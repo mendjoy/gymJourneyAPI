@@ -3,6 +3,7 @@ package io.github.mendjoy.gymJourneyAPI.service;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
 import io.github.mendjoy.gymJourneyAPI.entity.exercise.Exercise;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,7 @@ public class ExerciseService {
     }
 
     public ExerciseDTO getExerciseById(Integer id){
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new RuntimeException("Exercicio não encontrado!"));
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
         return new ExerciseDTO(exercise.getId(),
                                exercise.getName(),
                                exercise.getDescription(),
