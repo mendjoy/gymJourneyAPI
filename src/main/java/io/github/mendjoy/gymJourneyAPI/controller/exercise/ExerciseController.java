@@ -2,12 +2,9 @@ package io.github.mendjoy.gymJourneyAPI.controller.exercise;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
-import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
