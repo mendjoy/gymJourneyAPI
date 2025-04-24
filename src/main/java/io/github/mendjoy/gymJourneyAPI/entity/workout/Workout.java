@@ -1,7 +1,10 @@
 package io.github.mendjoy.gymJourneyAPI.entity.workout;
 
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
+import io.github.mendjoy.gymJourneyAPI.entity.workoutExercise.WorkoutExercise;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Workout {
@@ -16,13 +19,17 @@ public class Workout {
     private String name;
     private String description;
 
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<WorkoutExercise> workoutExercises;
+
     public Workout() {
     }
 
-    public Workout(User user, String name, String description) {
+    public Workout(User user, String name, String description, List<WorkoutExercise> workoutExercises) {
         this.user = user;
         this.name = name;
         this.description = description;
+        this.workoutExercises = workoutExercises;
     }
 
     public Integer getId() {
@@ -55,5 +62,13 @@ public class Workout {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<WorkoutExercise> getWorkoutExercises() {
+        return workoutExercises;
+    }
+
+    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
+        this.workoutExercises = workoutExercises;
     }
 }
