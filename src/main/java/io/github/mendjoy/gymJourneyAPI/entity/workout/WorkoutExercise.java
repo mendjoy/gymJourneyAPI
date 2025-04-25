@@ -22,18 +22,19 @@ public class WorkoutExercise {
     private Integer sets;
     private Integer repetitions;
     private Double weight;
-    private Integer rest_time;
+    @Column(name = "rest_time")
+    private Integer restTime;
 
     public WorkoutExercise() {
     }
 
-    public WorkoutExercise(Workout workout, Exercise exercise, Integer sets, Integer repetitions, Double weight, Integer rest_time) {
+    public WorkoutExercise(Workout workout, Exercise exercise, Integer sets, Integer repetitions, Double weight, Integer restTime) {
         this.workout = workout;
         this.exercise = exercise;
         this.sets = sets;
         this.repetitions = repetitions;
         this.weight = weight;
-        this.rest_time = rest_time;
+        this.restTime = restTime;
     }
 
     public Integer getId() {
@@ -84,11 +85,11 @@ public class WorkoutExercise {
         this.weight = weight;
     }
 
-    public Integer getRest_time() {
-        return rest_time;
+    public Integer getRestTime() {
+        return restTime;
     }
 
-    public void setRest_time(Integer rest_time) {
-        this.rest_time = rest_time;
+    public void setRestTime(Integer restTime) {
+        this.restTime = restTime;
     }
 }
