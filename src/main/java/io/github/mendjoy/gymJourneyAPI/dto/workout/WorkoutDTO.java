@@ -57,7 +57,7 @@ public class WorkoutDTO {
         return exercises;
     }
 
-    public void setExerciseDTOS(List<WorkoutExerciseDTO> exercises) {
+    public void setExercise(List<WorkoutExerciseDTO> exercises) {
         this.exercises = exercises;
     }
 }

@@ -1,7 +1,6 @@
-package io.github.mendjoy.gymJourneyAPI.entity.workoutExercise;
+package io.github.mendjoy.gymJourneyAPI.entity.workout;
 
 import io.github.mendjoy.gymJourneyAPI.entity.exercise.Exercise;
-import io.github.mendjoy.gymJourneyAPI.entity.workout.Workout;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,6 +21,7 @@ public class WorkoutExercise {
     private Integer sets;
     private Integer repetitions;
     private Double weight;
+
     @Column(name = "rest_time")
     private Integer restTime;
 

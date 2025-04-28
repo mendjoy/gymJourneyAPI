@@ -1,7 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.entity.workout;
 
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
-import io.github.mendjoy.gymJourneyAPI.entity.workoutExercise.WorkoutExercise;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -30,6 +29,12 @@ public class Workout {
         this.name = name;
         this.description = description;
         this.workoutExercises = workoutExercises;
+    }
+
+    public Workout(User user, String name, String description) {
+        this.user = user;
+        this.name = name;
+        this.description = description;
     }
 
     public Integer getId() {
