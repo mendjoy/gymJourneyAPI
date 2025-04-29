@@ -4,6 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.entity.exercise.Exercise;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "workout_exercise")
 public class WorkoutExercise {
 
     @Id
