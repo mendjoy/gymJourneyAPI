@@ -3,6 +3,7 @@ package io.github.mendjoy.gymJourneyAPI.entity.workout;
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,9 @@ public class Workout {
 
     @Column(name = "max_sessions")
     private Integer maxSessions;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkoutExercise> workoutExercises;
@@ -80,6 +84,14 @@ public class Workout {
 
     public void setMaxSessions(Integer maxSessions) {
         this.maxSessions = maxSessions;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public List<WorkoutExercise> getWorkoutExercises() {
