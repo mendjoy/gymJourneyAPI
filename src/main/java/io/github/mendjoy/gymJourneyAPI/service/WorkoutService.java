@@ -1,6 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDTO;
 import io.github.mendjoy.gymJourneyAPI.entity.exercise.Exercise;
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import io.github.mendjoy.gymJourneyAPI.entity.workout.Workout;
@@ -40,11 +41,27 @@ public class WorkoutService {
                     ex.getWeight(), ex.getRestTime());
         }).toList();
 
-        workout.setWorkoutExercises(workoutExercises);
+         workout.setWorkoutExercises(workoutExercises);
 
          Workout newWorkout = workoutRepository.save(workout);
          workoutDTO.setId(newWorkout.getId());
+         workoutDTO.setExercises(mapWorkoutExercises(newWorkout));
+
          return workoutDTO;
 
+    }
+
+    private List<WorkoutExerciseDTO> mapWorkoutExercises(Workout workout){
+
+        return workout.getWorkoutExercises().stream().map(we -> {
+            WorkoutExerciseDTO workoutExerciseDTO = new WorkoutExerciseDTO();
+            workoutExerciseDTO.setId(we.getExercise().getId());
+            workoutExerciseDTO.setExerciseId(we.getExercise().getId());
+            workoutExerciseDTO.setSets(we.getSets());
+            workoutExerciseDTO.setRepetitions(we.getRepetitions());
+            workoutExerciseDTO.setWeight(we.getWeight());
+            workoutExerciseDTO.setRestTime(we.getRestTime());
+            return workoutExerciseDTO;
+        }).toList();
     }
 }
