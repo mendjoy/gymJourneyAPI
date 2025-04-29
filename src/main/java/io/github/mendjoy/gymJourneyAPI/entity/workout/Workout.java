@@ -18,23 +18,28 @@ public class Workout {
     private String name;
     private String description;
 
+    @Column(name = "max_sessions")
+    private Integer maxSessions;
+
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkoutExercise> workoutExercises;
 
     public Workout() {
     }
 
-    public Workout(User user, String name, String description, List<WorkoutExercise> workoutExercises) {
+    public Workout(User user, String name, String description, Integer maxSessions, List<WorkoutExercise> workoutExercises) {
         this.user = user;
         this.name = name;
         this.description = description;
+        this.maxSessions = maxSessions;
         this.workoutExercises = workoutExercises;
     }
 
-    public Workout(User user, String name, String description) {
+    public Workout(User user, String name, String description, Integer maxSessions) {
         this.user = user;
         this.name = name;
         this.description = description;
+        this.maxSessions = maxSessions;
     }
 
     public Integer getId() {
@@ -67,6 +72,14 @@ public class Workout {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getMaxSessions() {
+        return maxSessions;
+    }
+
+    public void setMaxSessions(Integer maxSessions) {
+        this.maxSessions = maxSessions;
     }
 
     public List<WorkoutExercise> getWorkoutExercises() {

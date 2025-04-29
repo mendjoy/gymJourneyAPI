@@ -31,7 +31,7 @@ public class WorkoutService {
 
         User user = userRepository.findById(workoutDTO.getUserId()).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
 
-        Workout workout = new Workout(user, workoutDTO.getName(), workoutDTO.getDescription());
+        Workout workout = new Workout(user, workoutDTO.getName(), workoutDTO.getDescription(), workoutDTO.getMaxSessions());
 
         List<WorkoutExercise> workoutExercises = workoutDTO.getExercises().stream().map(ex -> {
             Exercise exercise = exerciseRepository.findById(ex.getExerciseId())

@@ -8,16 +8,18 @@ public class WorkoutDTO {
     private Integer userId;
     private String name;
     private String description;
+    private Integer maxSessions;
     private List<WorkoutExerciseDTO> exercises;
 
     public WorkoutDTO() {
     }
 
-    public WorkoutDTO(Integer id, Integer userId, String name, String description, List<WorkoutExerciseDTO> exercises) {
+    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutExerciseDTO> exercises) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.description = description;
+        this.maxSessions = maxSessions;
         this.exercises = exercises;
     }
 
@@ -51,6 +53,18 @@ public class WorkoutDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getMaxSessions() {
+        return maxSessions;
+    }
+
+    public void setMaxSessions(Integer maxSessions) {
+        this.maxSessions = maxSessions;
+    }
+
+    public void setExercises(List<WorkoutExerciseDTO> exercises) {
+        this.exercises = exercises;
     }
 
     public List<WorkoutExerciseDTO> getExercises() {
