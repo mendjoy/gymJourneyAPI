@@ -10,7 +10,7 @@ public class WorkoutDetailsDTO extends WorkoutBaseDTO {
     }
 
     public WorkoutDetailsDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutExerciseDetailsDTO> exercises) {
-        super();
+        super(id, userId, name, description, maxSessions);
         this.exercises = exercises;
     }
 
