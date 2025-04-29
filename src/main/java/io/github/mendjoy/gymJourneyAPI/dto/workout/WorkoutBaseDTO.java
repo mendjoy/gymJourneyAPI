@@ -1,16 +1,16 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
-public class WorkouBaseDTO {
+public class WorkoutBaseDTO {
     private Integer id;
     private Integer userId;
     private String name;
     private String description;
     private Integer maxSessions;
 
-    public WorkouBaseDTO() {
+    public WorkoutBaseDTO() {
     }
 
-    public WorkouBaseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
+    public WorkoutBaseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
         this.id = id;
         this.userId = userId;
         this.name = name;
