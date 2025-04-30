@@ -23,7 +23,7 @@ public class ExerciseService {
 
         Exercise newExercise = new Exercise(exerciseDTO.getName(),
                                             exerciseDTO.getDescription(),
-                                            exerciseDTO.getMuscle_group());
+                                            exerciseDTO.getMuscleGroup());
 
         Exercise savedExercise = exerciseRepository.save(newExercise);
 

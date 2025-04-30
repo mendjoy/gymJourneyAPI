@@ -3,22 +3,22 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
 
 public class WorkoutExerciseDetailsDTO extends WorkoutExerciseBaseDTO {
-    private ExerciseDTO exerciseDTO;
+    private ExerciseDTO exercise;
 
     public WorkoutExerciseDetailsDTO() {
     }
 
-    public WorkoutExerciseDetailsDTO(Integer id, ExerciseDTO exerciseDTO, Integer sets, Integer repetitions, Double weight, Integer restTime) {
+    public WorkoutExerciseDetailsDTO(Integer id, ExerciseDTO exercise, Integer sets, Integer repetitions, Double weight, Integer restTime) {
         super(id, sets, repetitions, weight, restTime);
-        this.exerciseDTO = exerciseDTO;
+        this.exercise = exercise;
 
     }
 
-    public ExerciseDTO getExerciseDTO() {
-        return exerciseDTO;
+    public ExerciseDTO getExercise() {
+        return exercise;
     }
 
-    public void setExerciseDTO(ExerciseDTO exerciseDTO) {
-        this.exerciseDTO = exerciseDTO;
+    public void setExercise(ExerciseDTO exercise) {
+        this.exercise = exercise;
     }
 }
