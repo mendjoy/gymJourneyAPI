@@ -1,7 +1,9 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
+import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
-import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDetailsDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDTO;
 import io.github.mendjoy.gymJourneyAPI.entity.exercise.Exercise;
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import io.github.mendjoy.gymJourneyAPI.entity.workout.Workout;
@@ -28,7 +30,7 @@ public class WorkoutService {
     @Autowired
     WorkoutRepository workoutRepository;
 
-    public WorkoutDTO register(WorkoutDTO workoutDTO){
+    public WorkoutDetailsDTO register(WorkoutDTO workoutDTO){
 
         User user = userRepository.findById(workoutDTO.getUserId()).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
 
@@ -44,24 +46,32 @@ public class WorkoutService {
          workout.setWorkoutExercises(workoutExercises);
 
          Workout newWorkout = workoutRepository.save(workout);
-         workoutDTO.setId(newWorkout.getId());
-         workoutDTO.setExercises(mapWorkoutExercises(newWorkout));
 
-         return workoutDTO;
+         return getWorkoutDetailsDTO(newWorkout);
 
     }
 
-    private List<WorkoutExerciseDTO> mapWorkoutExercises(Workout workout){
+    private WorkoutDetailsDTO getWorkoutDetailsDTO(Workout workout){
+        List<WorkoutExerciseDetailsDTO> workoutExerciseDetailsDTOS = workout.getWorkoutExercises().stream().map(we -> {
+            Exercise exercise = exerciseRepository.findById(we.getExercise().getId()).orElseThrow(() -> new EntityNotFoundException("Exercício não encontrado!"));
+            ExerciseDTO exerciseDTO = new ExerciseDTO(exercise.getId(),
+                                                      exercise.getName(),
+                                                      exercise.getDescription(),
+                                                      exercise.getMuscle_group());
 
-        return workout.getWorkoutExercises().stream().map(we -> {
-            WorkoutExerciseDTO workoutExerciseDTO = new WorkoutExerciseDTO();
-            workoutExerciseDTO.setId(we.getExercise().getId());
-            workoutExerciseDTO.setExerciseId(we.getExercise().getId());
-            workoutExerciseDTO.setSets(we.getSets());
-            workoutExerciseDTO.setRepetitions(we.getRepetitions());
-            workoutExerciseDTO.setWeight(we.getWeight());
-            workoutExerciseDTO.setRestTime(we.getRestTime());
-            return workoutExerciseDTO;
+            return new WorkoutExerciseDetailsDTO(we.getId(),
+                                                 exerciseDTO,
+                                                 we.getSets(),
+                                                 we.getRepetitions(),
+                                                 we.getWeight(),
+                                                 we.getRestTime());
         }).toList();
+
+        return new WorkoutDetailsDTO(workout.getId(),
+                                     workout.getUser().getId(),
+                                     workout.getName(),
+                                     workout.getDescription(),
+                                     workout.getMaxSessions(),
+                                     workoutExerciseDetailsDTOS);
     }
 }
