@@ -31,16 +31,24 @@ CREATE TABLE workout (
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE workout_exercise (
+CREATE TABLE workout_section (
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     workout_id INTEGER NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(255),
+    FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE
+);
+
+CREATE TABLE workout_exercise (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    workout_section_id INTEGER NOT NULL,
     exercise_id INTEGER NOT NULL,
-    sets INTEGER NOT NULL,
-    repetitions INTEGER NOT NULL,
-    weight DECIMAL(5,2),
+    sets INTEGER,
+    repetitions INTEGER,
+    weight DOUBLE,
     rest_time INTEGER,
-    FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE,
-    FOREIGN KEY (exercise_id) REFERENCES exercise(id) ON DELETE CASCADE
+    FOREIGN KEY (workout_section_id) REFERENCES workout_section(id) ON DELETE CASCADE,
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id)
 );
 
 CREATE TABLE workout_frequency (
