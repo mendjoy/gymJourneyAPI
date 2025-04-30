@@ -5,16 +5,16 @@ public class ExerciseDTO {
     private Integer id;
     private String name;
     private String description;
-    private String muscle_group;
+    private String muscleGroup;
 
     public ExerciseDTO() {
     }
 
-    public ExerciseDTO(Integer id, String name, String description, String muscle_group) {
+    public ExerciseDTO(Integer id, String name, String description, String muscleGroup) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.muscle_group = muscle_group;
+        this.muscleGroup = muscleGroup;
     }
 
     public Integer getId() {
@@ -41,11 +41,11 @@ public class ExerciseDTO {
         this.description = description;
     }
 
-    public String getMuscle_group() {
-        return muscle_group;
+    public String getMuscleGroup() {
+        return muscleGroup;
     }
 
-    public void setMuscle_group(String muscle_group) {
-        this.muscle_group = muscle_group;
+    public void setMuscleGroup(String muscleGroup) {
+        this.muscleGroup = muscleGroup;
     }
 }
