@@ -9,16 +9,16 @@ public class WorkoutSectionDTO {
     private Integer id;
     private String name;
     private String description;
-    private List<ExerciseDTO> exerciseDTOS;
+    private List<WorkoutExerciseDTO> workoutExerciseDTOS;
 
     public WorkoutSectionDTO() {
     }
 
-    public WorkoutSectionDTO(Integer id, String name, String description, List<ExerciseDTO> exerciseDTOS) {
+    public WorkoutSectionDTO(Integer id, String name, String description, List<WorkoutExerciseDTO> workoutExerciseDTOS) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.exerciseDTOS = exerciseDTOS;
+        this.workoutExerciseDTOS = workoutExerciseDTOS;
     }
 
     public Integer getId() {
@@ -45,11 +45,11 @@ public class WorkoutSectionDTO {
         this.description = description;
     }
 
-    public List<ExerciseDTO> getExerciseDTOS() {
-        return exerciseDTOS;
+    public List<WorkoutExerciseDTO> getWorkoutExerciseDTOS() {
+        return workoutExerciseDTOS;
     }
 
-    public void setExerciseDTOS(List<ExerciseDTO> exerciseDTOS) {
-        this.exerciseDTOS = exerciseDTOS;
+    public void setWorkoutExerciseDTOS(List<WorkoutExerciseDTO> workoutExerciseDTOS) {
+        this.workoutExerciseDTOS = workoutExerciseDTOS;
     }
 }
