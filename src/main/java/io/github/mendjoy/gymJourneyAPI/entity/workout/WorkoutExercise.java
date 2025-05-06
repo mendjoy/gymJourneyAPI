@@ -12,8 +12,8 @@ public class WorkoutExercise {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "workout_id", nullable = false)
-    private Workout workout;
+    @JoinColumn(name = "workout_section_id", nullable = false)
+    private WorkoutSection workoutSection;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id", nullable = false)
@@ -29,8 +29,8 @@ public class WorkoutExercise {
     public WorkoutExercise() {
     }
 
-    public WorkoutExercise(Workout workout, Exercise exercise, Integer sets, Integer repetitions, Double weight, Integer restTime) {
-        this.workout = workout;
+    public WorkoutExercise(WorkoutSection workoutSection, Exercise exercise, Integer sets, Integer repetitions, Double weight, Integer restTime) {
+        this.workoutSection = workoutSection;
         this.exercise = exercise;
         this.sets = sets;
         this.repetitions = repetitions;
@@ -46,12 +46,12 @@ public class WorkoutExercise {
         this.id = id;
     }
 
-    public Workout getWorkout() {
-        return workout;
+    public WorkoutSection getWorkoutSection() {
+        return workoutSection;
     }
 
-    public void setWorkout(Workout workout) {
-        this.workout = workout;
+    public void setWorkoutSection(WorkoutSection workoutSection) {
+        this.workoutSection = workoutSection;
     }
 
     public Exercise getExercise() {
