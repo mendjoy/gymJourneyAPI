@@ -5,21 +5,25 @@ import java.util.List;
 
 public class WorkoutDTO extends WorkoutBaseDTO {
 
-    private List<WorkoutExerciseDTO> exercises;
+    private List<WorkoutSectionDTO> workoutSectionDTOS;
 
     public WorkoutDTO() {
     }
 
-    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutExerciseDTO> exercises) {
-        super();
-        this.exercises = exercises;
+    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionDTO> workoutSectionDTOS) {
+        super(id, userId, name, description, maxSessions);
+        this.workoutSectionDTOS = workoutSectionDTOS;
     }
 
-    public List<WorkoutExerciseDTO> getExercises() {
-        return exercises;
+    public WorkoutDTO(List<WorkoutSectionDTO> workoutSectionDTOS) {
+        this.workoutSectionDTOS = workoutSectionDTOS;
     }
 
-    public void setExercises(List<WorkoutExerciseDTO> exercises) {
-        this.exercises = exercises;
+    public List<WorkoutSectionDTO> getWorkoutSections() {
+        return workoutSectionDTOS;
+    }
+
+    public void setWorkoutSections(List<WorkoutSectionDTO> workoutSectionDTOS) {
+        this.workoutSectionDTOS = workoutSectionDTOS;
     }
 }
