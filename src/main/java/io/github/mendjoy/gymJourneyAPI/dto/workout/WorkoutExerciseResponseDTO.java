@@ -8,7 +8,7 @@ public class WorkoutExerciseDetailsDTO extends WorkoutExerciseBaseDTO {
     public WorkoutExerciseDetailsDTO() {
     }
 
-    public WorkoutExerciseDetailsDTO(Integer id, ExerciseDTO exercise, Integer sets, Integer repetitions, Double weight, Integer restTime) {
+    public WorkoutExerciseDetailsDTO(Integer id, Integer sets, Integer repetitions, Double weight, Integer restTime, ExerciseDTO exercise) {
         super(id, sets, repetitions, weight, restTime);
         this.exercise = exercise;
 
