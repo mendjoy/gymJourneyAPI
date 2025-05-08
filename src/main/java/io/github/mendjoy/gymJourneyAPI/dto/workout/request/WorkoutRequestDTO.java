@@ -1,28 +1,30 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout.request;
 
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
-import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutSectionDTO;
 
 import java.util.List;
 
 public class WorkoutRequestDTO extends WorkoutDTO {
 
-    private List<WorkoutSectionRequestDTO> workoutSectionRequestDTOS;
+    private List<WorkoutSectionRequestDTO> workoutSection;
 
-    public WorkoutRequestDTO(List<WorkoutSectionRequestDTO> workoutSectionRequestDTOS) {
-        this.workoutSectionRequestDTOS = workoutSectionRequestDTOS;
+    public WorkoutRequestDTO() {
     }
 
-    public WorkoutRequestDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionRequestDTO> workoutSectionRequestDTOS) {
+    public WorkoutRequestDTO(List<WorkoutSectionRequestDTO> workoutSection) {
+        this.workoutSection = workoutSection;
+    }
+
+    public WorkoutRequestDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionRequestDTO> workoutSection) {
         super(id, userId, name, description, maxSessions);
-        this.workoutSectionRequestDTOS = workoutSectionRequestDTOS;
+        this.workoutSection = workoutSection;
     }
 
-    public List<WorkoutSectionRequestDTO> getWorkoutSectionRequestDTOS() {
-        return workoutSectionRequestDTOS;
+    public List<WorkoutSectionRequestDTO> getWorkoutSection() {
+        return workoutSection;
     }
 
-    public void setWorkoutSectionRequestDTOS(List<WorkoutSectionRequestDTO> workoutSectionRequestDTOS) {
-        this.workoutSectionRequestDTOS = workoutSectionRequestDTOS;
+    public void setWorkoutSection(List<WorkoutSectionRequestDTO> workoutSection) {
+        this.workoutSection = workoutSection;
     }
 }

@@ -8,6 +8,10 @@ public class WorkoutExerciseRequestDTO extends WorkoutExerciseDTO {
     public WorkoutExerciseRequestDTO() {
     }
 
+    public WorkoutExerciseRequestDTO(Integer id, Integer sets, Integer repetitions, Double weight, Integer restTime) {
+        super(id, sets, repetitions, weight, restTime);
+    }
+
     public WorkoutExerciseRequestDTO(Integer id, Integer exerciseId, Integer sets, Integer repetitions, Double weight, Integer restTime) {
         super(id, sets, repetitions, weight, restTime);
         this.exerciseId = exerciseId;

@@ -6,22 +6,25 @@ import java.util.List;
 
 public class WorkoutSectionRequestDTO extends WorkoutSectionDTO {
 
-    private List<WorkoutExerciseRequestDTO> workoutExerciseRequestDTOS;
+    private List<WorkoutExerciseRequestDTO> workoutExercise;
+
+    public WorkoutSectionRequestDTO() {
+    }
 
     public WorkoutSectionRequestDTO(Integer id, String name, String description) {
         super(id, name, description);
     }
 
-    public WorkoutSectionRequestDTO(Integer id, String name, String description, List<WorkoutExerciseRequestDTO> workoutExerciseRequestDTOS) {
+    public WorkoutSectionRequestDTO(Integer id, String name, String description, List<WorkoutExerciseRequestDTO> workoutExercise) {
         super(id, name, description);
-        this.workoutExerciseRequestDTOS = workoutExerciseRequestDTOS;
+        this.workoutExercise = workoutExercise;
     }
 
-    public List<WorkoutExerciseRequestDTO> getWorkoutExerciseRequestDTOS() {
-        return workoutExerciseRequestDTOS;
+    public List<WorkoutExerciseRequestDTO> getWorkoutExercise() {
+        return workoutExercise;
     }
 
-    public void setWorkoutExerciseRequestDTOS(List<WorkoutExerciseRequestDTO> workoutExerciseRequestDTOS) {
-        this.workoutExerciseRequestDTOS = workoutExerciseRequestDTOS;
+    public void setWorkoutExercise(List<WorkoutExerciseRequestDTO> workoutExercise) {
+        this.workoutExercise = workoutExercise;
     }
 }
