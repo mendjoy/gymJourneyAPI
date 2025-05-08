@@ -2,18 +2,17 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
 import java.util.List;
 
-public class WorkoutBaseDTO {
+public class WorkoutDTO {
     private Integer id;
     private Integer userId;
     private String name;
     private String description;
     private Integer maxSessions;
-    private List<WorkoutSectionDTO> workoutSectionDTOS;
 
-    public WorkoutBaseDTO() {
+    public WorkoutDTO() {
     }
 
-    public WorkoutBaseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
+    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -21,13 +20,12 @@ public class WorkoutBaseDTO {
         this.maxSessions = maxSessions;
     }
 
-    public WorkoutBaseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionDTO> workoutSectionDTOS) {
+    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionDTO> workoutSectionDTOS) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
-        this.workoutSectionDTOS = workoutSectionDTOS;
     }
 
     public Integer getId() {
@@ -70,11 +68,4 @@ public class WorkoutBaseDTO {
         this.maxSessions = maxSessions;
     }
 
-    public List<WorkoutSectionDTO> getWorkoutSectionDTOS() {
-        return workoutSectionDTOS;
-    }
-
-    public void setWorkoutSectionDTOS(List<WorkoutSectionDTO> workoutSectionDTOS) {
-        this.workoutSectionDTOS = workoutSectionDTOS;
-    }
 }
