@@ -19,4 +19,12 @@ public class WorkoutSectionResponseDTO extends WorkoutSectionDTO {
         super(id, name, description);
         this.workoutExercise = workoutExercise;
     }
+
+    public List<WorkoutExerciseResponseDTO> getWorkoutExercise() {
+        return workoutExercise;
+    }
+
+    public void setWorkoutExercise(List<WorkoutExerciseResponseDTO> workoutExercise) {
+        this.workoutExercise = workoutExercise;
+    }
 }
