@@ -2,6 +2,8 @@ package io.github.mendjoy.gymJourneyAPI.entity.workout;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "workout_section")
 public class WorkoutSection {
@@ -16,6 +18,9 @@ public class WorkoutSection {
     private String name;
     private String description;
 
+    @OneToMany(mappedBy = "workoutSection", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkoutExercise> workoutExercises;
+
     public WorkoutSection() {
     }
 
@@ -23,6 +28,13 @@ public class WorkoutSection {
         this.workout = workout;
         this.name = name;
         this.description = description;
+    }
+
+    public WorkoutSection(Workout workout, String name, String description, List<WorkoutExercise> workoutExercises) {
+        this.workout = workout;
+        this.name = name;
+        this.description = description;
+        this.workoutExercises = workoutExercises;
     }
 
     public Integer getId() {
@@ -55,5 +67,13 @@ public class WorkoutSection {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<WorkoutExercise> getWorkoutExercises() {
+        return workoutExercises;
+    }
+
+    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
+        this.workoutExercises = workoutExercises;
     }
 }

@@ -26,17 +26,17 @@ public class Workout {
     private Date endDate;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<WorkoutExercise> workoutExercises;
+    List<WorkoutSection> workoutSections;
 
     public Workout() {
     }
 
-    public Workout(User user, String name, String description, Integer maxSessions, List<WorkoutExercise> workoutExercises) {
+    public Workout(User user, String name, String description, Integer maxSessions, List<WorkoutSection> workoutSections) {
         this.user = user;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
-        this.workoutExercises = workoutExercises;
+        this.workoutSections = workoutSections;
     }
 
     public Workout(User user, String name, String description, Integer maxSessions) {
@@ -94,11 +94,11 @@ public class Workout {
         this.endDate = endDate;
     }
 
-    public List<WorkoutExercise> getWorkoutExercises() {
-        return workoutExercises;
+    public List<WorkoutSection> getWorkoutSections() {
+        return workoutSections;
     }
 
-    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
-        this.workoutExercises = workoutExercises;
+    public void setWorkoutSections(List<WorkoutSection> workoutSections) {
+        this.workoutSections = workoutSections;
     }
 }
