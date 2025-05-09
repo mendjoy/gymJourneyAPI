@@ -6,22 +6,22 @@ import java.util.List;
 
 public class WorkoutResponseDTO extends WorkoutDTO {
 
-    List<WorkoutSectionResponseDTO> workoutSection;
+    List<WorkoutSectionResponseDTO> workoutSections;
 
     public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
         super(id, userId, name, description, maxSessions);
     }
 
-    public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionResponseDTO> workoutSection) {
+    public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionResponseDTO> workoutSections) {
         super(id, userId, name, description, maxSessions);
-        this.workoutSection = workoutSection;
+        this.workoutSections = workoutSections;
     }
 
-    public List<WorkoutSectionResponseDTO> getWorkoutSection() {
-        return workoutSection;
+    public List<WorkoutSectionResponseDTO> getWorkoutSections() {
+        return workoutSections;
     }
 
-    public void setWorkoutSection(List<WorkoutSectionResponseDTO> workoutSection) {
-        this.workoutSection = workoutSection;
+    public void setWorkoutSections(List<WorkoutSectionResponseDTO> workoutSections) {
+        this.workoutSections = workoutSections;
     }
 }
