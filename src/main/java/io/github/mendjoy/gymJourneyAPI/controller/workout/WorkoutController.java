@@ -2,7 +2,7 @@ package io.github.mendjoy.gymJourneyAPI.controller.workout;
 
 import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
-import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDetailsDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.request.WorkoutRequestDTO;
 import io.github.mendjoy.gymJourneyAPI.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,8 @@ public class WorkoutController {
     WorkoutService workoutService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseApiDTO> register(@RequestBody WorkoutDTO workoutDTO){
-        WorkoutDetailsDTO newWorkoutDTO = workoutService.register(workoutDTO);
+    public ResponseEntity<ResponseApiDTO> register(@RequestBody WorkoutRequestDTO workoutRequestDTO){
+        WorkoutDTO newWorkoutDTO = workoutService.register(workoutRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseApiDTO.success(HttpStatus.CREATED, newWorkoutDTO));
     }
 
