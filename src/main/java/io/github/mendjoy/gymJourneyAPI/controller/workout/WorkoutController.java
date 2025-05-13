@@ -22,5 +22,10 @@ public class WorkoutController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseApiDTO.success(HttpStatus.CREATED, newWorkoutDTO));
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<ResponseApiDTO> deleteWorkout(@PathVariable Integer id){
+        workoutService.deleteWorkout(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino excluido com sucesso!"));
+    }
 
 }

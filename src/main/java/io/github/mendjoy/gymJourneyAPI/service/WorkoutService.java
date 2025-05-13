@@ -59,6 +59,13 @@ public class WorkoutService {
          return getWorkoutDetailsDTO(newWorkout);
     }
 
+    public void deleteWorkout(Integer id){
+       Workout workout = workoutRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Treino não encontrado!"));
+       if(workout != null){
+           workoutRepository.delete(workout);
+       }
+    }
+
     private WorkoutResponseDTO getWorkoutDetailsDTO(Workout workout){
 
         List<WorkoutSectionResponseDTO> workoutSectionResponseDTO = workout.getWorkoutSections().stream().map( ws -> {
