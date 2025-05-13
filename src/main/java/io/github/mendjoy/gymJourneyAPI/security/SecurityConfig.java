@@ -4,6 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.service.TokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,6 +39,7 @@ public class SecurityConfig {
                         authorize.requestMatchers("/users/{id}/grant-admin").hasAuthority("ROLE_ADMIN");
                         authorize.requestMatchers("/exercises/**").hasAuthority("ROLE_ADMIN");
                         authorize.requestMatchers("/workout/register").hasAuthority("ROLE_ADMIN");
+                        authorize.requestMatchers(HttpMethod.DELETE, "/workout/**").hasAuthority("ROLE_ADMIN");
                         authorize.anyRequest().authenticated();
                    })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
