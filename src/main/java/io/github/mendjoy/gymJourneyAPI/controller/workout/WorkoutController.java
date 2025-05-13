@@ -3,11 +3,14 @@ package io.github.mendjoy.gymJourneyAPI.controller.workout;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.request.WorkoutRequestDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.response.WorkoutResponseDTO;
 import io.github.mendjoy.gymJourneyAPI.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/workout")
@@ -22,7 +25,7 @@ public class WorkoutController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseApiDTO.success(HttpStatus.CREATED, newWorkoutDTO));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseApiDTO> deleteWorkout(@PathVariable Integer id){
         workoutService.deleteWorkout(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino excluido com sucesso!"));
@@ -32,5 +35,11 @@ public class WorkoutController {
     public ResponseEntity<ResponseApiDTO> finishWorkout(@PathVariable Integer id){
         workoutService.finishWorkout(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino finalizado com sucesso!"));
+    }
+
+    @GetMapping("/all/{userId}")
+    public ResponseEntity<ResponseApiDTO> getAllWorkoutsByUser(@PathVariable Integer userId){
+        List<WorkoutResponseDTO> workoutResponseDTOS =  workoutService.getAllWorkoutsByUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTOS));
     }
 }

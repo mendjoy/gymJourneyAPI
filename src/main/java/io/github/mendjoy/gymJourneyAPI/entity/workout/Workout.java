@@ -22,6 +22,9 @@ public class Workout {
     @Column(name = "max_sessions")
     private Integer maxSessions;
 
+    @Column(name = "start_date")
+    private Date startDate;
+
     @Column(name = "end_date")
     private Date endDate;
 
@@ -31,11 +34,12 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(User user, String name, String description, Integer maxSessions, List<WorkoutSection> workoutSections) {
+    public Workout(User user, String name, String description, Integer maxSessions, Date startDate, List<WorkoutSection> workoutSections) {
         this.user = user;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
+        this.startDate = startDate;
         this.workoutSections = workoutSections;
     }
 
@@ -92,6 +96,14 @@ public class Workout {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public List<WorkoutSection> getWorkoutSections() {
