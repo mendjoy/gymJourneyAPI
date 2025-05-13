@@ -28,4 +28,9 @@ public class WorkoutController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino excluido com sucesso!"));
     }
 
+    @PostMapping("/finish/{id}")
+    public ResponseEntity<ResponseApiDTO> finishWorkout(@PathVariable Integer id){
+        workoutService.finishWorkout(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino finalizado com sucesso!"));
+    }
 }
