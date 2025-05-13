@@ -80,6 +80,21 @@ public class WorkoutService {
         }
     }
 
+    public List<WorkoutResponseDTO> getAllWorkoutsByUser(Integer userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
+        List<Workout> workouts = workoutRepository.findByUser(user);
+        return workouts.stream()
+                .map((this::getWorkoutDetailsDTO))
+                .toList();
+
+    }
+
+    public WorkoutResponseDTO getCurrentWorkoutByUser(Integer userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
+        Workout workout = workoutRepository.findByUserAndEndDateIsNull(user);
+        return getWorkoutDetailsDTO(workout);
+    }
+
     private WorkoutResponseDTO getWorkoutDetailsDTO(Workout workout){
 
         List<WorkoutSectionResponseDTO> workoutSectionResponseDTO = workout.getWorkoutSections().stream().map( ws -> {

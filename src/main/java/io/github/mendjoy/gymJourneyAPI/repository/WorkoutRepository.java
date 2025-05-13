@@ -10,6 +10,6 @@ public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
 
     List<Workout> findByUser(User user);
 
-    List<Workout> findByUserIdAndEndDateIsNull(Integer userId);
+    Workout findByUserAndEndDateIsNull(User user);
 
 }

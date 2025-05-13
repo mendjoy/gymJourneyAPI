@@ -42,4 +42,10 @@ public class WorkoutController {
         List<WorkoutResponseDTO> workoutResponseDTOS =  workoutService.getAllWorkoutsByUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTOS));
     }
+
+    @GetMapping("/current/{userId}")
+    public ResponseEntity<ResponseApiDTO> getCurrentWorkoutByUser(@PathVariable Integer userId){
+        WorkoutResponseDTO workoutResponseDTO = workoutService.getCurrentWorkoutByUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTO));
+    }
 }
