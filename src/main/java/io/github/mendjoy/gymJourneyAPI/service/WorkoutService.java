@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,6 +65,19 @@ public class WorkoutService {
        if(workout != null){
            workoutRepository.delete(workout);
        }
+    }
+
+    public void finishWorkout(Integer id){
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Treino não encontrado!"));
+        if(workout != null){
+
+            if (workout.getEndDate() != null) {
+                throw new IllegalStateException("Treino já finalizado!");
+            }else{
+                workout.setEndDate(new Date());
+                workoutRepository.save(workout);
+            }
+        }
     }
 
     private WorkoutResponseDTO getWorkoutDetailsDTO(Workout workout){
