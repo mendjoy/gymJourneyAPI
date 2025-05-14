@@ -1,6 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.exception;
 
 import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
+import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomGymJourneyApiException.class)
     public ResponseEntity<ResponseApiDTO> handleCustomGymJourneyApiException(CustomGymJourneyApiException exception){
-        ResponseApiDTO responseApi = ResponseApiDTO.error(HttpStatus.valueOf(exception.getStatusCode()), exception.getMessage());
+        ResponseApiDTO responseApi = ResponseApiDTO.error(exception.getStatusCode(), exception.getMessage());
         return new ResponseEntity<>(responseApi, responseApi.getStatus());
     }
 }
