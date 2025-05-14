@@ -29,4 +29,10 @@ public class GlobalExceptionHandler {
         ResponseApiDTO responseApi = ResponseApiDTO.error(HttpStatus.NOT_FOUND, exception.getMessage());
         return new ResponseEntity<>(responseApi, responseApi.getStatus());
     }
+
+    @ExceptionHandler(CustomGymJourneyApiException.class)
+    public ResponseEntity<ResponseApiDTO> handleCustomGymJourneyApiException(CustomGymJourneyApiException exception){
+        ResponseApiDTO responseApi = ResponseApiDTO.error(HttpStatus.valueOf(exception.getStatusCode()), exception.getMessage());
+        return new ResponseEntity<>(responseApi, responseApi.getStatus());
+    }
 }
