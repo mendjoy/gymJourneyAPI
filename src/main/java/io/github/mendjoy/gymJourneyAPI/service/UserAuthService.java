@@ -6,6 +6,8 @@ import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import io.github.mendjoy.gymJourneyAPI.entity.user.UserRole;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,6 +64,16 @@ public class UserAuthService implements UserDetailsService {
         userRepository.save(newUser);
 
         return authenticate(userRegisterDTO.getEmail(), userRegisterDTO.getPassword());
+    }
+
+    public User getUserAuthenticate() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Usuário não autenticado");
+        }
+
+        return (User) authentication.getPrincipal();
     }
 
 }
