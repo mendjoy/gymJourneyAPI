@@ -62,7 +62,7 @@ public class WorkoutService {
             WorkoutSection section = new WorkoutSection(workout, sec.getName(), sec.getDescription());
 
             List<WorkoutExercise> workoutExercises = sec.getWorkoutExercise().stream().map(ex -> {
-                Exercise exercise = exerciseRepository.findById(ex.getId()).orElseThrow(() -> new EntityNotFoundException("Exercício: " + ex.getId() + " não encontrado!"));
+                Exercise exercise = exerciseRepository.findById(ex.getExerciseId()).orElseThrow(() -> new EntityNotFoundException("Exercício: " + ex.getExerciseId() + " não encontrado!"));
                 return new WorkoutExercise(section,
                                            exercise,
                                            ex.getSets(),
