@@ -11,11 +11,13 @@ import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import io.github.mendjoy.gymJourneyAPI.entity.workout.Workout;
 import io.github.mendjoy.gymJourneyAPI.entity.workout.WorkoutExercise;
 import io.github.mendjoy.gymJourneyAPI.entity.workout.WorkoutSection;
+import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,7 @@ public class WorkoutService {
         boolean hasConflict = workoutRepository.existsWorkoutInProgressForUser(user, newStartDate);
 
         if (hasConflict) {
-            throw new IllegalStateException("O usuário já possui um treino ativo. Por favor, finalize o treino atual para prosseguir com o cadastro.");
+            throw new CustomGymJourneyApiException(HttpStatus.CONFLICT, "O usuário já possui um treino ativo. Por favor, finalize o treino atual para prosseguir com o cadastro.");
         }
 
         Workout workout = new Workout(user,
