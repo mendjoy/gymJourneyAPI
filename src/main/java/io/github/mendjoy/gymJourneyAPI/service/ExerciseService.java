@@ -30,7 +30,7 @@ public class ExerciseService {
         return new ExerciseDTO(savedExercise.getId(),
                                savedExercise.getName(),
                                savedExercise.getDescription(),
-                               savedExercise.getMuscle_group());
+                               savedExercise.getMuscleGroup());
     }
 
     public ExerciseDTO getExerciseById(Integer id){
@@ -38,7 +38,7 @@ public class ExerciseService {
         return new ExerciseDTO(exercise.getId(),
                                exercise.getName(),
                                exercise.getDescription(),
-                               exercise.getMuscle_group());
+                               exercise.getMuscleGroup());
     }
 
     public Page<ExerciseDTO> getAllExercises(int page, int size){
@@ -48,7 +48,7 @@ public class ExerciseService {
         return exercisePage.map(exercise -> new ExerciseDTO(exercise.getId(),
                                                                     exercise.getName(),
                                                                     exercise.getDescription(),
-                                                                    exercise.getMuscle_group()));
+                                                                    exercise.getMuscleGroup()));
     }
 
     public Page<ExerciseDTO> searchExercisesByName(String name, int page, int size){
@@ -57,7 +57,7 @@ public class ExerciseService {
         return exercisePage.map(exercise -> new ExerciseDTO(exercise.getId(),
                                                                     exercise.getName(),
                                                                     exercise.getDescription(),
-                                                                    exercise.getMuscle_group()));
+                                                                    exercise.getMuscleGroup()));
 
     }
 }

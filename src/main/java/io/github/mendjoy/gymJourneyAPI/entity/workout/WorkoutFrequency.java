@@ -3,7 +3,7 @@ package io.github.mendjoy.gymJourneyAPI.entity.workout;
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "workout_frequency")
@@ -22,12 +22,12 @@ public class WorkoutFrequency {
     private Workout workout;
 
     @Column(name = "frequency_date")
-    private Date frequencyDate;
+    private LocalDate frequencyDate;
 
     public WorkoutFrequency() {
     }
 
-    public WorkoutFrequency(User user, Workout workout, Date frequencyDate) {
+    public WorkoutFrequency(User user, Workout workout, LocalDate frequencyDate) {
         this.user = user;
         this.workout = workout;
         this.frequencyDate = frequencyDate;
@@ -57,11 +57,11 @@ public class WorkoutFrequency {
         this.workout = workout;
     }
 
-    public Date getFrequencyDate() {
+    public LocalDate getFrequencyDate() {
         return frequencyDate;
     }
 
-    public void setFrequencyDate(Date frequencyDate) {
+    public void setFrequencyDate(LocalDate frequencyDate) {
         this.frequencyDate = frequencyDate;
     }
 }

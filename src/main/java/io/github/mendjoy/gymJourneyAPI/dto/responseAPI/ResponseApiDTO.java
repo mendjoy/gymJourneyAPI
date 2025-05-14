@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.dto.response;
+package io.github.mendjoy.gymJourneyAPI.dto.responseAPI;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;

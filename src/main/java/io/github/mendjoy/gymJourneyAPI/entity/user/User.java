@@ -5,8 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,7 +18,9 @@ public class User implements UserDetails {
     private String email;
     private String name;
     private String phone;
-    private Date birth_date;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -27,11 +29,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String email, String name, String phone, Date birth_date, String password, UserRole role ){
+    public User(String email, String name, String phone, LocalDate birthDate, String password, UserRole role ){
         this.email = email;
         this.name = name;
         this.phone = phone;
-        this.birth_date = birth_date;
+        this.birthDate = birthDate;
         this.password = password;
         this.role = role;
     }
@@ -68,12 +70,12 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public Date getBirth_date() {
-        return birth_date;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
+    public void setBirth_date(LocalDate birth_date) {
+        this.birthDate = birthDate;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller.workout;
 
-import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.request.WorkoutRequestDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.response.WorkoutResponseDTO;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -33,7 +33,7 @@ public class WorkoutController {
     }
 
     @PostMapping("/finish/{id}/{endDate}")
-    public ResponseEntity<ResponseApiDTO> finishWorkout(@PathVariable Integer id, @PathVariable Date endDate){
+    public ResponseEntity<ResponseApiDTO> finishWorkout(@PathVariable Integer id, @PathVariable LocalDate endDate){
         workoutService.finishWorkout(id, endDate);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino finalizado com sucesso!"));
     }

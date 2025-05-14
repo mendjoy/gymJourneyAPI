@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class WorkoutService {
 
         User user = userRepository.findById(workoutRequestDTO.getUserId()).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
 
-        Date newStartDate = workoutRequestDTO.getStartDate();
+        LocalDate newStartDate = workoutRequestDTO.getStartDate();
 
         boolean hasConflict = workoutRepository.existsWorkoutInProgressForUser(user, newStartDate);
 
@@ -89,7 +90,7 @@ public class WorkoutService {
        }
     }
 
-    public void finishWorkout(Integer id, Date endDate){
+    public void finishWorkout(Integer id, LocalDate endDate){
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Treino não encontrado!"));
         if(workout != null){
 
@@ -143,7 +144,7 @@ public class WorkoutService {
                 ExerciseDTO exerciseDTO = new ExerciseDTO(exercise.getId(),
                                                           exercise.getName(),
                                                           exercise.getDescription(),
-                                                          exercise.getMuscle_group());
+                                                          exercise.getMuscleGroup());
 
                 return new WorkoutExerciseResponseDTO(we.getId(),
                                                       we.getSets(),

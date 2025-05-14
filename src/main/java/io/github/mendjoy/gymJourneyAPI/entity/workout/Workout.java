@@ -3,6 +3,7 @@ package io.github.mendjoy.gymJourneyAPI.entity.workout;
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class Workout {
     private Integer maxSessions;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkoutSection> workoutSections;
@@ -34,7 +35,7 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(User user, String name, String description, Integer maxSessions, Date startDate, List<WorkoutSection> workoutSections) {
+    public Workout(User user, String name, String description, Integer maxSessions, LocalDate startDate, List<WorkoutSection> workoutSections) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -43,7 +44,7 @@ public class Workout {
         this.workoutSections = workoutSections;
     }
 
-    public Workout(User user, String name, String description, Integer maxSessions, Date startDate) {
+    public Workout(User user, String name, String description, Integer maxSessions, LocalDate startDate) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -91,19 +92,19 @@ public class Workout {
         this.maxSessions = maxSessions;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 

@@ -57,7 +57,7 @@ public class UserAuthService implements UserDetailsService {
         User newUser = new User(userRegisterDTO.getEmail(),
                                 userRegisterDTO.getName(),
                                 userRegisterDTO.getPhone(),
-                                userRegisterDTO.getBirth_date(),
+                                userRegisterDTO.getBirthDate(),
                                 passwordEncoder.encode(userRegisterDTO.getPassword()),
                                 UserRole.USER);
 

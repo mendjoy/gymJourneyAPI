@@ -1,6 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller.user;
 
-import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserAuthDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserLoginDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDTO;

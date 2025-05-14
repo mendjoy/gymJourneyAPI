@@ -1,9 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.entity.exercise;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Exercise {
@@ -13,7 +10,9 @@ public class Exercise {
     private Integer id;
     private String name;
     private String description;
-    private String muscle_group;
+
+    @Column(name = "muscle_group")
+    private String muscleGroup;
 
     public Exercise() {
     }
@@ -21,7 +20,7 @@ public class Exercise {
     public Exercise(String name, String description, String muscle_group) {
         this.name = name;
         this.description = description;
-        this.muscle_group = muscle_group;
+        this.muscleGroup = muscle_group;
     }
 
     public Integer getId() {
@@ -48,11 +47,11 @@ public class Exercise {
         this.description = description;
     }
 
-    public String getMuscle_group() {
-        return muscle_group;
+    public String getMuscleGroup() {
+        return muscleGroup;
     }
 
-    public void setMuscle_group(String muscle_group) {
-        this.muscle_group = muscle_group;
+    public void setMuscleGroup(String muscleGroup) {
+        this.muscleGroup = muscleGroup;
     }
 }

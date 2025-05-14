@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.controller.exercise;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
-import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

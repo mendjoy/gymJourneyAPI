@@ -1,6 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.dto.user;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserRegisterDTO {
 
@@ -8,15 +8,15 @@ public class UserRegisterDTO {
     private String email;
     private String name;
     private String phone;
-    private Date birth_date;
+    private LocalDate birthDate;
     private String password;
 
-    public UserRegisterDTO(String email, Integer id, String name, String phone, Date birth_date, String password) {
+    public UserRegisterDTO(String email, Integer id, String name, String phone, LocalDate birthDate, String password) {
         this.email = email;
         this.id = id;
         this.name = name;
         this.phone = phone;
-        this.birth_date = birth_date;
+        this.birthDate = birthDate;
         this.password = password;
     }
 
@@ -52,12 +52,12 @@ public class UserRegisterDTO {
         this.phone = phone;
     }
 
-    public Date getBirth_date() {
-        return birth_date;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirth_date(Date birth_date) {
-        this.birth_date = birth_date;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getPassword() {

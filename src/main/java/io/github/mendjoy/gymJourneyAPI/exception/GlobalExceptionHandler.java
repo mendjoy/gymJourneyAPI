@@ -1,6 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.exception;
 
-import io.github.mendjoy.gymJourneyAPI.dto.response.ResponseApiDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
