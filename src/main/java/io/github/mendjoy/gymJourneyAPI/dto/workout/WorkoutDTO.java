@@ -10,25 +10,19 @@ public class WorkoutDTO {
     private String description;
     private Integer maxSessions;
     private Date startDate;
+    private Date endDate;
 
     public WorkoutDTO() {
     }
 
-    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, Date startDate) {
+    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, Date startDate, Date endDate) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
         this.startDate = startDate;
-    }
-
-    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionDTO> workoutSectionDTOS) {
-        this.id = id;
-        this.userId = userId;
-        this.name = name;
-        this.description = description;
-        this.maxSessions = maxSessions;
+        this.endDate   = endDate;
     }
 
     public Integer getId() {
@@ -77,5 +71,13 @@ public class WorkoutDTO {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

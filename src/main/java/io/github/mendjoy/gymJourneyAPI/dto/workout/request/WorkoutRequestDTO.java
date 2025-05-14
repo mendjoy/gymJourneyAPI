@@ -2,6 +2,7 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout.request;
 
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
 
+import java.util.Date;
 import java.util.List;
 
 public class WorkoutRequestDTO extends WorkoutDTO {
@@ -15,8 +16,8 @@ public class WorkoutRequestDTO extends WorkoutDTO {
         this.workoutSection = workoutSection;
     }
 
-    public WorkoutRequestDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionRequestDTO> workoutSection) {
-        super(id, userId, name, description, maxSessions);
+    public WorkoutRequestDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, Date startDate, Date endDate, List<WorkoutSectionRequestDTO> workoutSection) {
+        super(id, userId, name, description, maxSessions, startDate, endDate);
         this.workoutSection = workoutSection;
     }
 

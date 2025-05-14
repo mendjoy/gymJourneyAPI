@@ -2,18 +2,19 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout.response;
 
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
 
+import java.util.Date;
 import java.util.List;
 
 public class WorkoutResponseDTO extends WorkoutDTO {
 
     List<WorkoutSectionResponseDTO> workoutSections;
 
-    public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
-        super(id, userId, name, description, maxSessions);
+    public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, Date startDate, Date endDate) {
+        super(id, userId, name, description, maxSessions, startDate, endDate);
     }
 
-    public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionResponseDTO> workoutSections) {
-        super(id, userId, name, description, maxSessions);
+    public WorkoutResponseDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, Date startDate,Date endDate, List<WorkoutSectionResponseDTO> workoutSections) {
+        super(id, userId, name, description, maxSessions, startDate, endDate);
         this.workoutSections = workoutSections;
     }
 
