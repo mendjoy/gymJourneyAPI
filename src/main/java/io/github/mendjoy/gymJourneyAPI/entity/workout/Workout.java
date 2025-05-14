@@ -43,11 +43,12 @@ public class Workout {
         this.workoutSections = workoutSections;
     }
 
-    public Workout(User user, String name, String description, Integer maxSessions) {
+    public Workout(User user, String name, String description, Integer maxSessions, Date startDate) {
         this.user = user;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
+        this.startDate = startDate;
     }
 
     public Integer getId() {

@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
+import java.util.Date;
 import java.util.List;
 
 public class WorkoutDTO {
@@ -8,16 +9,18 @@ public class WorkoutDTO {
     private String name;
     private String description;
     private Integer maxSessions;
+    private Date startDate;
 
     public WorkoutDTO() {
     }
 
-    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions) {
+    public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, Date startDate) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
+        this.startDate = startDate;
     }
 
     public WorkoutDTO(Integer id, Integer userId, String name, String description, Integer maxSessions, List<WorkoutSectionDTO> workoutSectionDTOS) {
@@ -68,4 +71,11 @@ public class WorkoutDTO {
         this.maxSessions = maxSessions;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 }
