@@ -41,7 +41,19 @@ public class WorkoutService {
 
         User user = userRepository.findById(workoutRequestDTO.getUserId()).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
 
-        Workout workout = new Workout(user, workoutRequestDTO.getName(), workoutRequestDTO.getDescription(), workoutRequestDTO.getMaxSessions());
+        Date newStartDate = workoutRequestDTO.getStartDate();
+
+        boolean hasConflict = workoutRepository.existsWorkoutInProgressForUser(user, newStartDate);
+
+        if (hasConflict) {
+            throw new IllegalStateException("O usuário já possui um treino ativo. Por favor, finalize o treino atual para prosseguir com o cadastro.");
+        }
+
+        Workout workout = new Workout(user,
+                                      workoutRequestDTO.getName(),
+                                      workoutRequestDTO.getDescription(),
+                                      workoutRequestDTO.getMaxSessions(),
+                                      workoutRequestDTO.getStartDate());
 
         List<WorkoutSection> workoutSections = workoutRequestDTO.getWorkoutSection().stream().map(sec -> {
 
@@ -49,7 +61,12 @@ public class WorkoutService {
 
             List<WorkoutExercise> workoutExercises = sec.getWorkoutExercise().stream().map(ex -> {
                 Exercise exercise = exerciseRepository.findById(ex.getId()).orElseThrow(() -> new EntityNotFoundException("Exercício: " + ex.getId() + " não encontrado!"));
-                return new WorkoutExercise(section, exercise, ex.getSets(), ex.getRepetitions(), ex.getWeight(), ex.getRestTime());
+                return new WorkoutExercise(section,
+                                           exercise,
+                                           ex.getSets(),
+                                           ex.getRepetitions(),
+                                           ex.getWeight(),
+                                           ex.getRestTime());
             }).toList();
 
             section.setWorkoutExercises(workoutExercises);
@@ -70,14 +87,14 @@ public class WorkoutService {
        }
     }
 
-    public void finishWorkout(Integer id){
+    public void finishWorkout(Integer id, Date endDate){
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Treino não encontrado!"));
         if(workout != null){
 
             if (workout.getEndDate() != null) {
                 throw new IllegalStateException("Treino já finalizado!");
             }else{
-                workout.setEndDate(new Date());
+                workout.setEndDate(endDate);
                 workoutRepository.save(workout);
             }
         }
@@ -141,6 +158,8 @@ public class WorkoutService {
                                       workout.getName(),
                                       workout.getDescription(),
                                       workout.getMaxSessions(),
+                                      workout.getStartDate(),
+                                      workout.getEndDate(),
                                       workoutSectionResponseDTO);
 
     }
