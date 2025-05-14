@@ -25,6 +25,7 @@ CREATE TABLE workout (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     max_sessions INTEGER,
+    start_date DATE,
     end_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -58,5 +59,6 @@ CREATE TABLE workout_frequency (
     frequency_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-    FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE
+    FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE,
+    UNIQUE (user_id, frequency_date)
 );
