@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,9 +32,9 @@ public class WorkoutController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino excluido com sucesso!"));
     }
 
-    @PostMapping("/finish/{id}")
-    public ResponseEntity<ResponseApiDTO> finishWorkout(@PathVariable Integer id){
-        workoutService.finishWorkout(id);
+    @PostMapping("/finish/{id}/{endDate}")
+    public ResponseEntity<ResponseApiDTO> finishWorkout(@PathVariable Integer id, @PathVariable Date endDate){
+        workoutService.finishWorkout(id, endDate);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, "Treino finalizado com sucesso!"));
     }
 
