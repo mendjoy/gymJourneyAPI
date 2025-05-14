@@ -57,11 +57,11 @@ public class WorkoutService {
                                       workoutRequestDTO.getMaxSessions(),
                                       workoutRequestDTO.getStartDate());
 
-        List<WorkoutSection> workoutSections = workoutRequestDTO.getWorkoutSection().stream().map(sec -> {
+        List<WorkoutSection> workoutSections = workoutRequestDTO.getWorkoutSections().stream().map(sec -> {
 
             WorkoutSection section = new WorkoutSection(workout, sec.getName(), sec.getDescription());
 
-            List<WorkoutExercise> workoutExercises = sec.getWorkoutExercise().stream().map(ex -> {
+            List<WorkoutExercise> workoutExercises = sec.getWorkoutExercises().stream().map(ex -> {
                 Exercise exercise = exerciseRepository.findById(ex.getExerciseId()).orElseThrow(() -> new EntityNotFoundException("Exercício: " + ex.getExerciseId() + " não encontrado!"));
                 return new WorkoutExercise(section,
                                            exercise,
