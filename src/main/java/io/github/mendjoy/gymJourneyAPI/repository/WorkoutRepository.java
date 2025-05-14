@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
@@ -14,5 +15,9 @@ public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
 
     @Query("SELECT w FROM Workout w WHERE w.user = :user AND w.startDate <= CURRENT_DATE AND (w.endDate IS NULL OR w.endDate >= CURRENT_DATE)")
     Workout findCurrentWorkout(@Param("user") User user);
+
+    @Query("SELECT CASE WHEN COUNT(w) > 0 THEN true ELSE false END " +
+    "FROM Workout w WHERE w.user = :user AND (w.endDate IS NULL OR w.endDate >= :newStartDate)")
+    boolean existsWorkoutInProgressForUser(@Param("user") User user, @Param("newStartDate") Date newStartDate);
 
 }
