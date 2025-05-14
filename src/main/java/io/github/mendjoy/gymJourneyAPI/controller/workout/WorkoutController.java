@@ -43,9 +43,22 @@ public class WorkoutController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTOS));
     }
 
+    @GetMapping("/all/{userId}")
+    public ResponseEntity<ResponseApiDTO> getAllWorkoutsByUser(){
+        List<WorkoutResponseDTO> workoutResponseDTOS =  workoutService.getAllWorkoutsByUser();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTOS));
+    }
+
     @GetMapping("/current/{userId}")
     public ResponseEntity<ResponseApiDTO> getCurrentWorkoutByUser(@PathVariable Integer userId){
         WorkoutResponseDTO workoutResponseDTO = workoutService.getCurrentWorkoutByUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTO));
     }
+
+   @GetMapping("/current")
+    public ResponseEntity<ResponseApiDTO> getCurrentWorkoutByUser(){
+        WorkoutResponseDTO workoutResponseDTO = workoutService.getCurrentWorkoutByUser();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseApiDTO.success(HttpStatus.OK, workoutResponseDTO));
+    }
+
 }

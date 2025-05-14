@@ -34,6 +34,9 @@ public class WorkoutService {
     @Autowired
     WorkoutRepository workoutRepository;
 
+    @Autowired
+    UserAuthService userAuthService;
+
     public WorkoutDTO register(WorkoutRequestDTO workoutRequestDTO){
 
         User user = userRepository.findById(workoutRequestDTO.getUserId()).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
@@ -89,9 +92,26 @@ public class WorkoutService {
 
     }
 
+    //Retorna o Treino do usuario autenticado
+    public List<WorkoutResponseDTO> getAllWorkoutsByUser(){
+        User user = userAuthService.getUserAuthenticate();
+        List<Workout> workouts = workoutRepository.findByUser(user);
+        return workouts.stream()
+                .map((this::getWorkoutDetailsDTO))
+                .toList();
+
+    }
+
     public WorkoutResponseDTO getCurrentWorkoutByUser(Integer userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
-        Workout workout = workoutRepository.findByUserAndEndDateIsNull(user);
+        Workout workout = workoutRepository.findCurrentWorkout(user);
+        return getWorkoutDetailsDTO(workout);
+    }
+
+    //Retorna o Treino do usuario autenticado
+    public WorkoutResponseDTO getCurrentWorkoutByUser(){
+        User user = userAuthService.getUserAuthenticate();
+        Workout workout = workoutRepository.findCurrentWorkout(user);
         return getWorkoutDetailsDTO(workout);
     }
 
