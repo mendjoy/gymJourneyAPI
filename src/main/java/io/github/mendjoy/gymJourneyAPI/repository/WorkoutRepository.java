@@ -12,7 +12,7 @@ public interface WorkoutRepository extends JpaRepository<Workout, Integer> {
 
     List<Workout> findByUser(User user);
 
-    @Query("SELECT w FROM Workout w WHERE w.user = :user AND (w.endDate IS NULL OR w.endDate >= CURRENT_DATE)")
+    @Query("SELECT w FROM Workout w WHERE w.user = :user AND w.startDate <= CURRENT_DATE AND (w.endDate IS NULL OR w.endDate >= CURRENT_DATE)")
     Workout findCurrentWorkout(@Param("user") User user);
 
 }
