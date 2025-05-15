@@ -1,8 +1,11 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout.request;
 
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDTO;
+import jakarta.validation.constraints.NotNull;
 
 public class WorkoutExerciseRequestDTO extends WorkoutExerciseDTO {
+
+    @NotNull(message = "O id do Exercicio deve ser informado")
     private Integer exerciseId;
 
     public WorkoutExerciseRequestDTO() {

@@ -1,8 +1,11 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
 
+import jakarta.validation.constraints.NotBlank;
+
 public class WorkoutSectionDTO {
     private Integer id;
+    @NotBlank(message = "O Nome da secao deve ser informado")
     private String name;
     private String description;
 

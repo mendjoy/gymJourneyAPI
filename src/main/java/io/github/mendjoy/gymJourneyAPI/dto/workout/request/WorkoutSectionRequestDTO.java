@@ -1,11 +1,15 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout.request;
 
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutSectionDTO;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
 public class WorkoutSectionRequestDTO extends WorkoutSectionDTO {
 
+    @Valid
+    @NotEmpty(message = "O treino deve conter ao menos um exercício")
     private List<WorkoutExerciseRequestDTO> workoutExercises;
 
     public WorkoutSectionRequestDTO() {

@@ -1,13 +1,21 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 public class WorkoutDTO {
+
     private Integer id;
+    @NotNull(message = "O id do Usuario deve ser informado")
     private Integer userId;
+    @NotBlank(message = "O Nome do Treino deve ser informado")
     private String name;
     private String description;
+    @NotNull(message = "O Numero maximo de sessões do treino deve ser informado")
     private Integer maxSessions;
+    @NotNull(message = "A data de inicio do treino deve ser informada")
     private LocalDate startDate;
     private LocalDate endDate;
 
