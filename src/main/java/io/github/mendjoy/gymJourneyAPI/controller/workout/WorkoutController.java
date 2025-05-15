@@ -4,7 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.request.WorkoutRequestDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.response.WorkoutResponseDTO;
-import io.github.mendjoy.gymJourneyAPI.service.WorkoutService;
+import io.github.mendjoy.gymJourneyAPI.service.workout.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
