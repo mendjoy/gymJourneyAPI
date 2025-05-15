@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.service;
+package io.github.mendjoy.gymJourneyAPI.service.exercise;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
 import io.github.mendjoy.gymJourneyAPI.entity.exercise.Exercise;

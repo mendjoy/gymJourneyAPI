@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.service;
+package io.github.mendjoy.gymJourneyAPI.service.workout;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.*;
@@ -14,31 +14,30 @@ import io.github.mendjoy.gymJourneyAPI.entity.workout.WorkoutSection;
 import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
-import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
+import io.github.mendjoy.gymJourneyAPI.repository.workout.WorkoutRepository;
+import io.github.mendjoy.gymJourneyAPI.service.UserAuthService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class WorkoutService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final WorkoutRepository workoutRepository;
+    private final UserAuthService userAuthService;
 
-    @Autowired
-    ExerciseRepository exerciseRepository;
-
-    @Autowired
-    WorkoutRepository workoutRepository;
-
-    @Autowired
-    UserAuthService userAuthService;
+    public WorkoutService(UserRepository userRepository, ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository, UserAuthService userAuthService){
+        this.userRepository = userRepository;
+        this.exerciseRepository = exerciseRepository;
+        this.workoutRepository = workoutRepository;
+        this.userAuthService = userAuthService;
+    }
 
     public WorkoutDTO register(WorkoutRequestDTO workoutRequestDTO){
 
