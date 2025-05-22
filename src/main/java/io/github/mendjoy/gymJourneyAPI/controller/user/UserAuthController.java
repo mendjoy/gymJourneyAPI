@@ -5,7 +5,6 @@ import io.github.mendjoy.gymJourneyAPI.dto.user.UserAuthDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserLoginDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDTO;
 import io.github.mendjoy.gymJourneyAPI.service.UserAuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,11 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class UserAuthController {
 
-    @Autowired
-    private UserAuthService userAuthService;
+    private final UserAuthService userAuthService;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    public UserAuthController(UserAuthService userAuthService, AuthenticationManager authenticationManager) {
+        this.userAuthService = userAuthService;
+        this.authenticationManager = authenticationManager;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ResponseApiDTO> login(@RequestBody UserLoginDTO userLoginDTO){
