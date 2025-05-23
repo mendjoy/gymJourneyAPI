@@ -1,6 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.controller.user;
 
 import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordUpdateDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserUpdateDTO;
 import io.github.mendjoy.gymJourneyAPI.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,12 @@ public class UserController {
     public ResponseEntity<ResponseApiDTO> updateUser(@PathVariable Integer id, @RequestBody UserUpdateDTO userUpdateDTO){
         userService.updateUser(id, userUpdateDTO);
         return ResponseEntity.ok(ResponseApiDTO.success(HttpStatus.OK, "Dados alterados com sucesso!"));
+    }
+
+    @PatchMapping("/{id}/update/password")
+    public ResponseEntity<ResponseApiDTO> updatePassword(@PathVariable Integer id, UserPasswordUpdateDTO userPasswordUpdateDTO){
+        userService.updatePassword(id, userPasswordUpdateDTO);
+        return ResponseEntity.ok(ResponseApiDTO.success(HttpStatus.OK, "Senha alterada com sucesso!"));
     }
 
 }

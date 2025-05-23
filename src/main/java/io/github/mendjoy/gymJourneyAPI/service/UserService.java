@@ -1,12 +1,15 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordUpdateDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserUpdateDTO;
 import io.github.mendjoy.gymJourneyAPI.entity.user.User;
 import io.github.mendjoy.gymJourneyAPI.entity.user.UserRole;
 import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,10 +17,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserAuthService userAuthService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserAuthService userAuthService) {
+    public UserService(UserRepository userRepository, UserAuthService userAuthService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userAuthService = userAuthService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void grantAdminRole(Integer id){
@@ -44,5 +49,21 @@ public class UserService {
         }
 
         userRepository.save(user);
+    }
+
+    public void updatePassword(Integer id, UserPasswordUpdateDTO userPasswordUpdateDTO){
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
+
+        if(!passwordEncoder.matches(userPasswordUpdateDTO.getCurrentPassword(), user.getPassword())){
+            throw new BadCredentialsException("Senha atual incorreta!");
+        }
+
+        if (!userPasswordUpdateDTO.getNewPassword().equals(userPasswordUpdateDTO.getConfirmNewPassword())) {
+            throw new BadCredentialsException("A nova senha e a confirmação não coincidem.");
+        }
+
+        user.setPassword(passwordEncoder.encode(userPasswordUpdateDTO.getNewPassword()));
+        userRepository.save(user);
+
     }
 }
