@@ -7,6 +7,7 @@ import io.github.mendjoy.gymJourneyAPI.entity.user.UserRole;
 import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,7 @@ public class UserService {
         User userAuth = userAuthService.getUserAuthenticate();
 
         if (!user.equals(userAuth)) {
-            throw new CustomGymJourneyApiException(HttpStatus.FORBIDDEN, "Você não tem permissão para realizar esta ação.");
+            throw new AccessDeniedException("Você não tem permissão para realizar esta ação.");
         }
 
         if(userUpdateDTO.getName() != null){
@@ -54,6 +55,12 @@ public class UserService {
     public void updatePassword(Integer id, UserPasswordUpdateDTO userPasswordUpdateDTO){
         User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
 
+        User userAuth = userAuthService.getUserAuthenticate();
+
+        if (!user.equals(userAuth)) {
+            throw new CustomGymJourneyApiException(HttpStatus.FORBIDDEN, "Você não tem permissão para realizar esta ação.");
+        }
+
         if(!passwordEncoder.matches(userPasswordUpdateDTO.getCurrentPassword(), user.getPassword())){
             throw new BadCredentialsException("Senha atual incorreta!");
         }
@@ -64,6 +71,5 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(userPasswordUpdateDTO.getNewPassword()));
         userRepository.save(user);
-
     }
 }

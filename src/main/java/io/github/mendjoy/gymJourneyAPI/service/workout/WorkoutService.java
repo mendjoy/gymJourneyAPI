@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkoutService {
@@ -123,14 +124,14 @@ public class WorkoutService {
 
     public WorkoutResponseDTO getCurrentWorkoutByUser(Integer userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
-        Workout workout = workoutRepository.findCurrentWorkout(user);
+        Workout workout = workoutRepository.findCurrentWorkout(user).orElseThrow(() -> new EntityNotFoundException("O usuário não possui um treino ativo"));
         return getWorkoutDetailsDTO(workout);
     }
 
     //Retorna o Treino do usuario autenticado
     public WorkoutResponseDTO getCurrentWorkoutByUser(){
         User user = userAuthService.getUserAuthenticate();
-        Workout workout = workoutRepository.findCurrentWorkout(user);
+        Workout workout = workoutRepository.findCurrentWorkout(user).orElseThrow(() -> new EntityNotFoundException("O usuário não possui um treino ativo"));
         return getWorkoutDetailsDTO(workout);
     }
 
