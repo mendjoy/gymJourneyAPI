@@ -19,8 +19,7 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
 - `POST /auth/register`  
   Registra um novo usuário no sistema.
 
-
- ### 👤 Usuários
+### 👤 Usuários
 
 - `PATCH /users/{id}/grant-admin`  
   Promove o usuário ao papel de ADMIN.  
@@ -32,6 +31,22 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
   **Requer autenticação.**
 
 - `PATCH /users/{id}/update/password`  
-  Atualiza a senha do usuário.  
+  Atualiza a senha do usuário.
+  
+### 🏋️ Exercícios
+
+### 💪 Treinos
+ - `POST /workout/register`  
+  Cria um novo treino para um usuário. Somente usuários com perfil ADMIN podem cadastrar treinos.
+
+- `DELETE /workout/{id}`
+- `POST /workout/finish/{id}/{endDate}`
+- `GET /workout/all/{userId}`
+- `GET /workout/user/all/{userId}`
+- `GET /workout/current/{userId}`
+- `GET /workout/current/user`
+
+### 📅 Frequência de Treinos
+- `POST /workout/frequency/{idWorkout}/{date}`
  
   
