@@ -37,9 +37,9 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
 - `POST /exercises/register`
 ```json
 {
-"name": "Supino Reto",
-"description": "Exercício para fortalecimento do peitoral.",
-"muscleGroup": "Peitoral"
+  "name": "Supino Reto",
+  "description": "Exercício para fortalecimento do peitoral.",
+  "muscleGroup": "Peitoral"
 }
 
 ```
