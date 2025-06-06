@@ -5,10 +5,7 @@ import io.github.mendjoy.gymJourneyAPI.dto.workout.response.WorkoutFrequencyResp
 import io.github.mendjoy.gymJourneyAPI.service.workout.WorkoutFrequencyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -23,7 +20,7 @@ public class WorkoutFrequencyController {
     }
 
     @PostMapping("{idWorkout}/{date}")
-    public ResponseEntity<ResponseApiDTO> registerFrequency(@RequestParam Integer idWorkout, @RequestParam LocalDate date){
+    public ResponseEntity<ResponseApiDTO> registerFrequency(@PathVariable Integer idWorkout, @PathVariable LocalDate date){
         WorkoutFrequencyResponseDTO workoutFrequencyResponseDTO = workoutFrequencyService.registerFrequency(idWorkout, date);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseApiDTO.success(HttpStatus.CREATED, workoutFrequencyResponseDTO));
     }
