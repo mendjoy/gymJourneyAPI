@@ -34,6 +34,10 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
   Atualiza a senha do usuário.
   
 ### 🏋️ Exercícios
+- `POST /exercises/register`
+- `GET /exercises/{id}`
+- `GET /exercises`
+- `GET /exercises/search`
 
 ### 💪 Treinos
  - `POST /workout/register`  
