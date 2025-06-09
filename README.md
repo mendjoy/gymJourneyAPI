@@ -35,14 +35,28 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
   
 ### 🏋️ Exercícios
 - `POST /exercises/register`
-```json
-{
-  "name": "Supino Reto",
-  "description": "Exercício para fortalecimento do peitoral.",
-  "muscleGroup": "Peitoral"
-}
+###### 📥 Exemplo de requisição
+  ```json
+  {
+    "name": "Remada Curvada",
+    "description": "Exercício para costas que também ativa os bíceps e deltoides posteriores.",
+    "muscleGroup": "Costas"
+  }
+  ```
+###### 📤 Exemplo de resposta (201 CREATED):
+  ```json
+  {
+    "status": "CREATED",
+    "success": true,
+    "data": {
+        "id": 5,
+        "name": "Remada Curvada",
+        "description": "Exercício para costas que também ativa os bíceps e deltoides posteriores.",
+        "muscleGroup": "Costas"
+    }
+  }
+  ```
 
-```
 
 - `GET /exercises/{id}`
 - `GET /exercises`
