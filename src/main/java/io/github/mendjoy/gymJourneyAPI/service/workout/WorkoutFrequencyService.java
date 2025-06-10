@@ -44,7 +44,7 @@ public class WorkoutFrequencyService {
             throw new CustomGymJourneyApiException(HttpStatus.BAD_REQUEST, "Não é permitido registrar frequência futura!");
         }
 
-        if(workoutFrequencyRepository.existsByUserAndWorkoutAndDate(user,workout,date)){
+        if(workoutFrequencyRepository.existsByUserAndWorkoutAndFrequencyDate(user,workout,date)){
             throw new CustomGymJourneyApiException(HttpStatus.CONFLICT,  String.format("Frequência já registrada para a data %s.", date));
         }
 

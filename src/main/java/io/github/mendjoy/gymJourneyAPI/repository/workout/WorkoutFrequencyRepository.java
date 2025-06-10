@@ -9,5 +9,5 @@ import java.time.LocalDate;
 
 public interface WorkoutFrequencyRepository extends JpaRepository<WorkoutFrequency, Integer> {
 
-    boolean existsByUserAndWorkoutAndDate(User user, Workout workout, LocalDate date);
+    boolean existsByUserAndWorkoutAndFrequencyDate(User user, Workout workout, LocalDate date);
 }
