@@ -84,9 +84,41 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
   Atualiza os dados do usuário autenticado, como nome e telefone.  
   **Campos atualizáveis:** `name`, `phone` 
   **Requer autenticação.**
+  ###### 📥 Exemplo de requisição
+  ```json
+  {
+    "name": "Teste da Silva",
+    "phone": "(44)89909-8789"
+  }
+  ```
+  ###### 📤 Exemplo de resposta (200 OK):
+  ```json
+  {
+    "status": "OK",
+    "message": "Dados alterados com sucesso!",
+    "success": true
+  }
+  ```
 
 - `PATCH /users/{id}/update/password`  
   Atualiza a senha do usuário.
+
+  ###### 📥 Exemplo de requisição
+  ```json
+  {
+    "currentPassword": "12345667",
+    "newPassword": "90876543",
+    "confirmNewPassword": "90876543"
+  } 
+  ```
+  ###### 📤 Exemplo de resposta (200 OK):
+  ```json
+  {
+    "status": "OK",
+    "message": "Senha alterada com sucesso!",
+    "success": true
+  }
+  ```
   
 ### 🏋️ Exercícios
 - `POST /exercises/register`
