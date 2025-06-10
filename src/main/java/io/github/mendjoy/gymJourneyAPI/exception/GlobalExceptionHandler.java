@@ -10,26 +10,28 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ResponseApiDTO> handleUserNotFoundException(UsernameNotFoundException exception){
-        ResponseApiDTO responseApi = ResponseApiDTO.error(HttpStatus.NOT_FOUND, exception.getMessage());
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseApiDTO> handleException(Exception exception){
+        HttpStatus status  = HttpStatus.INTERNAL_SERVER_ERROR;
+        String message = exception.getMessage();
+
+        if(exception instanceof UsernameNotFoundException || exception instanceof EntityNotFoundException){
+            status = HttpStatus.NOT_FOUND;
+        }else if(exception instanceof BadCredentialsException || exception instanceof AccessDeniedException){
+            status = HttpStatus.UNAUTHORIZED;
+        }else {
+            message = "Ocorreu um erro interno. Tente novamente mais tarde.";
+        }
+
+        ResponseApiDTO responseApi = ResponseApiDTO.error(status, message);
         return new ResponseEntity<>(responseApi, responseApi.getStatus());
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ResponseApiDTO> handleBadCredentialsException(BadCredentialsException exception){
-        ResponseApiDTO responseApi = ResponseApiDTO.error(HttpStatus.UNAUTHORIZED, exception.getMessage());
-        return new ResponseEntity<>(responseApi, responseApi.getStatus());
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ResponseApiDTO> handleEntityNotFoundException(EntityNotFoundException exception){
-        ResponseApiDTO responseApi = ResponseApiDTO.error(HttpStatus.NOT_FOUND, exception.getMessage());
-        return new ResponseEntity<>(responseApi, responseApi.getStatus());
-    }
 
     @ExceptionHandler(CustomGymJourneyApiException.class)
     public ResponseEntity<ResponseApiDTO> handleCustomGymJourneyApiException(CustomGymJourneyApiException exception){
