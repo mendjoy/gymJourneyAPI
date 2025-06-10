@@ -11,13 +11,56 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
 - **MySQL**
   
 ## 📌 Endpoints da API
-### 🔐 Autenticação
-
-- `POST /auth/login`  
-  Autentica o usuário e retorna um token JWT.
+### 🔐 Cadastro de usuário e Autenticação
 
 - `POST /auth/register`  
   Registra um novo usuário no sistema.
+  ###### 📥 Exemplo de requisição
+  ```json
+  {
+    "email": "teste02@gmail.com",
+    "name": "Teste Silva",
+    "phone": "(44) 12345-1234",
+    "password": "12345678"
+  }
+  ```
+  ###### 📤 Exemplo de resposta (201 CREATED):
+  ```json
+  {
+    "status": "CREATED",
+    "success": true,
+    "data": {
+        "id": 3,
+        "name": "Teste Silva",
+        "email": "teste02@gmail.com",
+        "role": "USER",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJneW1Kb3VybmV5QVBJIiwic3ViIjoidGVzdGUwMkBnbWFpbC5jb20iLCJpZCI6MywiZXhwIjoxNzQ5NzczMjA5fQ.tKTGW6fe19nGDxlqist7jiecBW5rnbX42hmB7GlRlaU"
+    }
+  }
+  ```
+  - `POST /auth/login`  
+    Autentica o usuário e retorna um token JWT.
+  ###### 📥 Exemplo de requisição
+  ```json
+   {
+      "email": "teste02@gmail.com",
+      "password": "12345678"
+   }
+  ```
+  ###### 📤 Exemplo de resposta (200 OK):
+  ```json
+  {
+    "status": "OK",
+    "success": true,
+    "data": {
+        "id": 3,
+        "name": "Teste Silva",
+        "email": "teste02@gmail.com",
+        "role": "USER",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJneW1Kb3VybmV5QVBJIiwic3ViIjoidGVzdGUwMkBnbWFpbC5jb20iLCJpZCI6MywiZXhwIjoxNzQ5NzczNDg4fQ.DjJNC80n6QE83u4-S5SlPWoKfaiA25thBmuKwambIec"
+    }
+  }
+  ```
 
 ### 👤 Usuários
 
@@ -35,7 +78,7 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
   
 ### 🏋️ Exercícios
 - `POST /exercises/register`
-###### 📥 Exemplo de requisição
+  ###### 📥 Exemplo de requisição
   ```json
   {
     "name": "Remada Curvada",
@@ -43,7 +86,7 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
     "muscleGroup": "Costas"
   }
   ```
-###### 📤 Exemplo de resposta (201 CREATED):
+  ###### 📤 Exemplo de resposta (201 CREATED):
   ```json
   {
     "status": "CREATED",
