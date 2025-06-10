@@ -14,7 +14,7 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
 ### 🔐 Cadastro de usuário e Autenticação
 
 - `POST /auth/register`  
-  Registra um novo usuário no sistema.
+  Registra um novo usuário no sistema e retorna um token JWT.
   ###### 📥 Exemplo de requisição
   ```json
   {
@@ -38,8 +38,8 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
     }
   }
   ```
-  - `POST /auth/login`  
-    Autentica o usuário e retorna um token JWT.
+- `POST /auth/login`  
+  Autentica o usuário e retorna um token JWT.
   ###### 📥 Exemplo de requisição
   ```json
    {
@@ -67,6 +67,18 @@ API para gerenciamento de treinos, permitindo o cadastro e controle de usuários
 - `PATCH /users/{id}/grant-admin`  
   Promove o usuário ao papel de ADMIN.  
   **Requer autenticação com perfil ADMIN.**
+
+  ###### 📥 Exemplo de requisição(Sem Body)
+  `http://localhost:8080/users/3/grant-admin`
+
+  ###### 📤 Exemplo de resposta (200 OK):
+  ```json
+  {
+    "status": "OK",
+    "message": "Usuário promovido a ADMIN com sucesso!",
+    "success": true
+  }
+  ```
 
 - `PATCH /users/{id}/update`  
   Atualiza os dados do usuário autenticado, como nome e telefone.  
