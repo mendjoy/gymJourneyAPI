@@ -1,14 +1,32 @@
 package io.github.mendjoy.gymJourneyAPI.dto.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class UserRegisterDTO {
 
     private Integer id;
+
+    @NotBlank(message = "O Email é obrigatório.")
+    @Email(message = "Email inválido.")
     private String email;
+
+    @NotBlank(message = "O nome é obrigatório.")
+    @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres.")
     private String name;
+
+    @NotBlank(message = "O telefone é obrigatório.")
     private String phone;
+
+    @NotNull(message = "A data de nascimento é obrigatória.")
     private LocalDate birthDate;
+
+    @NotBlank(message = "A senha é obrigatória.")
+    @Size(min = 8, max = 20, message = "A senha deve ter entre 8 e 20 caracteres.")
     private String password;
 
     public UserRegisterDTO(String email, Integer id, String name, String phone, LocalDate birthDate, String password) {
