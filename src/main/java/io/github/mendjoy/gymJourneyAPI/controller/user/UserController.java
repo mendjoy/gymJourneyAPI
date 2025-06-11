@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/update/password")
-    public ResponseEntity<ResponseApiDTO> updatePassword(@PathVariable Integer id, UserPasswordUpdateDTO userPasswordUpdateDTO){
+    public ResponseEntity<ResponseApiDTO> updatePassword(@PathVariable Integer id, @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO){
         userService.updatePassword(id, userPasswordUpdateDTO);
         return ResponseEntity.ok(ResponseApiDTO.success(HttpStatus.OK, "Senha alterada com sucesso!"));
     }
