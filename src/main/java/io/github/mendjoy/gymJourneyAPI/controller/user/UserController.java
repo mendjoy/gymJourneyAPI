@@ -3,7 +3,7 @@ package io.github.mendjoy.gymJourneyAPI.controller.user;
 import io.github.mendjoy.gymJourneyAPI.dto.responseAPI.ResponseApiDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordUpdateDTO;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserUpdateDTO;
-import io.github.mendjoy.gymJourneyAPI.service.UserService;
+import io.github.mendjoy.gymJourneyAPI.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

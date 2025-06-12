@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.service;
+package io.github.mendjoy.gymJourneyAPI.service.user;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

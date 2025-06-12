@@ -7,7 +7,7 @@ import io.github.mendjoy.gymJourneyAPI.entity.workout.WorkoutFrequency;
 import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiException;
 import io.github.mendjoy.gymJourneyAPI.repository.workout.WorkoutFrequencyRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.workout.WorkoutRepository;
-import io.github.mendjoy.gymJourneyAPI.service.UserAuthService;
+import io.github.mendjoy.gymJourneyAPI.service.user.UserAuthService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

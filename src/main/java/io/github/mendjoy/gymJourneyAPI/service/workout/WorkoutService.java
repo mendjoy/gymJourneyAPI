@@ -15,7 +15,7 @@ import io.github.mendjoy.gymJourneyAPI.exception.custom.CustomGymJourneyApiExcep
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.workout.WorkoutRepository;
-import io.github.mendjoy.gymJourneyAPI.service.UserAuthService;
+import io.github.mendjoy.gymJourneyAPI.service.user.UserAuthService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WorkoutService {

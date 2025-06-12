@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.security;
 
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
-import io.github.mendjoy.gymJourneyAPI.service.TokenService;
+import io.github.mendjoy.gymJourneyAPI.service.user.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
