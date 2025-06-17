@@ -1,10 +1,22 @@
 package io.github.mendjoy.gymJourneyAPI.dto.exercise;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class ExerciseDTO {
 
     private Integer id;
+
+    @NotBlank(message = "O nome do exercício é obrigatório.")
+    @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres.")
     private String name;
+
+    @NotBlank(message = "A descrição é obrigatória.")
+    @Size(min = 10, max = 255, message = "A descrição deve ter entre 10 e 255 caracteres.")
     private String description;
+
+    @NotBlank(message = "O grupo muscular é obrigatório.")
+    @Size(min = 2, max = 50, message = "O grupo muscular deve ter entre 2 e 50 caracteres.")
     private String muscleGroup;
 
     public ExerciseDTO() {
