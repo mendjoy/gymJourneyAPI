@@ -1,4 +1,9 @@
 package io.github.mendjoy.gymJourneyAPI.repository;
 
-public class UserRepository {
+import io.github.mendjoy.gymJourneyAPI.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Integer> {
+
+    public boolean existsByEmail(String email);
 }

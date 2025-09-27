@@ -1,12 +1,51 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
-import io.github.mendjoy.gymJourneyAPI.domain.User;
+import java.time.LocalDate;
 
-public record UserDto(Integer id,
-                      String email,
-                      String name) {
+public class UserRequestDto{
+    private Integer id;
+    private String email;
+    private String name;
+    private String phone;
+    private LocalDate birthDate;
 
-    public UserDto (User user){
-        this(user.getId(), user.getEmail(), user.getName());
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }
