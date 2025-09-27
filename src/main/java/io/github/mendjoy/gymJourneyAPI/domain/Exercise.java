@@ -23,12 +23,6 @@ public class Exercise {
         this.muscleGroup = muscle_group;
     }
 
-    public Exercise(ExerciseDto exerciseDto){
-        this.name = exerciseDto.name();
-        this.description = exerciseDto.description();
-        this.muscleGroup = exerciseDto.muscleGroup();
-    }
-
     public Integer getId() {
         return id;
     }

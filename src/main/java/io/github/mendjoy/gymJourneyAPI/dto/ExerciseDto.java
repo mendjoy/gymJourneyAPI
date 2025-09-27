@@ -1,15 +1,42 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
-import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
+public class ExerciseDto{
 
-public record ExerciseDto(
-        Integer id,
-        String name,
-        String description,
-        String muscleGroup
-) {
-    public ExerciseDto(Exercise exercise) {
-        this(exercise.getId(), exercise.getName(), exercise.getDescription(), exercise.getMuscleGroup());
+    private Integer id;
+    private String name;
+    private String description;
+    private String muscleGroup;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMuscleGroup() {
+        return muscleGroup;
+    }
+
+    public void setMuscleGroup(String muscleGroup) {
+        this.muscleGroup = muscleGroup;
     }
 }
 
