@@ -58,4 +58,9 @@ public class WorkoutService {
         Workout newWorkout = workoutRepository.save(workout);
         return modelMapper.map(workout, WorkoutDto.class);
     }
+
+    public WorkoutDto getWorkoutById(Integer id){
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new RuntimeException("Treino não encontrado!"));
+        return modelMapper.map(workout, WorkoutDto.class);
+    }
 }
