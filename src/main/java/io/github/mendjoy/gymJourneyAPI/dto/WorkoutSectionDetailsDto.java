@@ -1,10 +1,13 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
-public class WorkoutSectionDto {
+import java.util.List;
+
+public class WorkoutSectionDetailsDto {
     private Integer id;
     private Integer workoutId;
     private String name;
     private String description;
+    private List<WorkoutExerciseDetailsDto> workoutExercises;
 
     public Integer getId() {
         return id;
@@ -38,4 +41,11 @@ public class WorkoutSectionDto {
         this.description = description;
     }
 
+    public List<WorkoutExerciseDetailsDto> getWorkoutExercises() {
+        return workoutExercises;
+    }
+
+    public void setWorkoutExercises(List<WorkoutExerciseDetailsDto> workoutExercises) {
+        this.workoutExercises = workoutExercises;
+    }
 }

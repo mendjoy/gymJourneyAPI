@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class WorkoutExercise {
 
     @ManyToOne
     @JoinColumn(name = "workout_section_id", nullable = false)
+    @JsonBackReference
     private WorkoutSection workoutSection;
 
     @ManyToOne

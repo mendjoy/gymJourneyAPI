@@ -1,5 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,11 +15,13 @@ public class WorkoutSection {
 
     @ManyToOne
     @JoinColumn(name = "workout_id")
+    @JsonBackReference
     private Workout workout;
     private String name;
     private String description;
 
     @OneToMany(mappedBy = "workoutSection", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<WorkoutExercise> workoutExercises;
 
     public WorkoutSection() {

@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,7 +23,9 @@ public class Workout {
     private LocalDate startDate;
     @Column(name = "end_date")
     private LocalDate endDate;
+
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     List<WorkoutSection> workoutSections;
 
     public Workout() {

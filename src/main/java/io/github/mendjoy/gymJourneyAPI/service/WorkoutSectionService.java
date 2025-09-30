@@ -1,0 +1,65 @@
+package io.github.mendjoy.gymJourneyAPI.service;
+
+import io.github.mendjoy.gymJourneyAPI.domain.Workout;
+import io.github.mendjoy.gymJourneyAPI.domain.WorkoutSection;
+import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDetailsDto;
+import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDetailsDto;
+import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDto;
+import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
+import io.github.mendjoy.gymJourneyAPI.repository.WorkoutSectionRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class WorkoutSectionService {
+
+    private final WorkoutRepository workoutRepository;
+    private final WorkoutSectionRepository workoutSectionRepository;
+    private final ModelMapper modelMapper;
+
+    public WorkoutSectionService(WorkoutRepository workoutRepository, WorkoutSectionRepository workoutSectionRepository, ModelMapper modelMapper) {
+        this.workoutRepository = workoutRepository;
+        this.workoutSectionRepository = workoutSectionRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    public List<WorkoutSectionDto> register(List<WorkoutSectionDto> workoutSectionDtos) {
+        List<WorkoutSection> workoutSections = workoutSectionDtos.stream().map( section -> {
+            Workout workout = workoutRepository.findById(section.getWorkoutId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+            WorkoutSection workoutSection = modelMapper.map(section, WorkoutSection.class);
+            workoutSection.setWorkout(workout);
+            return workoutSection;
+        }).toList();
+
+        List<WorkoutSection> newSections = workoutSectionRepository.saveAll(workoutSections);
+
+        return newSections.stream()
+                .map(section -> modelMapper.map(section, WorkoutSectionDto.class))
+                .toList();
+    }
+
+    public Page<WorkoutSectionDetailsDto> getSectionsByWorkoutId(Integer workoutId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<WorkoutSection> workoutSections = workoutSectionRepository.findByWorkoutId(workoutId, pageable);
+
+        return workoutSections.map(section -> {
+            WorkoutSectionDetailsDto workoutSectionDetailsDto = modelMapper.map(section, WorkoutSectionDetailsDto.class);
+            List<WorkoutExerciseDetailsDto> exercises = section.getWorkoutExercises().stream()
+                    .map(ex -> modelMapper.map(ex, WorkoutExerciseDetailsDto.class))
+                    .toList();
+            workoutSectionDetailsDto.setWorkoutExercises(exercises);
+            return workoutSectionDetailsDto;
+        });
+    }
+
+    public void deleteWorkoutSection(Integer id) {
+        WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
+        workoutRepository.deleteById(workoutSection.getId());
+    }
+}

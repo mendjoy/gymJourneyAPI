@@ -9,5 +9,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
 
      boolean existsByName(String name);
 
-    Page<Exercise> findByNameContainingIgnoreCase(String name, Pageable pageable);
+     Page<Exercise> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

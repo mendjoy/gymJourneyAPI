@@ -1,6 +1,5 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
-import io.github.mendjoy.gymJourneyAPI.dto.ExerciseDto;
 import jakarta.persistence.*;
 
 @Entity
