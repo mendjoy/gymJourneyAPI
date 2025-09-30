@@ -31,4 +31,10 @@ public class WorkoutExerciseController {
         Page<WorkoutExerciseDetailsDto> exercises = workoutExerciseService.getExercisesBySectionId(sectionId, page, size);
         return ResponseEntity.ok(exercises);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteWorkoutExercise (@PathVariable Integer id){
+        workoutExerciseService.deleteWorkoutExercise(id);
+        return ResponseEntity.ok("Exercicio removido do treino com sucesso!");
+    }
 }

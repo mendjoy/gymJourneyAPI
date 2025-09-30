@@ -46,7 +46,7 @@ public class WorkoutSectionService {
 
     public Page<WorkoutSectionDetailsDto> getSectionsByWorkoutId(Integer workoutId, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        Page<WorkoutSection> workoutSections = workoutSectionRepository.findByWorkoutId(workoutId, pageable);
+        Page<WorkoutSection> workoutSections = workoutSectionRepository.findAllByWorkoutId(workoutId, pageable);
 
         return workoutSections.map(section -> {
             WorkoutSectionDetailsDto workoutSectionDetailsDto = modelMapper.map(section, WorkoutSectionDetailsDto.class);

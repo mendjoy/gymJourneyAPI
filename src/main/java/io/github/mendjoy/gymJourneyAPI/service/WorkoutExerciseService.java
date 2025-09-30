@@ -45,10 +45,15 @@ public class WorkoutExerciseService {
 
     public Page<WorkoutExerciseDetailsDto> getExercisesBySectionId(Integer workoutSectionId, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        Page<WorkoutExercise> workoutExercises = workoutExerciseRepository.findByWorkoutSectionId(workoutSectionId, pageable);
+        Page<WorkoutExercise> workoutExercises = workoutExerciseRepository.findAllByWorkoutSectionId(workoutSectionId, pageable);
 
         return workoutExercises.map( we -> {
             return modelMapper.map(we, WorkoutExerciseDetailsDto.class);
         });
+    }
+
+    public void deleteWorkoutExercise(Integer id) {
+        WorkoutExercise workoutExercise = workoutExerciseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exercicio relacionado a treino não encontrado!"));
+        workoutExerciseRepository.deleteById(id);
     }
 }

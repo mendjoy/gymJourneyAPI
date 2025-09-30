@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WorkoutExerciseRepository extends JpaRepository<WorkoutExercise, Integer> {
 
-    Page<WorkoutExercise> findByWorkoutSectionId(Integer workoutSectionId, Pageable pageable);
+    Page<WorkoutExercise> findAllByWorkoutSectionId(Integer workoutSectionId, Pageable pageable);
 }
