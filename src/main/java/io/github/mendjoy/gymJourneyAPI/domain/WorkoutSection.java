@@ -2,6 +2,7 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDto;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -72,5 +73,15 @@ public class WorkoutSection {
 
     public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
         this.workoutExercises = workoutExercises;
+    }
+
+    public void update(WorkoutSectionDto workoutSectionDto){
+        if(workoutSectionDto.getName() != null){
+            this.name = workoutSectionDto.getName();
+        }
+
+        if(workoutSectionDto.getDescription() != null){
+            this.description = workoutSectionDto.getDescription();
+        }
     }
 }

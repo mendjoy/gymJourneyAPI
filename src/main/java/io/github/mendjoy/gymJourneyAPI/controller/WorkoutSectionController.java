@@ -22,8 +22,8 @@ public class WorkoutSectionController {
 
     @PostMapping("/register")
     public ResponseEntity<List<WorkoutSectionDto>> register(@RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
-        List<WorkoutSectionDto> newWorkoutSections = workoutSectionService.register(workoutSectionDtos);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newWorkoutSections);
+        List<WorkoutSectionDto> newSections = workoutSectionService.register(workoutSectionDtos);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newSections);
     }
 
     @GetMapping
@@ -32,9 +32,22 @@ public class WorkoutSectionController {
         return ResponseEntity.ok(sections);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<WorkoutSectionDetailsDto> getWorkoutSectionById(@PathVariable Integer id){
+        WorkoutSectionDetailsDto section = workoutSectionService.getWorkoutSectionById(id);
+        return ResponseEntity.ok(section);
+    }
+
+    @PatchMapping
+    public ResponseEntity<WorkoutSectionDto> updateWorkoutSection(@RequestBody WorkoutSectionDto workoutSectionDto) {
+        WorkoutSectionDto section = workoutSectionService.updateWorkoutSection(workoutSectionDto);
+        return ResponseEntity.ok(section);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteWorkoutSection (@PathVariable Integer id){
         workoutSectionService.deleteWorkoutSection(id);
         return ResponseEntity.ok("Seção deletada com sucesso!");
     }
+
 }

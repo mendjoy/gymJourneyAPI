@@ -19,9 +19,9 @@ public class WorkoutController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<WorkoutDto> register(@RequestBody WorkoutDto workoutDto) {
-        WorkoutDto newWorkoutDetailsDTO = workoutService.register(workoutDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newWorkoutDetailsDTO);
+    public ResponseEntity<WorkoutDto> registerWorkout(@RequestBody WorkoutDto workoutDto) {
+        WorkoutDto newWorkout = workoutService.register(workoutDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newWorkout);
     }
 
     @GetMapping("/{id}")
@@ -34,6 +34,12 @@ public class WorkoutController {
     public ResponseEntity<Page<WorkoutDetailsDto>> getWorkoutsByUser(@PathVariable Integer id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         Page<WorkoutDetailsDto> workoutDtos = workoutService.getWorkoutsByUser(id, page, size);
         return ResponseEntity.ok(workoutDtos);
+    }
+
+    @PatchMapping
+    public ResponseEntity<WorkoutDto> updateWorkout(@RequestBody WorkoutDto workoutDto) {
+        WorkoutDto newWorkout = workoutService.updateWorkout(workoutDto);
+        return ResponseEntity.ok(newWorkout);
     }
 
     @DeleteMapping("/{id}")

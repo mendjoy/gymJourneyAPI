@@ -1,6 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDto;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -102,5 +103,23 @@ public class Workout {
 
     public void setWorkoutSections(List<WorkoutSection> workoutSections) {
         this.workoutSections = workoutSections;
+    }
+
+    public void update(WorkoutDto workoutDto){
+        if (workoutDto.getName() != null) {
+            this.name = workoutDto.getName();
+        }
+        if (workoutDto.getDescription() != null) {
+            this.description = workoutDto.getDescription();
+        }
+        if (workoutDto.getMaxSessions() != null) {
+            this.maxSessions = workoutDto.getMaxSessions();
+        }
+        if (workoutDto.getStartDate() != null) {
+            this.startDate = workoutDto.getStartDate();
+        }
+        if (workoutDto.getEndDate() != null) {
+            this.endDate = workoutDto.getEndDate();
+        }
     }
 }

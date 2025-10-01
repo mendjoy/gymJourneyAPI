@@ -62,4 +62,22 @@ public class WorkoutSectionService {
         WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
         workoutRepository.deleteById(workoutSection.getId());
     }
+
+    public WorkoutSectionDto updateWorkoutSection(WorkoutSectionDto workoutSectionDto) {
+        WorkoutSection section = workoutSectionRepository.findById(workoutSectionDto.getId()).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
+        section.update(workoutSectionDto);
+        WorkoutSection updateSection = workoutSectionRepository.save(section);
+        return modelMapper.map(updateSection, WorkoutSectionDto.class);
+    }
+
+    public WorkoutSectionDetailsDto getWorkoutSectionById(Integer id) {
+        WorkoutSection section = workoutSectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
+        WorkoutSectionDetailsDto sectionDto = modelMapper.map(section, WorkoutSectionDetailsDto.class);
+        List<WorkoutExerciseDetailsDto> exercises = section.getWorkoutExercises().stream()
+                .map(ex -> modelMapper.map(ex, WorkoutExerciseDetailsDto.class))
+                .toList();
+
+        sectionDto.setWorkoutExercises(exercises);
+        return sectionDto;
+    }
 }
