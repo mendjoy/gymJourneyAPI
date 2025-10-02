@@ -19,7 +19,7 @@ public class WorkoutController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<WorkoutDto> registerWorkout(@RequestBody WorkoutDto workoutDto) {
+    public ResponseEntity<WorkoutDto> register(@RequestBody WorkoutDto workoutDto) {
         WorkoutDto newWorkout = workoutService.register(workoutDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newWorkout);
     }
@@ -37,14 +37,14 @@ public class WorkoutController {
     }
 
     @PatchMapping
-    public ResponseEntity<WorkoutDto> updateWorkout(@RequestBody WorkoutDto workoutDto) {
-        WorkoutDto newWorkout = workoutService.updateWorkout(workoutDto);
+    public ResponseEntity<WorkoutDto> update(@RequestBody WorkoutDto workoutDto) {
+        WorkoutDto newWorkout = workoutService.update(workoutDto);
         return ResponseEntity.ok(newWorkout);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteWorkout (@PathVariable Integer id){
-        workoutService.deleteWorkout(id);
+    public ResponseEntity<String> delete(@PathVariable Integer id){
+        workoutService.delete(id);
         return ResponseEntity.ok("Treino deletado com sucesso!");
     }
 

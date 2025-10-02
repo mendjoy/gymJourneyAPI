@@ -47,12 +47,12 @@ public class WorkoutService {
         return workouts.map(workout -> modelMapper.map(workout, WorkoutDetailsDto.class));
     }
 
-    public void deleteWorkout(Integer id) {
+    public void delete(Integer id) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new RuntimeException("Treino não encontrado!"));
         workoutRepository.deleteById(workout.getId());
     }
 
-    public WorkoutDto updateWorkout(WorkoutDto workoutDto) {
+    public WorkoutDto update(WorkoutDto workoutDto) {
         Workout workout = workoutRepository.findById(workoutDto.getId()).orElseThrow(() -> new RuntimeException("Treino não encontrado!"));
         workout.update(workoutDto);
         Workout updatedWorkout = workoutRepository.save(workout);
