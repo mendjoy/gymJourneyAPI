@@ -31,19 +31,19 @@ public class ExerciseController {
 
     @GetMapping
     public ResponseEntity<Page<ExerciseDto>> getAllExercises(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        Page<ExerciseDto> exerciseDTOS = exerciseService.getAllExercises(page, size);
-        return ResponseEntity.ok(exerciseDTOS);
+        Page<ExerciseDto> exercises = exerciseService.getAllExercises(page, size);
+        return ResponseEntity.ok(exercises);
     }
 
     @PatchMapping
-    public ResponseEntity<ExerciseDto> updateExercise(@RequestBody ExerciseDto exerciseDto) {
-        ExerciseDto exercise = exerciseService.updateExercise(exerciseDto);
+    public ResponseEntity<ExerciseDto> update(@RequestBody ExerciseDto exerciseDto) {
+        ExerciseDto exercise = exerciseService.update(exerciseDto);
         return ResponseEntity.ok(exercise);
     }
 
     @GetMapping("/search")
     public ResponseEntity<Page<ExerciseDto>> searchExercisesByName(@RequestParam String name,@RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size ){
-        Page<ExerciseDto> exerciseDTOS = exerciseService.searchExercisesByName(name, page, size);
-        return ResponseEntity.ok(exerciseDTOS);
+        Page<ExerciseDto> exercises = exerciseService.searchExercisesByName(name, page, size);
+        return ResponseEntity.ok(exercises);
     }
 }

@@ -42,17 +42,16 @@ public class ExerciseService {
     public Page<ExerciseDto> getAllExercises(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<Exercise> exercisePage = exerciseRepository.findAll(pageable);
-
         return exercisePage.map(exercise -> modelMapper.map(exercise, ExerciseDto.class));
     }
 
     public Page<ExerciseDto> searchExercisesByName(String name, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
-        return exercisePage.map(exercise -> modelMapper.map(exercise, ExerciseDto.class));
+        Page<Exercise> exercises = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
+        return exercises.map(exercise -> modelMapper.map(exercise, ExerciseDto.class));
     }
 
-    public ExerciseDto updateExercise(ExerciseDto exerciseDto) {
+    public ExerciseDto update(ExerciseDto exerciseDto) {
         Exercise exercise = exerciseRepository.findById(exerciseDto.getId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
         exercise.update(exerciseDto);
         Exercise newExercise = exerciseRepository.save(exercise);
