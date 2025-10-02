@@ -1,6 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDto;
 import jakarta.persistence.*;
 
 @Entity
@@ -92,5 +93,20 @@ public class WorkoutExercise {
 
     public void setRestTime(Integer restTime) {
         this.restTime = restTime;
+    }
+
+    public void update(WorkoutExerciseDto workoutExerciseDto) {
+        if(workoutExerciseDto.getSets() != null){
+            this.sets = workoutExerciseDto.getSets();
+        }
+        if(workoutExerciseDto.getRepetitions() != null){
+            this.repetitions = workoutExerciseDto.getRepetitions();
+        }
+        if(workoutExerciseDto.getWeight() != null){
+            this.weight = workoutExerciseDto.getWeight();
+        }
+        if(workoutExerciseDto.getRestTime() != null){
+            this.restTime = workoutExerciseDto.getRestTime();
+        }
     }
 }

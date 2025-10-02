@@ -32,9 +32,15 @@ public class WorkoutExerciseController {
         return ResponseEntity.ok(exercises);
     }
 
+    @PatchMapping
+    public ResponseEntity<WorkoutExerciseDto> update(@RequestBody WorkoutExerciseDto workoutExerciseDto) {
+        WorkoutExerciseDto workoutExercise = workoutExerciseService.update(workoutExerciseDto);
+        return ResponseEntity.ok(workoutExercise);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteWorkoutExercise (@PathVariable Integer id){
-        workoutExerciseService.deleteWorkoutExercise(id);
+    public ResponseEntity<String> delete (@PathVariable Integer id){
+        workoutExerciseService.delete(id);
         return ResponseEntity.ok("Exercicio removido do treino com sucesso!");
     }
 }

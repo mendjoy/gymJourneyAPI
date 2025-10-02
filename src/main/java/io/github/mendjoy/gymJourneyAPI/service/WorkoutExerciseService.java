@@ -52,8 +52,21 @@ public class WorkoutExerciseService {
         });
     }
 
-    public void deleteWorkoutExercise(Integer id) {
+    public void delete(Integer id) {
         WorkoutExercise workoutExercise = workoutExerciseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exercicio relacionado a treino não encontrado!"));
         workoutExerciseRepository.deleteById(id);
+    }
+
+    public WorkoutExerciseDto update(WorkoutExerciseDto workoutExerciseDto) {
+        WorkoutExercise workoutExercise = workoutExerciseRepository.findById(workoutExerciseDto.getId()).orElseThrow(() -> new EntityNotFoundException("Exercicio relacionado a treino não encontrado!"));
+        workoutExercise.update(workoutExerciseDto);
+
+        if(workoutExerciseDto.getExerciseId() != null){
+           Exercise exercise = exerciseRepository.findById(workoutExerciseDto.getExerciseId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+           workoutExercise.setExercise(exercise);
+        }
+
+        WorkoutExercise updatedWorkoutExercise = workoutExerciseRepository.save(workoutExercise);
+        return modelMapper.map(updatedWorkoutExercise, WorkoutExerciseDto.class);
     }
 }
