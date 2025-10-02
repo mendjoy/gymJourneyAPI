@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
+import io.github.mendjoy.gymJourneyAPI.dto.ExerciseDto;
 import jakarta.persistence.*;
 
 @Entity
@@ -48,5 +49,17 @@ public class Exercise {
 
     public void setMuscleGroup(String muscleGroup) {
         this.muscleGroup = muscleGroup;
+    }
+
+    public void update(ExerciseDto exerciseDto) {
+        if(exerciseDto.getName() != null){
+            this.name = exerciseDto.getName();
+        }
+        if(exerciseDto.getDescription() != null){
+            this.description = exerciseDto.getDescription();
+        }
+        if(exerciseDto.getMuscleGroup() != null){
+            this.muscleGroup = exerciseDto.getMuscleGroup();
+        }
     }
 }

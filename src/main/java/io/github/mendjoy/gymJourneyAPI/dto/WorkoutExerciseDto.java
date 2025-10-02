@@ -2,11 +2,12 @@ package io.github.mendjoy.gymJourneyAPI.dto;
 
 public class WorkoutExerciseDto {
     private Integer id;
+    private Integer workoutSectionId;
+    private Integer exerciseId;
     private Integer sets;
     private Integer repetitions;
     private Double weight;
     private Integer restTime;
-    private Integer exerciseId;
 
     public WorkoutExerciseDto() {
     }
@@ -17,6 +18,22 @@ public class WorkoutExerciseDto {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getWorkoutSectionId() {
+        return workoutSectionId;
+    }
+
+    public void setWorkoutSectionId(Integer workoutSectionId) {
+        this.workoutSectionId = workoutSectionId;
+    }
+
+    public Integer getExerciseId() {
+        return exerciseId;
+    }
+
+    public void setExerciseId(Integer exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public Integer getSets() {
@@ -49,13 +66,5 @@ public class WorkoutExerciseDto {
 
     public void setRestTime(Integer restTime) {
         this.restTime = restTime;
-    }
-
-    public Integer getExerciseId() {
-        return exerciseId;
-    }
-
-    public void setExerciseId(Integer exerciseId) {
-        this.exerciseId = exerciseId;
     }
 }

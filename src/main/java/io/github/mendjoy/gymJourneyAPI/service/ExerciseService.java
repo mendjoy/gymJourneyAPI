@@ -51,4 +51,11 @@ public class ExerciseService {
         Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
         return exercisePage.map(exercise -> modelMapper.map(exercise, ExerciseDto.class));
     }
+
+    public ExerciseDto updateExercise(ExerciseDto exerciseDto) {
+        Exercise exercise = exerciseRepository.findById(exerciseDto.getId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+        exercise.update(exerciseDto);
+        Exercise newExercise = exerciseRepository.save(exercise);
+        return modelMapper.map(newExercise, ExerciseDto.class);
+    }
 }

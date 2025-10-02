@@ -35,6 +35,12 @@ public class ExerciseController {
         return ResponseEntity.ok(exerciseDTOS);
     }
 
+    @PatchMapping
+    public ResponseEntity<ExerciseDto> updateExercise(@RequestBody ExerciseDto exerciseDto) {
+        ExerciseDto exercise = exerciseService.updateExercise(exerciseDto);
+        return ResponseEntity.ok(exercise);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<Page<ExerciseDto>> searchExercisesByName(@RequestParam String name,@RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size ){
         Page<ExerciseDto> exerciseDTOS = exerciseService.searchExercisesByName(name, page, size);
