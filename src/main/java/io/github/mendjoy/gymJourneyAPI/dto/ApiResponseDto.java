@@ -1,14 +1,12 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
-public class ErrorResponseDto {
+public class ApiResponseDto {
 
     private int status;
-    private String code;
     private String message;
 
-    public ErrorResponseDto(int status, String code) {
+    public ApiResponseDto(int status, String code) {
         this.status = status;
-        this.code = code;
         this.message = message;
     }
 
@@ -18,14 +16,6 @@ public class ErrorResponseDto {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getMessage() {
