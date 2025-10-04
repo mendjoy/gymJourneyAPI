@@ -105,14 +105,14 @@ public class Workout {
         this.workoutSections = workoutSections;
     }
 
-    public void update(WorkoutDto workoutDto){
-        if (workoutDto.getName() != null) {
+    public void updateWorkout(WorkoutDto workoutDto){
+        if (workoutDto.getName() != null && !workoutDto.getName().isBlank()) {
             this.name = workoutDto.getName();
         }
-        if (workoutDto.getDescription() != null) {
+        if (workoutDto.getDescription() != null && !workoutDto.getDescription().isBlank()) {
             this.description = workoutDto.getDescription();
         }
-        if (workoutDto.getMaxSessions() != null) {
+        if (workoutDto.getMaxSessions() != null && workoutDto.getMaxSessions() != 0) {
             this.maxSessions = workoutDto.getMaxSessions();
         }
         if (workoutDto.getStartDate() != null) {
