@@ -1,10 +1,18 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class ExerciseDto{
 
     private Integer id;
+
+    @NotBlank(message = "O nome do exercicio deve ser informado!")
     private String name;
+
+    @NotBlank(message = "A descricao do exercicio deve ser informada!")
     private String description;
+
+    @NotBlank(message = "O grupo muscular deve ser informado!")
     private String muscleGroup;
 
     public Integer getId() {

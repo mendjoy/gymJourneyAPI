@@ -1,12 +1,25 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class WorkoutExerciseDto {
     private Integer id;
+
+    @NotNull(message = "O id da secao deve ser informado!")
     private Integer workoutSectionId;
+
+    @NotNull(message = "O id do exercicio deve ser informado!")
     private Integer exerciseId;
+
+    @NotNull(message = "O numero de series deve ser informado!")
     private Integer sets;
+
+    @NotNull(message = "O numero de repetições deve ser informado!")
     private Integer repetitions;
+
     private Double weight;
+
+    @NotNull(message = "O tempo de descanso deve ser informado!")
     private Integer restTime;
 
     public WorkoutExerciseDto() {
