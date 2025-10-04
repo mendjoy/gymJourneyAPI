@@ -17,8 +17,8 @@ public class ExerciseController {
         this.exerciseService = exerciseService;
     }
 
-    @PostMapping("/registerWorkout")
-    public ResponseEntity<ExerciseDto> register(@RequestBody ExerciseDto exerciseDto){
+    @PostMapping("/register")
+    public ResponseEntity<ExerciseDto> registerWorkout(@RequestBody ExerciseDto exerciseDto){
         ExerciseDto newExercise = exerciseService.registerExercise(exerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
     }
@@ -35,8 +35,8 @@ public class ExerciseController {
         return ResponseEntity.ok(exercises);
     }
 
-    @PatchMapping
-    public ResponseEntity<ExerciseDto> update(@RequestBody ExerciseDto exerciseDto) {
+    @PutMapping
+    public ResponseEntity<ExerciseDto> updateExercise(@RequestBody ExerciseDto exerciseDto) {
         ExerciseDto exercise = exerciseService.updateExercise(exerciseDto);
         return ResponseEntity.ok(exercise);
     }

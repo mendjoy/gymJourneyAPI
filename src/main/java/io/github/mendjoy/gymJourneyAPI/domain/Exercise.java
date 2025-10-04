@@ -51,7 +51,7 @@ public class Exercise {
         this.muscleGroup = muscleGroup;
     }
 
-    public void update(ExerciseDto exerciseDto) {
+    public void updateExercise(ExerciseDto exerciseDto) {
         if(exerciseDto.getName() != null && !exerciseDto.getName().isBlank()){
             this.name = exerciseDto.getName();
         }

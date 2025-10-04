@@ -1,8 +1,10 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
+import io.github.mendjoy.gymJourneyAPI.dto.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDto;
 import io.github.mendjoy.gymJourneyAPI.service.WorkoutService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,8 @@ public class WorkoutController {
         this.workoutService = workoutService;
     }
 
-    @PostMapping("/registerWorkout")
-    public ResponseEntity<WorkoutDto> register(@RequestBody WorkoutDto workoutDto) {
+    @PostMapping("/register")
+    public ResponseEntity<WorkoutDto> registerWorkout(@Valid @RequestBody WorkoutDto workoutDto) {
         WorkoutDto newWorkout = workoutService.registerWorkout(workoutDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newWorkout);
     }
@@ -36,16 +38,16 @@ public class WorkoutController {
         return ResponseEntity.ok(workoutDtos);
     }
 
-    @PatchMapping
-    public ResponseEntity<WorkoutDto> update(@RequestBody WorkoutDto workoutDto) {
+    @PutMapping
+    public ResponseEntity<WorkoutDto> update(@Valid @RequestBody WorkoutDto workoutDto) {
         WorkoutDto newWorkout = workoutService.updateWorkout(workoutDto);
         return ResponseEntity.ok(newWorkout);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id){
+    public ResponseEntity<ApiResponseDto> deleteWorkout(@PathVariable Integer id){
         workoutService.deleteWorkout(id);
-        return ResponseEntity.ok("Treino deletado com sucesso!");
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Treino excluido com sucesso!"));
     }
 
 }

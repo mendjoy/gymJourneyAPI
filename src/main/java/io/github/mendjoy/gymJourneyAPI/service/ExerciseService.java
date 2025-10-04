@@ -51,7 +51,7 @@ public class ExerciseService {
         if(exerciseRepository.existsByName(exerciseDto.getName())){
             throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.getName() + " já cadastrado!");
         }
-        exercise.update(exerciseDto);
+        exercise.updateExercise(exerciseDto);
         Exercise newExercise = exerciseRepository.save(exercise);
         return modelMapper.map(newExercise, ExerciseDto.class);
     }

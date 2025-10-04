@@ -39,7 +39,7 @@ public class WorkoutSectionController {
         return ResponseEntity.ok(section);
     }
 
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<WorkoutSectionDto> updateWorkoutSection(@RequestBody WorkoutSectionDto workoutSectionDto) {
         WorkoutSectionDto section = workoutSectionService.updateWorkoutSection(workoutSectionDto);
         return ResponseEntity.ok(section);

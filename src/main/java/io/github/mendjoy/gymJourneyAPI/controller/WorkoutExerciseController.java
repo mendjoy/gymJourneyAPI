@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
+import io.github.mendjoy.gymJourneyAPI.dto.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDto;
 import io.github.mendjoy.gymJourneyAPI.service.WorkoutExerciseService;
@@ -20,8 +21,8 @@ public class WorkoutExerciseController {
         this.workoutExerciseService = workoutExerciseService;
     }
 
-    @PostMapping("/registerWorkout")
-    public ResponseEntity<List<WorkoutExerciseDto>> register(@RequestBody List<WorkoutExerciseDto> workoutExerciseDto) {
+    @PostMapping("/register")
+    public ResponseEntity<List<WorkoutExerciseDto>> registerWorkoutExercise(@RequestBody List<WorkoutExerciseDto> workoutExerciseDto) {
         List<WorkoutExerciseDto> newWorkoutSections = workoutExerciseService.registerWorkoutExercise(workoutExerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newWorkoutSections);
     }
@@ -32,15 +33,15 @@ public class WorkoutExerciseController {
         return ResponseEntity.ok(exercises);
     }
 
-    @PatchMapping
-    public ResponseEntity<WorkoutExerciseDto> update(@RequestBody WorkoutExerciseDto workoutExerciseDto) {
+    @PutMapping
+    public ResponseEntity<WorkoutExerciseDto> updateWorkoutExercise(@RequestBody WorkoutExerciseDto workoutExerciseDto) {
         WorkoutExerciseDto workoutExercise = workoutExerciseService.updateWorkoutExercise(workoutExerciseDto);
         return ResponseEntity.ok(workoutExercise);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete (@PathVariable Integer id){
+    public ResponseEntity<ApiResponseDto> deleteWorkoutExercise (@PathVariable Integer id){
         workoutExerciseService.deleteWorkoutExercise(id);
-        return ResponseEntity.ok("Exercicio removido do treino com sucesso!");
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Exercicio removido do treino com sucesso!"));
     }
 }
