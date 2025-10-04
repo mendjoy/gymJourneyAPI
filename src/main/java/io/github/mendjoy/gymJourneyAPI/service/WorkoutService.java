@@ -7,6 +7,7 @@ import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
+import io.github.mendjoy.gymJourneyAPI.utils.ValidationUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,6 +53,7 @@ public class WorkoutService {
     }
 
     public WorkoutDto updateWorkout(WorkoutDto workoutDto) {
+        ValidationUtils.validateIdNotNull(workoutDto.getId(), "Treino");
         Workout workout = workoutRepository.findById(workoutDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Treino " + workoutDto.getId() + " não encontrado!"));
         workout.updateWorkout(workoutDto);
         Workout updatedWorkout = workoutRepository.save(workout);

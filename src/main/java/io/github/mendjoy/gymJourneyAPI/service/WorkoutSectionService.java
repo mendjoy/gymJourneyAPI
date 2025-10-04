@@ -8,6 +8,7 @@ import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutSectionRepository;
+import io.github.mendjoy.gymJourneyAPI.utils.ValidationUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,10 +65,11 @@ public class WorkoutSectionService {
         WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound(
                 "Seção de treino " +
                 "não encontrada!"));
-        workoutSectionRepository.deleteById(workoutSection.getId());
+        workoutSectionRepository.delete(workoutSection);
     }
 
     public WorkoutSectionDto updateWorkoutSection(WorkoutSectionDto workoutSectionDto) {
+        ValidationUtils.validateIdNotNull(workoutSectionDto.getId(), "Seção de treino");
         WorkoutSection section = workoutSectionRepository.findById(workoutSectionDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Seção de treino não encontrada!"));
         section.update(workoutSectionDto);
         WorkoutSection updatedSection = workoutSectionRepository.save(section);
