@@ -4,9 +4,9 @@ import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
 import io.github.mendjoy.gymJourneyAPI.domain.WorkoutExercise;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDto;
+import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutExerciseRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,9 +28,9 @@ public class WorkoutExerciseService {
         this.modelMapper = modelMapper;
     }
 
-    public List<WorkoutExerciseDto> register(List<WorkoutExerciseDto> workoutExerciseDto) {
+    public List<WorkoutExerciseDto> registerWorkoutExercise(List<WorkoutExerciseDto> workoutExerciseDto) {
         List<WorkoutExercise> workoutExercises = workoutExerciseDto.stream().map( we -> {
-            Exercise exercise = exerciseRepository.findById(we.getExerciseId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+            Exercise exercise = exerciseRepository.findById(we.getExerciseId()).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
             WorkoutExercise workoutExercise = modelMapper.map(we, WorkoutExercise.class);
             workoutExercise.setExercise(exercise);
             return workoutExercise;
@@ -52,17 +52,23 @@ public class WorkoutExerciseService {
         });
     }
 
-    public void delete(Integer id) {
-        WorkoutExercise workoutExercise = workoutExerciseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exercicio relacionado a treino não encontrado!"));
+    public void deleteWorkoutExercise(Integer id) {
+        WorkoutExercise workoutExercise =
+                workoutExerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio " +
+                "relacionado a treino não encontrado!"));
         workoutExerciseRepository.deleteById(id);
     }
 
-    public WorkoutExerciseDto update(WorkoutExerciseDto workoutExerciseDto) {
-        WorkoutExercise workoutExercise = workoutExerciseRepository.findById(workoutExerciseDto.getId()).orElseThrow(() -> new EntityNotFoundException("Exercicio relacionado a treino não encontrado!"));
+    public WorkoutExerciseDto updateWorkoutExercise(WorkoutExerciseDto workoutExerciseDto) {
+        WorkoutExercise workoutExercise =
+                workoutExerciseRepository.findById(workoutExerciseDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Exercicio " +
+                        "relacionado a treino não encontrado!"));
         workoutExercise.update(workoutExerciseDto);
 
         if(workoutExerciseDto.getExerciseId() != null){
-           Exercise exercise = exerciseRepository.findById(workoutExerciseDto.getExerciseId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+           Exercise exercise =
+                   exerciseRepository.findById(workoutExerciseDto.getExerciseId()).orElseThrow(() -> GymJourneyException.notFound(
+                   "Exercicio não encontrado!"));
            workoutExercise.setExercise(exercise);
         }
 

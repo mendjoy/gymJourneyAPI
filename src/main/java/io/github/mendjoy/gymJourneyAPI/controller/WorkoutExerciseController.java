@@ -20,9 +20,9 @@ public class WorkoutExerciseController {
         this.workoutExerciseService = workoutExerciseService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registerWorkout")
     public ResponseEntity<List<WorkoutExerciseDto>> register(@RequestBody List<WorkoutExerciseDto> workoutExerciseDto) {
-        List<WorkoutExerciseDto> newWorkoutSections = workoutExerciseService.register(workoutExerciseDto);
+        List<WorkoutExerciseDto> newWorkoutSections = workoutExerciseService.registerWorkoutExercise(workoutExerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newWorkoutSections);
     }
 
@@ -34,13 +34,13 @@ public class WorkoutExerciseController {
 
     @PatchMapping
     public ResponseEntity<WorkoutExerciseDto> update(@RequestBody WorkoutExerciseDto workoutExerciseDto) {
-        WorkoutExerciseDto workoutExercise = workoutExerciseService.update(workoutExerciseDto);
+        WorkoutExerciseDto workoutExercise = workoutExerciseService.updateWorkoutExercise(workoutExerciseDto);
         return ResponseEntity.ok(workoutExercise);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete (@PathVariable Integer id){
-        workoutExerciseService.delete(id);
+        workoutExerciseService.deleteWorkoutExercise(id);
         return ResponseEntity.ok("Exercicio removido do treino com sucesso!");
     }
 }

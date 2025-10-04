@@ -5,9 +5,9 @@ import io.github.mendjoy.gymJourneyAPI.domain.WorkoutSection;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDto;
+import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutSectionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +29,11 @@ public class WorkoutSectionService {
         this.modelMapper = modelMapper;
     }
 
-    public List<WorkoutSectionDto> register(List<WorkoutSectionDto> workoutSectionDtos) {
+    public List<WorkoutSectionDto> registerWorkoutSection(List<WorkoutSectionDto> workoutSectionDtos) {
         List<WorkoutSection> workoutSections = workoutSectionDtos.stream().map( section -> {
-            Workout workout = workoutRepository.findById(section.getWorkoutId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+            Workout workout =
+                    workoutRepository.findById(section.getWorkoutId()).orElseThrow(() -> GymJourneyException.notFound("Treino não " +
+                    "encontrado!"));
             WorkoutSection workoutSection = modelMapper.map(section, WorkoutSection.class);
             workoutSection.setWorkout(workout);
             return workoutSection;
@@ -59,19 +61,23 @@ public class WorkoutSectionService {
     }
 
     public void deleteWorkoutSection(Integer id) {
-        WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
-        workoutRepository.deleteById(workoutSection.getId());
+        WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound(
+                "Seção de treino " +
+                "não encontrada!"));
+        workoutSectionRepository.deleteById(workoutSection.getId());
     }
 
     public WorkoutSectionDto updateWorkoutSection(WorkoutSectionDto workoutSectionDto) {
-        WorkoutSection section = workoutSectionRepository.findById(workoutSectionDto.getId()).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
+        WorkoutSection section = workoutSectionRepository.findById(workoutSectionDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Seção de treino não encontrada!"));
         section.update(workoutSectionDto);
-        WorkoutSection updateSection = workoutSectionRepository.save(section);
-        return modelMapper.map(updateSection, WorkoutSectionDto.class);
+        WorkoutSection updatedSection = workoutSectionRepository.save(section);
+        return modelMapper.map(updatedSection, WorkoutSectionDto.class);
     }
 
     public WorkoutSectionDetailsDto getWorkoutSectionById(Integer id) {
-        WorkoutSection section = workoutSectionRepository.findById(id).orElseThrow(() -> new RuntimeException("Seção de treino não encontrada!"));
+        WorkoutSection section = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Seção " +
+                "de treino não " +
+                "encontrada!"));
         WorkoutSectionDetailsDto sectionDto = modelMapper.map(section, WorkoutSectionDetailsDto.class);
         List<WorkoutExerciseDetailsDto> exercises = section.getWorkoutExercises().stream()
                 .map(ex -> modelMapper.map(ex, WorkoutExerciseDetailsDto.class))

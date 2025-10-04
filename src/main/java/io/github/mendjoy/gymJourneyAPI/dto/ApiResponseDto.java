@@ -5,7 +5,7 @@ public class ApiResponseDto {
     private int status;
     private String message;
 
-    public ApiResponseDto(int status, String code) {
+    public ApiResponseDto(int status, String message) {
         this.status = status;
         this.message = message;
     }

@@ -4,6 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.domain.Workout;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDto;
+import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;
 import org.modelmapper.ModelMapper;
@@ -24,36 +25,35 @@ public class WorkoutService {
         this.modelMapper = modelMapper;
     }
 
-    public WorkoutDto register(WorkoutDto workoutDto){
+    public WorkoutDto registerWorkout(WorkoutDto workoutDto){
         User user = userRepository.findById(workoutDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
 
         Workout workout = modelMapper.map(workoutDto, Workout.class);
         workout.setUser(user);
         Workout newWorkout = workoutRepository.save(workout);
-
         return modelMapper.map(newWorkout, WorkoutDto.class);
     }
 
     public WorkoutDetailsDto getWorkoutById(Integer id){
-        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new RuntimeException("Treino não encontrado!"));
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
         return modelMapper.map(workout, WorkoutDetailsDto.class);
     }
 
     public Page<WorkoutDetailsDto> getWorkoutsByUser(Integer id, int page, int size) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+        User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
         Pageable pageable = PageRequest.of(page, size);
         Page<Workout> workouts = workoutRepository.findAllByUser(user, pageable);
         return workouts.map(workout -> modelMapper.map(workout, WorkoutDetailsDto.class));
     }
 
-    public void delete(Integer id) {
-        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new RuntimeException("Treino não encontrado!"));
+    public void deleteWorkout(Integer id) {
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
         workoutRepository.deleteById(workout.getId());
     }
 
-    public WorkoutDto update(WorkoutDto workoutDto) {
-        Workout workout = workoutRepository.findById(workoutDto.getId()).orElseThrow(() -> new RuntimeException("Treino não encontrado!"));
+    public WorkoutDto updateWorkout(WorkoutDto workoutDto) {
+        Workout workout = workoutRepository.findById(workoutDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
         workout.update(workoutDto);
         Workout updatedWorkout = workoutRepository.save(workout);
         return modelMapper.map(updatedWorkout, WorkoutDto.class);

@@ -2,8 +2,8 @@ package io.github.mendjoy.gymJourneyAPI.service;
 
 import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
 import io.github.mendjoy.gymJourneyAPI.dto.ExerciseDto;
+import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,21 +21,16 @@ public class ExerciseService {
         this.modelMapper = modelMapper;
     }
 
-    public ExerciseDto register(ExerciseDto exerciseDto){
-
+    public ExerciseDto registerExercise(ExerciseDto exerciseDto){
         if(exerciseRepository.existsByName(exerciseDto.getName())){
-            throw new RuntimeException("Exercicio já cadastrado!");
+            throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.getName() + " já cadastrado!");
         }
-
         Exercise newExercise = exerciseRepository.save(modelMapper.map(exerciseDto, Exercise.class));
-
         return modelMapper.map(newExercise, ExerciseDto.class);
-
     }
 
     public ExerciseDto getExerciseById(Integer id) {
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
-
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
         return modelMapper.map(exercise, ExerciseDto.class);
     }
 
@@ -51,8 +46,11 @@ public class ExerciseService {
         return exercises.map(exercise -> modelMapper.map(exercise, ExerciseDto.class));
     }
 
-    public ExerciseDto update(ExerciseDto exerciseDto) {
-        Exercise exercise = exerciseRepository.findById(exerciseDto.getId()).orElseThrow(() -> new EntityNotFoundException("Exercicio não encontrado!"));
+    public ExerciseDto updateExercise(ExerciseDto exerciseDto) {
+        Exercise exercise = exerciseRepository.findById(exerciseDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
+        if(exerciseRepository.existsByName(exerciseDto.getName())){
+            throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.getName() + " já cadastrado!");
+        }
         exercise.update(exerciseDto);
         Exercise newExercise = exerciseRepository.save(exercise);
         return modelMapper.map(newExercise, ExerciseDto.class);

@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
+import io.github.mendjoy.gymJourneyAPI.dto.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDto;
 import io.github.mendjoy.gymJourneyAPI.service.WorkoutSectionService;
@@ -20,9 +21,9 @@ public class WorkoutSectionController {
         this.workoutSectionService = workoutSectionService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registerWorkout")
     public ResponseEntity<List<WorkoutSectionDto>> register(@RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
-        List<WorkoutSectionDto> newSections = workoutSectionService.register(workoutSectionDtos);
+        List<WorkoutSectionDto> newSections = workoutSectionService.registerWorkoutSection(workoutSectionDtos);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSections);
     }
 
@@ -45,9 +46,8 @@ public class WorkoutSectionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteWorkoutSection (@PathVariable Integer id){
+    public ResponseEntity<ApiResponseDto> deleteWorkoutSection (@PathVariable Integer id){
         workoutSectionService.deleteWorkoutSection(id);
-        return ResponseEntity.ok("Seção deletada com sucesso!");
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Seção do treino excluida com sucesso!"));
     }
-
 }
