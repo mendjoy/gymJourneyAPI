@@ -19,4 +19,11 @@ public class GymJourneyException extends RuntimeException{
         return new GymJourneyException(message, HttpStatus.NOT_FOUND);
     }
 
+    public static GymJourneyException alreadyExists(String message) {
+        return new GymJourneyException(message, HttpStatus.CONFLICT);
+    }
+
+    public static GymJourneyException badRequest(String message) {
+        return new GymJourneyException(message, HttpStatus.BAD_REQUEST);
+    }
 }
