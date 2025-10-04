@@ -52,13 +52,13 @@ public class Exercise {
     }
 
     public void update(ExerciseDto exerciseDto) {
-        if(exerciseDto.getName() != null){
+        if(exerciseDto.getName() != null && !exerciseDto.getName().isBlank()){
             this.name = exerciseDto.getName();
         }
-        if(exerciseDto.getDescription() != null){
+        if(exerciseDto.getDescription() != null && !exerciseDto.getDescription().isBlank()){
             this.description = exerciseDto.getDescription();
         }
-        if(exerciseDto.getMuscleGroup() != null){
+        if(exerciseDto.getMuscleGroup() != null && !exerciseDto.getMuscleGroup().isBlank()){
             this.muscleGroup = exerciseDto.getMuscleGroup();
         }
     }
