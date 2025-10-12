@@ -16,6 +16,7 @@ public class UserRequestDto{
     private String name;
     private String phone;
     private LocalDate birthDate;
+    private String password;
 
     public Integer getId() {
         return id;
@@ -55,5 +56,13 @@ public class UserRequestDto{
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
