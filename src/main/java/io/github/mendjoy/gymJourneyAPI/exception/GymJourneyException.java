@@ -26,4 +26,13 @@ public class GymJourneyException extends RuntimeException{
     public static GymJourneyException badRequest(String message) {
         return new GymJourneyException(message, HttpStatus.BAD_REQUEST);
     }
+
+    public static GymJourneyException internalError(String message) {
+        return new GymJourneyException(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static GymJourneyException forbidden(String message) {
+        return new GymJourneyException(message, HttpStatus.FORBIDDEN);
+    }
 }
+
