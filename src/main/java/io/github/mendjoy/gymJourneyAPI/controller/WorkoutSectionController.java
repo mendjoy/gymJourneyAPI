@@ -21,7 +21,7 @@ public class WorkoutSectionController {
         this.workoutSectionService = workoutSectionService;
     }
 
-    @PostMapping("/registerWorkout")
+    @PostMapping("/register")
     public ResponseEntity<List<WorkoutSectionDto>> register(@RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
         List<WorkoutSectionDto> newSections = workoutSectionService.registerWorkoutSection(workoutSectionDtos);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSections);
