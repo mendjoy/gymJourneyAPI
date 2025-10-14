@@ -20,9 +20,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/registerWorkout")
+    @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@RequestBody UserRequestDto userRequestDto){
         UserResponseDto userResponseDto = userService.registerUser(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
+
 }
