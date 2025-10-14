@@ -1,7 +1,15 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
-import jakarta.validation.constraints.NotBlank;
+public class UserLoginDto{
 
-public record UserLogin(@NotBlank String email, @NotBlank String password) {
-    
+    private String email;
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
