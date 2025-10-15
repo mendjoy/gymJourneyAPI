@@ -2,6 +2,7 @@ package io.github.mendjoy.gymJourneyAPI.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,8 +30,14 @@ public class SecurityConfig {
                    .sessionManagement( sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                    .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(req -> {
-                        req.requestMatchers("/users/register", "/auth/login").permitAll();
-                        req.anyRequest().authenticated();
+                             req.requestMatchers("/users/register", "/users/verify-account", "/auth/login").permitAll()
+                                .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.POST, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.PUT, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.DELETE, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.PUT, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.DELETE, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
+                                     .anyRequest().authenticated();
                    })
                    .build();
     }

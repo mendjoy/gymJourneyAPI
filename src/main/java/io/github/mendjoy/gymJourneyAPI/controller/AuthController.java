@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
-import io.github.mendjoy.gymJourneyAPI.dto.UserLoginDto;
-import io.github.mendjoy.gymJourneyAPI.dto.UserTokenDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserLoginDto;
+import io.github.mendjoy.gymJourneyAPI.dto.TokenDto;
 import io.github.mendjoy.gymJourneyAPI.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenDto> login(@Valid @RequestBody UserLoginDto userLoginDto){
-        UserTokenDto userTokenDto = authService.login(userLoginDto);
-        return ResponseEntity.ok(userTokenDto);
+    public ResponseEntity<TokenDto> login(@Valid @RequestBody UserLoginDto userLoginDto){
+        TokenDto tokenDto = authService.login(userLoginDto);
+        return ResponseEntity.ok(tokenDto);
     }
+
 }

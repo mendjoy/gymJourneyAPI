@@ -1,22 +1,14 @@
-package io.github.mendjoy.gymJourneyAPI.dto;
+package io.github.mendjoy.gymJourneyAPI.dto.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
-public class UserRequestDto{
+public class UserDto {
     private Integer id;
-
-    @NotBlank(message = "O email do usuario deve ser informado!")
-    @Email(message = "O email deve ser válido!")
     private String email;
-
-    @NotBlank(message = "O nome deve ser informado!")
     private String name;
     private String phone;
     private LocalDate birthDate;
-    private String password;
 
     public Integer getId() {
         return id;
@@ -56,13 +48,5 @@ public class UserRequestDto{
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

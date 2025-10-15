@@ -1,10 +1,10 @@
 package io.github.mendjoy.gymJourneyAPI.dto;
 
-public class UserTokenDto {
+public class TokenDto {
 
     private String token;
 
-    public UserTokenDto(String token) {
+    public TokenDto(String token) {
         this.token = token;
     }
 

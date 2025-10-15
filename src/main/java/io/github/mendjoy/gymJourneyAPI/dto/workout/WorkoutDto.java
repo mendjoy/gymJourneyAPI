@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.dto;
+package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
 import jakarta.persistence.*;
 
 @Entity

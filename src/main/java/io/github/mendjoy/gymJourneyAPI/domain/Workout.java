@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDto;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

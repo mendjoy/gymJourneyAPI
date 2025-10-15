@@ -1,4 +1,6 @@
-package io.github.mendjoy.gymJourneyAPI.dto;
+package io.github.mendjoy.gymJourneyAPI.dto.workout;
+
+import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 
 public class WorkoutExerciseDetailsDto {
     private Integer id;

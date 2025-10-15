@@ -2,7 +2,7 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutSectionDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutSectionDto;
 import jakarta.persistence.*;
 
 import java.util.List;

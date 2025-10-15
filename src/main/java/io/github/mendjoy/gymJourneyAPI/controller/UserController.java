@@ -1,14 +1,11 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
-import io.github.mendjoy.gymJourneyAPI.dto.UserRequestDto;
-import io.github.mendjoy.gymJourneyAPI.dto.UserResponseDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterRequestDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -21,9 +18,21 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDto> register(@RequestBody UserRequestDto userRequestDto){
-        UserResponseDto userResponseDto = userService.registerUser(userRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
+    public ResponseEntity<UserDto> register(@RequestBody UserRegisterRequestDto userRegisterRequestDto){
+        UserDto userDto = userService.registerUser(userRegisterRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    }
+
+    @GetMapping("/verify-account")
+    public ResponseEntity<String> verifyAccount(@RequestParam String code){
+        userService.verifyEmail(code);
+        return ResponseEntity.ok("Conta verificada com sucesso!");
+    }
+
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserRegisterRequestDto userRegisterRequestDto){
+        UserDto userDto = userService.registerUser(userRegisterRequestDto);
+        return ResponseEntity.ok(userDto);
     }
 
 }

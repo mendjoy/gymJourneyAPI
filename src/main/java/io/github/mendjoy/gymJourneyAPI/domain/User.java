@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String name;
@@ -26,21 +28,34 @@ public class User implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private UserRole userRole = UserRole.USER;
+
+    private Boolean verified = false;
+
+    private String token;
+
+    @Column(name = "expiration_token")
+    private LocalDateTime expirationToken;
+
+    private Boolean ativo;
 
     public User() {
     }
 
-    public User(String email, String name, String phone, LocalDate birthDate, String password, UserRole userRole) {
+    public User(String email, String name, String phone, LocalDate birthDate, String password, UserRole userRole, Boolean verified, String token, LocalDateTime expirationToken) {
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.birthDate = birthDate;
         this.password = password;
         this.userRole = userRole;
+        this.verified = verified;
+        this.token = token;
+        this.expirationToken = expirationToken;
     }
 
     public Integer getId() {
@@ -87,6 +102,38 @@ public class User implements UserDetails {
         this.userRole = userRole;
     }
 
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDateTime getExpirationToken() {
+        return expirationToken;
+    }
+
+    public void setExpirationToken(LocalDateTime expirationToken) {
+        this.expirationToken = expirationToken;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "ROLE_" + this.userRole.name());
@@ -105,4 +152,5 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
 }

@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.dto;
+package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
 import java.time.LocalDate;
 import java.util.List;

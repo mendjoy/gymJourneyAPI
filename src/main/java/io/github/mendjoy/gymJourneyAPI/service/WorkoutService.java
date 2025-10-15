@@ -2,8 +2,8 @@ package io.github.mendjoy.gymJourneyAPI.service;
 
 import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.domain.Workout;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDetailsDto;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDetailsDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutRepository;

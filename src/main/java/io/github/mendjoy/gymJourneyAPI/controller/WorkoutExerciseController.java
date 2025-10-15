@@ -1,8 +1,8 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
-import io.github.mendjoy.gymJourneyAPI.dto.ApiResponseDto;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDetailsDto;
-import io.github.mendjoy.gymJourneyAPI.dto.WorkoutExerciseDto;
+import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
+import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
 import io.github.mendjoy.gymJourneyAPI.service.WorkoutExerciseService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

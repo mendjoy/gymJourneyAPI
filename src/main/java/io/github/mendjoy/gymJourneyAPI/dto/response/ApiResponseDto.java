@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.dto;
+package io.github.mendjoy.gymJourneyAPI.dto.response;
 
 public class ApiResponseDto {
 

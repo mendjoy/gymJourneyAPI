@@ -1,6 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.exception;
 
-import io.github.mendjoy.gymJourneyAPI.dto.ApiResponseDto;
+import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponseDto> handleGenericException(Exception ex) {
         ApiResponseDto response = new ApiResponseDto(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Erro inesperado. Tente novamente mais tarde.");
+                "Erro inesperado. Tente novamente mais tarde." + ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
