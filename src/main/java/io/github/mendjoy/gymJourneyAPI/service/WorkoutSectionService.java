@@ -47,7 +47,7 @@ public class WorkoutSectionService {
                 .toList();
     }
 
-    public Page<WorkoutSectionDetailsDto> getSectionsByWorkoutId(Integer workoutId, int page, int size){
+    public Page<WorkoutSectionDetailsDto> getSectionsByWorkoutId(Long workoutId, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<WorkoutSection> workoutSections = workoutSectionRepository.findAllByWorkoutId(workoutId, pageable);
 
@@ -61,7 +61,7 @@ public class WorkoutSectionService {
         });
     }
 
-    public void deleteWorkoutSection(Integer id) {
+    public void deleteWorkoutSection(Long id) {
         WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound(
                 "Seção de treino " +
                 "não encontrada!"));
@@ -76,7 +76,7 @@ public class WorkoutSectionService {
         return modelMapper.map(updatedSection, WorkoutSectionDto.class);
     }
 
-    public WorkoutSectionDetailsDto getWorkoutSectionById(Integer id) {
+    public WorkoutSectionDetailsDto getWorkoutSectionById(Long id) {
         WorkoutSection section = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Seção " +
                 "de treino não " +
                 "encontrada!"));

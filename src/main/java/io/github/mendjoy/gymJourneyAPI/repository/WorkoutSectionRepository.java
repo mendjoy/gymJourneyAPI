@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkoutSectionRepository extends JpaRepository<WorkoutSection, Integer> {
+public interface WorkoutSectionRepository extends JpaRepository<WorkoutSection, Long> {
 
-    Page<WorkoutSection> findAllByWorkoutId(Integer workoutId, Pageable pageable);
+    Page<WorkoutSection> findAllByWorkoutId(Long workoutId, Pageable pageable);
 }

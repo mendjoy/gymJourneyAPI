@@ -30,7 +30,7 @@ public class ExerciseService {
         return modelMapper.map(newExercise, ExerciseDto.class);
     }
 
-    public ExerciseDto getExerciseById(Integer id) {
+    public ExerciseDto getExerciseById(Long id) {
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
         return modelMapper.map(exercise, ExerciseDto.class);
     }

@@ -7,10 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class WorkoutDto {
-    private Integer id;
+    private Long id;
 
-    @NotNull(message = "O id do usuário deve ser informado!")
-    private Integer userId;
+    @NotNull(message = "O id do do usuário deve ser informado!")
+    private Long userId;
 
     @NotBlank(message = "O nome do treino deve ser informado!")
     private String name;
@@ -26,19 +26,19 @@ public class WorkoutDto {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

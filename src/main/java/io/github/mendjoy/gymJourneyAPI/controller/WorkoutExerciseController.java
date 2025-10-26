@@ -28,7 +28,7 @@ public class WorkoutExerciseController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<WorkoutExerciseDetailsDto>> getExercisesBySectionId(@RequestParam Integer sectionId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<Page<WorkoutExerciseDetailsDto>> getExercisesBySectionId(@RequestParam Long sectionId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         Page<WorkoutExerciseDetailsDto> exercises = workoutExerciseService.getExercisesBySectionId(sectionId, page, size);
         return ResponseEntity.ok(exercises);
     }
@@ -40,7 +40,7 @@ public class WorkoutExerciseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> deleteWorkoutExercise (@PathVariable Integer id){
+    public ResponseEntity<ApiResponseDto> deleteWorkoutExercise (@PathVariable Long id){
         workoutExerciseService.deleteWorkoutExercise(id);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Exercicio removido do treino com sucesso!"));
     }

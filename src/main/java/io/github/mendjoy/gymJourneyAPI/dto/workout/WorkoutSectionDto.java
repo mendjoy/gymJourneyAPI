@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 
 public class WorkoutSectionDto {
 
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "O id do treino deve ser informado!")
-    private Integer workoutId;
+    private Long workoutId;
 
     @NotBlank(message = "O nome da seção deve ser informado!")
     private String name;
@@ -16,19 +16,19 @@ public class WorkoutSectionDto {
     @NotBlank(message = "A descrição deve ser informada!")
     private String description;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getWorkoutId() {
+    public Long getWorkoutId() {
         return workoutId;
     }
 
-    public void setWorkoutId(Integer workoutId) {
+    public void setWorkoutId(Long workoutId) {
         this.workoutId = workoutId;
     }
 

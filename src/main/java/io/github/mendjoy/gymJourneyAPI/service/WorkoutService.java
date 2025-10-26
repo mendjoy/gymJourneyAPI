@@ -35,19 +35,19 @@ public class WorkoutService {
         return modelMapper.map(newWorkout, WorkoutDto.class);
     }
 
-    public WorkoutDetailsDto getWorkoutById(Integer id){
+    public WorkoutDetailsDto getWorkoutById(Long id){
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
         return modelMapper.map(workout, WorkoutDetailsDto.class);
     }
 
-    public Page<WorkoutDetailsDto> getWorkoutsByUser(Integer id, int page, int size) {
+    public Page<WorkoutDetailsDto> getWorkoutsByUser(Long id, int page, int size) {
         User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
         Pageable pageable = PageRequest.of(page, size);
         Page<Workout> workouts = workoutRepository.findAllByUser(user, pageable);
         return workouts.map(workout -> modelMapper.map(workout, WorkoutDetailsDto.class));
     }
 
-    public void deleteWorkout(Integer id) {
+    public void deleteWorkout(Long id) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
         workoutRepository.delete(workout);
     }

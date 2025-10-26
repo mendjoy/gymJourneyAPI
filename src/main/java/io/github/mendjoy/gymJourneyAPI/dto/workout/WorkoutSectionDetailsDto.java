@@ -3,25 +3,25 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout;
 import java.util.List;
 
 public class WorkoutSectionDetailsDto {
-    private Integer id;
-    private Integer workoutId;
+    private Long id;
+    private Long workoutId;
     private String name;
     private String description;
     private List<WorkoutExerciseDetailsDto> workoutExercises;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getWorkoutId() {
+    public Long getWorkoutId() {
         return workoutId;
     }
 
-    public void setWorkoutId(Integer workoutId) {
+    public void setWorkoutId(Long workoutId) {
         this.workoutId = workoutId;
     }
 

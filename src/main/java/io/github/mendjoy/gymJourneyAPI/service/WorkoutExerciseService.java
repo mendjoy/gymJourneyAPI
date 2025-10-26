@@ -44,7 +44,7 @@ public class WorkoutExerciseService {
                 .toList();
     }
 
-    public Page<WorkoutExerciseDetailsDto> getExercisesBySectionId(Integer workoutSectionId, int page, int size){
+    public Page<WorkoutExerciseDetailsDto> getExercisesBySectionId(Long workoutSectionId, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<WorkoutExercise> workoutExercises = workoutExerciseRepository.findAllByWorkoutSectionId(workoutSectionId, pageable);
 
@@ -53,7 +53,7 @@ public class WorkoutExerciseService {
         });
     }
 
-    public void deleteWorkoutExercise(Integer id) {
+    public void deleteWorkoutExercise(Long id) {
         WorkoutExercise workoutExercise =
                 workoutExerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio " +
                 "relacionado a treino não encontrado!"));

@@ -27,13 +27,13 @@ public class WorkoutController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WorkoutDetailsDto> getWorkoutById(@PathVariable Integer id) {
+    public ResponseEntity<WorkoutDetailsDto> getWorkoutById(@PathVariable Long id) {
         WorkoutDetailsDto workoutDetailsDto = workoutService.getWorkoutById(id);
         return ResponseEntity.ok(workoutDetailsDto);
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<Page<WorkoutDetailsDto>> getWorkoutsByUser(@PathVariable Integer id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<Page<WorkoutDetailsDto>> getWorkoutsByUser(@PathVariable Long id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         Page<WorkoutDetailsDto> workoutDtos = workoutService.getWorkoutsByUser(id, page, size);
         return ResponseEntity.ok(workoutDtos);
     }
@@ -45,7 +45,7 @@ public class WorkoutController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> deleteWorkout(@PathVariable Integer id){
+    public ResponseEntity<ApiResponseDto> deleteWorkout(@PathVariable Long id){
         workoutService.deleteWorkout(id);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Treino excluido com sucesso!"));
     }

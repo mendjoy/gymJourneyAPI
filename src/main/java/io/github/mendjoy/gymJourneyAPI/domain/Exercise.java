@@ -8,7 +8,7 @@ public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     @Column(name = "muscle_group")
@@ -23,7 +23,7 @@ public class Exercise {
         this.muscleGroup = muscle_group;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

@@ -3,18 +3,18 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 
 public class WorkoutExerciseDetailsDto {
-    private Integer id;
+    private Long id;
     private Integer sets;
     private Integer repetitions;
     private Double weight;
     private Integer restTime;
     private ExerciseDto exercise;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

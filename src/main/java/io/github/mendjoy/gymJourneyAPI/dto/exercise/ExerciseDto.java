@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ExerciseDto{
 
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "O nome do exercicio deve ser informado!")
     private String name;
@@ -15,11 +15,11 @@ public class ExerciseDto{
     @NotBlank(message = "O grupo muscular deve ser informado!")
     private String muscleGroup;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -24,7 +24,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExerciseDto> getExerciseById(@RequestParam Integer id){
+    public ResponseEntity<ExerciseDto> getExerciseById(@RequestParam Long id){
         ExerciseDto exercise = exerciseService.getExerciseById(id);
         return ResponseEntity.ok(exercise);
     }

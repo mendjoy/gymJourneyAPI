@@ -12,7 +12,7 @@ import java.util.List;
 public class WorkoutSection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "workout_id")
@@ -35,11 +35,11 @@ public class WorkoutSection {
         this.workoutExercises = workoutExercises;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

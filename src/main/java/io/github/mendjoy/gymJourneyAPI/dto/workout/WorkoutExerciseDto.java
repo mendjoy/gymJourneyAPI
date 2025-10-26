@@ -3,13 +3,13 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout;
 import jakarta.validation.constraints.NotNull;
 
 public class WorkoutExerciseDto {
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "O id da secao deve ser informado!")
-    private Integer workoutSectionId;
+    private Long workoutSectionId;
 
     @NotNull(message = "O id do exercicio deve ser informado!")
-    private Integer exerciseId;
+    private Long exerciseId;
 
     @NotNull(message = "O numero de series deve ser informado!")
     private Integer sets;
@@ -25,27 +25,27 @@ public class WorkoutExerciseDto {
     public WorkoutExerciseDto() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getWorkoutSectionId() {
+    public Long getWorkoutSectionId() {
         return workoutSectionId;
     }
 
-    public void setWorkoutSectionId(Integer workoutSectionId) {
+    public void setWorkoutSectionId(Long workoutSectionId) {
         this.workoutSectionId = workoutSectionId;
     }
 
-    public Integer getExerciseId() {
+    public Long getExerciseId() {
         return exerciseId;
     }
 
-    public void setExerciseId(Integer exerciseId) {
+    public void setExerciseId(Long exerciseId) {
         this.exerciseId = exerciseId;
     }
 
