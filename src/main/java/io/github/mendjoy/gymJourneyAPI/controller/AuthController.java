@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
-import io.github.mendjoy.gymJourneyAPI.dto.user.UserLoginDto;
 import io.github.mendjoy.gymJourneyAPI.dto.TokenDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserLoginDto;
 import io.github.mendjoy.gymJourneyAPI.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
