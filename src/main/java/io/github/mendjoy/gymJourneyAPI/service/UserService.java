@@ -76,7 +76,7 @@ public class UserService implements UserDetailsService {
         return UUID.randomUUID().toString();
     }
 
-    public void disableUser(Integer userId, User authenticatedUser) {
+    public void disableUser(Long userId, User authenticatedUser) {
         User user = userRepository.findById(userId).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
        // boolean isAdmin = authenticatedUser.getUserRole() == RoleName.ADMIN;

@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<String> disableUser(@PathVariable Integer id, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<String> disableUser(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
         userService.disableUser(id, authenticatedUser);
         return ResponseEntity.ok("Usuário inativado com sucesso.");
     }
