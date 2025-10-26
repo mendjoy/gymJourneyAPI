@@ -1,6 +1,5 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
-import io.github.mendjoy.gymJourneyAPI.domain.enums.UserRole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -31,8 +30,11 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole = UserRole.USER;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+               joinColumns = @JoinColumn(name = "user_id"),
+               inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> role;
 
     private Boolean verified = false;
 
@@ -41,24 +43,26 @@ public class User implements UserDetails {
     @Column(name = "expiration_token")
     private LocalDateTime expirationToken;
 
-    private Boolean ativo;
+    @Column(nullable = false)
+    private Boolean active;
 
     public User() {
     }
 
-    public User(String email, String name, String phone, LocalDate birthDate, String password, UserRole userRole, Boolean verified, String token, LocalDateTime expirationToken) {
+    public User(String email, String name, String phone, LocalDate birthDate, String password, List<Role> role, Boolean verified, String token, LocalDateTime expirationToken, Boolean active) {
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.birthDate = birthDate;
         this.password = password;
-        this.userRole = userRole;
+        this.role = role;
         this.verified = verified;
         this.token = token;
         this.expirationToken = expirationToken;
+        this.active = active;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -90,16 +94,12 @@ public class User implements UserDetails {
         return birthDate;
     }
 
+    public void setRole(List<Role> role) {
+        this.role = role;
+    }
+
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
     }
 
     public Boolean getVerified() {
@@ -126,17 +126,17 @@ public class User implements UserDetails {
         this.expirationToken = expirationToken;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "ROLE_" + this.userRole.name());
+        return this.role;
     }
 
     @Override

@@ -1,9 +1,12 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
+import io.github.mendjoy.gymJourneyAPI.domain.Role;
 import io.github.mendjoy.gymJourneyAPI.domain.User;
-import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterRequestDto;
+import io.github.mendjoy.gymJourneyAPI.domain.enums.RoleName;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterRequestDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.repository.RoleRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,11 +25,15 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
    public UserDto registerUser(UserRegisterRequestDto userRegisterRequestDto) {
@@ -33,14 +41,18 @@ public class UserService implements UserDetailsService {
             throw GymJourneyException.alreadyExists("E-mail já cadastrado!");
         }
 
+        Role role = roleRepository.findByName(RoleName.USER).orElseThrow(() -> GymJourneyException.notFound("Papel do usuário nao encontrado!"));
         String encodedPassword = passwordEncoder.encode(userRegisterRequestDto.getPassword());
-        userRegisterRequestDto.setPassword(encodedPassword);
         User user =  modelMapper.map(userRegisterRequestDto, User.class);
+        user.setPassword(encodedPassword);
         user.setVerified(false);
         user.setToken(generateVerificationToken());
         user.setExpirationToken(LocalDateTime.now().plusMinutes(30));
+        user.setActive(true);
+        user.setRole(List.of(role));
 
         User newUser = userRepository.save(user);
+       // emailService.sendVerificationEmail(user);
         return modelMapper.map(newUser, UserDto.class);
     }
 
@@ -57,11 +69,24 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username)  {
-        return userRepository.findByEmailIgnoreCaseAndVerifiedTrue(username).orElseThrow( () -> new UsernameNotFoundException("Usuário nao foi encontrado"));
+        return userRepository.findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(username).orElseThrow( () -> new UsernameNotFoundException("Usuário nao foi encontrado"));
     }
 
     private String generateVerificationToken(){
         return UUID.randomUUID().toString();
     }
 
+    public void disableUser(Integer userId, User authenticatedUser) {
+        User user = userRepository.findById(userId).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
+
+       // boolean isAdmin = authenticatedUser.getUserRole() == RoleName.ADMIN;
+        //boolean isSameUser = user.getId().equals(authenticatedUser.getId());
+
+        //if (!isAdmin && !isSameUser) {
+         //   throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
+        //}
+
+        //user.setActive(false);
+       // userRepository.save(user);
+    }
 }

@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    Optional<User> findByEmailIgnoreCaseAndVerifiedTrue(String email);
+    Optional<User> findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(String email);
 
     Optional<User> findByToken(String token);
 }
