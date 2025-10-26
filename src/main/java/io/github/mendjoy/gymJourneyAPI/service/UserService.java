@@ -37,6 +37,12 @@ public class UserService implements UserDetailsService {
     }
 
    public UserDto registerUser(UserRegisterRequestDto userRegisterRequestDto) {
+
+        try {
+
+        }catch (GymJourneyException e){
+
+        }
         if(userRepository.existsByEmail(userRegisterRequestDto.getEmail())){
             throw GymJourneyException.alreadyExists("E-mail já cadastrado!");
         }
@@ -52,7 +58,7 @@ public class UserService implements UserDetailsService {
         user.setRole(List.of(role));
 
         User newUser = userRepository.save(user);
-       // emailService.sendVerificationEmail(user);
+        emailService.sendVerificationEmail(user);
         return modelMapper.map(newUser, UserDto.class);
     }
 
