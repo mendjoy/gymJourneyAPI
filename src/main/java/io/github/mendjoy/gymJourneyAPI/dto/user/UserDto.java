@@ -1,14 +1,19 @@
 package io.github.mendjoy.gymJourneyAPI.dto.user;
 
 
+import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public class UserDto {
+
     private Long id;
     private String email;
     private String name;
     private String phone;
     private LocalDate birthDate;
+    private List<RoleDto> roles;
 
     public Long getId() {
         return id;
@@ -48,5 +53,13 @@ public class UserDto {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public List<RoleDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleDto> roles) {
+        this.roles = roles;
     }
 }

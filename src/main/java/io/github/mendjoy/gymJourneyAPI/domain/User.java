@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role",
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> role;
+    private List<Role> roles;
 
     private Boolean verified = false;
 
@@ -55,7 +55,7 @@ public class User implements UserDetails {
         this.phone = phone;
         this.birthDate = birthDate;
         this.password = password;
-        this.role = role;
+        this.roles = role;
         this.verified = verified;
         this.token = token;
         this.expirationToken = expirationToken;
@@ -94,8 +94,12 @@ public class User implements UserDetails {
         return birthDate;
     }
 
-    public void setRole(List<Role> role) {
-        this.role = role;
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public void setBirthDate(LocalDate birthDate) {
@@ -136,7 +140,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.role;
+        return this.roles;
     }
 
     @Override
