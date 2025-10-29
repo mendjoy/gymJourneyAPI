@@ -3,6 +3,8 @@ package io.github.mendjoy.gymJourneyAPI.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,6 +33,8 @@ public class SecurityConfig {
                    .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(req -> {
                              req.requestMatchers("/users/register", "/users/verify-account", "/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.PATCH, "/users/add-role/{id}", "users/remove-role/{id}").hasRole("ADMIN")
                                 .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.POST, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.PUT, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
@@ -50,5 +54,13 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        return RoleHierarchyImpl.withDefaultRolePrefix()
+                .role("ADMIN").implies("TRAINER")
+                .role("TRAINER").implies("USER")
+                .build();
     }
 }

@@ -34,7 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if(token != null){
             String email = tokenService.verifyToken(token);
-            User user = userRepository.findByEmailIgnoreCaseAndVerifiedTrue(email).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
+            User user = userRepository.findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(email).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
