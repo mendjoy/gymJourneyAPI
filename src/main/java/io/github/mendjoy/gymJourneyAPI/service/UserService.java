@@ -5,6 +5,7 @@ import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.domain.enums.RoleName;
 import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterRequestDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.repository.RoleRepository;
@@ -35,6 +36,11 @@ public class UserService implements UserDetailsService {
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username)  {
+        return userRepository.findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(username).orElseThrow( () -> new UsernameNotFoundException("Usuário nao foi encontrado"));
     }
 
    public UserDto registerUser(UserRegisterRequestDto userRegisterRequestDto) {
@@ -121,10 +127,23 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username)  {
-        return userRepository.findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(username).orElseThrow( () -> new UsernameNotFoundException("Usuário nao foi encontrado"));
-    }
+    public void changePassword(UserPasswordDto userPasswordDto, User authenticatedUser) {
+        User user = userRepository.findById(authenticatedUser.getId()).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
+        if(!passwordEncoder.matches(userPasswordDto.getCurrentPassword(), user.getPassword())){
+            throw GymJourneyException.badRequest("Senha atual incorreta");
+        }
+
+        if(!userPasswordDto.getNewPassword().equals(userPasswordDto.getConfirmPassword())){
+            throw GymJourneyException.badRequest("A nova senha e a confirmação não coincidem");
+        }
+
+        if (passwordEncoder.matches(userPasswordDto.getNewPassword(), user.getPassword())) {
+            throw GymJourneyException.badRequest("A nova senha não pode ser igual à senha atual");
+        }
+
+        String encodedPassword = passwordEncoder.encode(userPasswordDto.getNewPassword());
+        userRepository.save(user);
+    }
 
 }

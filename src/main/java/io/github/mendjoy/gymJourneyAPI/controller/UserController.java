@@ -4,6 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterRequestDto;
 import io.github.mendjoy.gymJourneyAPI.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -64,9 +65,15 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<String> disableUser(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<ApiResponseDto> disableUser(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
         userService.disableUser(id, authenticatedUser);
-        return ResponseEntity.ok("Usuário inativado com sucesso.");
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Usuário inativado com sucesso"));
+    }
+
+    @PatchMapping("/change-password")
+    public ResponseEntity<ApiResponseDto> changePassword(@RequestBody UserPasswordDto userPasswordDto, @AuthenticationPrincipal User authenticatedUser){
+        userService.changePassword(userPasswordDto, authenticatedUser);
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Senha alterada com sucesso"));
     }
 
 }
