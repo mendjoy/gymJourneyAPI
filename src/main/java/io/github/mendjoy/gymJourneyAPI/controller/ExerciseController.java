@@ -2,6 +2,7 @@ package io.github.mendjoy.gymJourneyAPI.controller;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 import io.github.mendjoy.gymJourneyAPI.service.ExerciseService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ExerciseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ExerciseDto> registerWorkout(@RequestBody ExerciseDto exerciseDto){
+    public ResponseEntity<ExerciseDto> registerWorkout(@Valid @RequestBody ExerciseDto exerciseDto){
         ExerciseDto newExercise = exerciseService.registerExercise(exerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
     }

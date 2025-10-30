@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
+import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
@@ -7,6 +8,7 @@ import io.github.mendjoy.gymJourneyAPI.service.WorkoutExerciseService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +40,11 @@ public class WorkoutExerciseController {
         WorkoutExerciseDto workoutExercise = workoutExerciseService.updateWorkoutExercise(workoutExerciseDto);
         return ResponseEntity.ok(workoutExercise);
     }
+
+    //@PutMapping
+   // public ResponseEntity<ApiResponseDto> updateWeight(@RequestParam Double Weight, @AuthenticationPrincipal User authenticatedUser){
+
+   // }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDto> deleteWorkoutExercise (@PathVariable Long id){

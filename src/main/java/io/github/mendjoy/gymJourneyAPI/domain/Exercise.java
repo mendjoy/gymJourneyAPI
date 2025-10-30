@@ -9,8 +9,11 @@ public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String description;
+
     @Column(name = "muscle_group")
     private String muscleGroup;
 
@@ -53,13 +56,13 @@ public class Exercise {
 
     public void updateExercise(ExerciseDto exerciseDto) {
         if(exerciseDto.getName() != null && !exerciseDto.getName().isBlank()){
-            this.name = exerciseDto.getName();
+            this.setName(exerciseDto.getName());
         }
         if(exerciseDto.getDescription() != null && !exerciseDto.getDescription().isBlank()){
-            this.description = exerciseDto.getDescription();
+            this.setDescription(exerciseDto.getDescription());
         }
         if(exerciseDto.getMuscleGroup() != null && !exerciseDto.getMuscleGroup().isBlank()){
-            this.muscleGroup = exerciseDto.getMuscleGroup();
+            this.setMuscleGroup(exerciseDto.getMuscleGroup());
         }
     }
 }
