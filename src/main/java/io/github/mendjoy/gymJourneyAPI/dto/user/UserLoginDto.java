@@ -1,15 +1,15 @@
 package io.github.mendjoy.gymJourneyAPI.dto.user;
 
-public class UserLoginDto{
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-    private String email;
-    private String password;
+public record UserLoginDto(
 
-    public String getEmail() {
-        return email;
-    }
+        @NotBlank(message = "O e-mail é obrigatório.")
+        @Email(message = "E-mail inválido.")
+        String email,
 
-    public String getPassword() {
-        return password;
-    }
-}
+        @NotBlank(message = "A senha é obrigatória.")
+        String password
+
+) {}

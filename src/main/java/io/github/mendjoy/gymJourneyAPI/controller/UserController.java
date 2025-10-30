@@ -5,8 +5,9 @@ import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
-import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterRequestDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDto;
 import io.github.mendjoy.gymJourneyAPI.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody UserRegisterRequestDto userRegisterRequestDto){
-        UserDto userDto = userService.registerUser(userRegisterRequestDto);
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegisterDto userRegisterDto){
+        UserDto userDto = userService.registerUser(userRegisterDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
@@ -46,11 +47,11 @@ public class UserController {
         return ResponseEntity.ok("Conta verificada com sucesso!");
     }
 
-    @PutMapping
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserRegisterRequestDto userRegisterRequestDto){
-        UserDto userDto = userService.registerUser(userRegisterRequestDto);
-        return ResponseEntity.ok(userDto);
-    }
+    //@PutMapping
+   // public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @AuthenticationPrincipal User authenticatedUser){
+       // UserDto userUpdated = userService.updateUser(userDto, authenticatedUser);
+       // return ResponseEntity.ok(userDto);
+    //}
 
     @PatchMapping("add-role/{id}")
     public ResponseEntity<ApiResponseDto> addRole(@PathVariable Long id, @RequestBody RoleDto roleDto){
@@ -71,7 +72,7 @@ public class UserController {
     }
 
     @PatchMapping("/change-password")
-    public ResponseEntity<ApiResponseDto> changePassword(@RequestBody UserPasswordDto userPasswordDto, @AuthenticationPrincipal User authenticatedUser){
+    public ResponseEntity<ApiResponseDto> changePassword(@Valid @RequestBody UserPasswordDto userPasswordDto, @AuthenticationPrincipal User authenticatedUser){
         userService.changePassword(userPasswordDto, authenticatedUser);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Senha alterada com sucesso"));
     }

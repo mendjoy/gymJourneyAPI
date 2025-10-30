@@ -15,6 +15,18 @@ public class UserDto {
     private LocalDate birthDate;
     private List<RoleDto> roles;
 
+    public UserDto() {
+    }
+
+    public UserDto(Long id, String email, String name, String phone, LocalDate birthDate, List<RoleDto> roles) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.roles = roles;
+    }
+
     public Long getId() {
         return id;
     }

@@ -25,7 +25,7 @@ public class AuthService {
 
         try {
 
-            UsernamePasswordAuthenticationToken tokenAuth = new UsernamePasswordAuthenticationToken(userLoginDto.getEmail(), userLoginDto.getPassword());
+            UsernamePasswordAuthenticationToken tokenAuth = new UsernamePasswordAuthenticationToken(userLoginDto.email(), userLoginDto.password());
             Authentication auth = authenticationManager.authenticate(tokenAuth);
             String newToken = tokenService.generateToken((User) auth.getPrincipal());
             return new TokenDto(newToken);
