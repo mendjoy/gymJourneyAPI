@@ -36,12 +36,14 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.PATCH, "/users/add-role/{id}", "users/remove-role/{id}").hasRole("ADMIN")
                                 .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
+                                .requestMatchers(HttpMethod.POST, "/muscle-group/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/muscle-group/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.POST, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.PUT, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.DELETE, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.PUT, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
                                 .requestMatchers(HttpMethod.DELETE, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
-                                     .anyRequest().authenticated();
+                                .anyRequest().authenticated();
                    })
                    .build();
     }
