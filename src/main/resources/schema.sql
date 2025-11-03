@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS user_role (
 
 CREATE TABLE IF NOT EXISTS exercise (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    description VARCHAR(255),
-    muscle_group VARCHAR(255)
+    name VARCHAR(255) UNIQUE NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    muscle_group VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS workout (
