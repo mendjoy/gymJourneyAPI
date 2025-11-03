@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.exception;
+package io.github.mendjoy.gymJourneyAPI.config.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -34,5 +34,10 @@ public class GymJourneyException extends RuntimeException{
     public static GymJourneyException forbidden(String message) {
         return new GymJourneyException(message, HttpStatus.FORBIDDEN);
     }
+
+    public static GymJourneyException conflict(String message) {
+        return new GymJourneyException(message, HttpStatus.CONFLICT);
+    }
+
 }
 

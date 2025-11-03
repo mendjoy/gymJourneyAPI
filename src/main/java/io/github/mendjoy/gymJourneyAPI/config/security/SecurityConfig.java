@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.security;
+package io.github.mendjoy.gymJourneyAPI.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

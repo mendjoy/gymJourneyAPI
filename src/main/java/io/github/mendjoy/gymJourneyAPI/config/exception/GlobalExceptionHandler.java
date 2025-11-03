@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.exception;
+package io.github.mendjoy.gymJourneyAPI.config.exception;
 
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import org.springframework.http.HttpStatus;

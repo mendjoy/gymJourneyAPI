@@ -1,6 +1,6 @@
-package io.github.mendjoy.gymJourneyAPI.utils;
+package io.github.mendjoy.gymJourneyAPI.config.utils;
 
-import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
 
 public class ValidationUtils {
 

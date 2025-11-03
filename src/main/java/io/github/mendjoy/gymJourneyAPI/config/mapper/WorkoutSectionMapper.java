@@ -1,4 +1,4 @@
-package io.github.mendjoy.gymJourneyAPI.mapper;
+package io.github.mendjoy.gymJourneyAPI.config.mapper;
 
 import io.github.mendjoy.gymJourneyAPI.domain.WorkoutSection;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutSectionDetailsDto;
