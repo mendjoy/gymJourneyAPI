@@ -3,49 +3,17 @@ package io.github.mendjoy.gymJourneyAPI.dto.workout;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class WorkoutSectionDto {
+public record WorkoutSectionDto(
 
-    private Long id;
+        Long id,
 
-    @NotNull(message = "O id do treino deve ser informado!")
-    private Long workoutId;
+        @NotNull(message = "O id do treino deve ser informado!")
+        Long workoutId,
 
-    @NotBlank(message = "O nome da seção deve ser informado!")
-    private String name;
+        @NotBlank(message = "O nome da seção deve ser informado!")
+        String name,
 
-    @NotBlank(message = "A descrição deve ser informada!")
-    private String description;
+        @NotBlank(message = "A descrição deve ser informada!")
+        String description
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getWorkoutId() {
-        return workoutId;
-    }
-
-    public void setWorkoutId(Long workoutId) {
-        this.workoutId = workoutId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-}
+) {}

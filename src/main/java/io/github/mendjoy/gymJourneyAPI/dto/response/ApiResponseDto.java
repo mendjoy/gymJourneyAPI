@@ -1,28 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.dto.response;
 
-public class ApiResponseDto {
-
-    private int status;
-    private String message;
-
-    public ApiResponseDto(int status, String message) {
-        this.status = status;
-        this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-}
+public record ApiResponseDto(
+        int status,
+        String message
+) {}

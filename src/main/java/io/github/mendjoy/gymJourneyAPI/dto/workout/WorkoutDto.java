@@ -6,79 +6,25 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public class WorkoutDto {
-    private Long id;
+public record WorkoutDto(
 
-    @NotNull(message = "O id do do usuário deve ser informado!")
-    private Long userId;
+        Long id,
 
-    @NotBlank(message = "O nome do treino deve ser informado!")
-    private String name;
+        @NotNull(message = "O id do usuário deve ser informado!")
+        Long userId,
 
-    @NotBlank(message = "A descrição do treino deve ser informada!")
-    private String description;
+        @NotBlank(message = "O nome do treino deve ser informado!")
+        String name,
 
-    @NotNull(message = "O número de sessões do treino deve ser informado!")
-    @Min(value = 1, message = "O número de sessões do treino deve ser maior que zero!")
-    private Integer maxSessions;
+        @NotBlank(message = "A descrição do treino deve ser informada!")
+        String description,
 
-    @NotNull(message = "A data de início do treino deve ser informada!")
-    private LocalDate startDate;
-    private LocalDate endDate;
+        @NotNull(message = "O número de sessões do treino deve ser informado!")
+        @Min(value = 1, message = "O número de sessões do treino deve ser maior que zero!")
+        Integer maxSessions,
 
-    public Long getId() {
-        return id;
-    }
+        @NotNull(message = "A data de início do treino deve ser informada!")
+        LocalDate startDate,
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getMaxSessions() {
-        return maxSessions;
-    }
-
-    public void setMaxSessions(Integer maxSessions) {
-        this.maxSessions = maxSessions;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-}
+        LocalDate endDate
+) {}
