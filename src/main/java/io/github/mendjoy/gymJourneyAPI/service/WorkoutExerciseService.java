@@ -1,14 +1,14 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
+import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.config.mapper.WorkoutExerciseMapper;
+import io.github.mendjoy.gymJourneyAPI.config.utils.ValidationUtils;
 import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
 import io.github.mendjoy.gymJourneyAPI.domain.WorkoutExercise;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
-import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
-import io.github.mendjoy.gymJourneyAPI.config.mapper.WorkoutExerciseMapper;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutExerciseRepository;
-import io.github.mendjoy.gymJourneyAPI.config.utils.ValidationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

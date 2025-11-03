@@ -1,6 +1,10 @@
 package io.github.mendjoy.gymJourneyAPI.dto.exercise;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.Set;
 
 public record ExerciseDto(
 
@@ -12,6 +16,7 @@ public record ExerciseDto(
         @NotBlank(message = "A descricao do exercicio deve ser informada!")
         String description,
 
-        @NotBlank(message = "O grupo muscular deve ser informado!")
-        String muscleGroup
+        @NotNull(message = "Os grupos musculares devem ser informados!")
+        @NotEmpty(message = "O exercício deve ter pelo menos um grupo muscular!")
+        Set<Long> muscleGroupIds
 ) {}

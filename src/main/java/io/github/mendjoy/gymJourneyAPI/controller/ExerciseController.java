@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
+import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 import io.github.mendjoy.gymJourneyAPI.service.ExerciseService;
 import jakarta.validation.Valid;
@@ -19,20 +20,20 @@ public class ExerciseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ExerciseDto> registerWorkout(@Valid @RequestBody ExerciseDto exerciseDto){
-        ExerciseDto newExercise = exerciseService.registerExercise(exerciseDto);
+    public ResponseEntity<ExerciseDetailsDto> registerWorkout(@Valid @RequestBody ExerciseDto exerciseDto){
+        ExerciseDetailsDto newExercise = exerciseService.registerExercise(exerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExerciseDto> getExerciseById(@RequestParam Long id){
-        ExerciseDto exercise = exerciseService.getExerciseById(id);
+    public ResponseEntity<ExerciseDetailsDto> getExerciseById(@RequestParam Long id){
+        ExerciseDetailsDto exercise = exerciseService.getExerciseById(id);
         return ResponseEntity.ok(exercise);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ExerciseDto>> getAllExercises(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        Page<ExerciseDto> exercises = exerciseService.getAllExercises(page, size);
+    public ResponseEntity<Page<ExerciseDetailsDto>> getAllExercises(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        Page<ExerciseDetailsDto> exercises = exerciseService.getAllExercises(page, size);
         return ResponseEntity.ok(exercises);
     }
 
@@ -43,8 +44,8 @@ public class ExerciseController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<ExerciseDto>> searchExercisesByName(@RequestParam String name,@RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size ){
-        Page<ExerciseDto> exercises = exerciseService.searchExercisesByName(name, page, size);
+    public ResponseEntity<Page<ExerciseDetailsDto>> searchExercisesByName(@RequestParam String name,@RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size ){
+        Page<ExerciseDetailsDto> exercises = exerciseService.searchExercisesByName(name, page, size);
         return ResponseEntity.ok(exercises);
     }
 }

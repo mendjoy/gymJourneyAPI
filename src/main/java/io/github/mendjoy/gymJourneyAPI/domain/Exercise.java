@@ -3,6 +3,9 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Exercise {
 
@@ -14,16 +17,21 @@ public class Exercise {
 
     private String description;
 
-    @Column(name = "muscle_group")
-    private String muscleGroup;
+    @ManyToMany
+    @JoinTable(
+            name = "exercise_muscle_group",
+            joinColumns = @JoinColumn(name = "exercise_id"),
+            inverseJoinColumns = @JoinColumn(name = "muscle_group_id")
+    )
+    private Set<MuscleGroup> muscleGroups = new HashSet<>();
 
     public Exercise() {
     }
 
-    public Exercise(String name, String description, String muscle_group) {
+    public Exercise(String name, String description, Set<MuscleGroup> muscleGroups) {
         this.name = name;
         this.description = description;
-        this.muscleGroup = muscle_group;
+        this.muscleGroups = muscleGroups;
     }
 
     public Long getId() {
@@ -46,12 +54,12 @@ public class Exercise {
         this.description = description;
     }
 
-    public String getMuscleGroup() {
-        return muscleGroup;
+    public Set<MuscleGroup> getMuscleGroups() {
+        return muscleGroups;
     }
 
-    public void setMuscleGroup(String muscleGroup) {
-        this.muscleGroup = muscleGroup;
+    public void setMuscleGroups(Set<MuscleGroup> muscleGroups) {
+        this.muscleGroups = muscleGroups;
     }
 
     public void updateExercise(ExerciseDto exerciseDto) {
@@ -60,9 +68,6 @@ public class Exercise {
         }
         if(exerciseDto.description() != null && !exerciseDto.description().isBlank()){
             this.setDescription(exerciseDto.description());
-        }
-        if(exerciseDto.muscleGroup() != null && !exerciseDto.muscleGroup().isBlank()){
-            this.setMuscleGroup(exerciseDto.muscleGroup());
         }
     }
 }

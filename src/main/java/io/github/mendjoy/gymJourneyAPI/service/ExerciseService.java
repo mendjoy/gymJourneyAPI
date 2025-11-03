@@ -1,51 +1,66 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
-import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
-import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.config.mapper.ExerciseMapper;
-import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.config.utils.ValidationUtils;
+import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
+import io.github.mendjoy.gymJourneyAPI.domain.MuscleGroup;
+import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDetailsDto;
+import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
+import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
+import io.github.mendjoy.gymJourneyAPI.repository.MuscleGroupRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
-    private final ExerciseMapper mapper;
+    private final MuscleGroupRepository muscleGroupRepository;
+    private final ExerciseMapper exerciseMappermapper;
 
-    public ExerciseService(ExerciseRepository exerciseRepository, ExerciseMapper mapper) {
+    public ExerciseService(ExerciseRepository exerciseRepository, MuscleGroupRepository muscleGroupRepository, ExerciseMapper exerciseMappermapper) {
         this.exerciseRepository = exerciseRepository;
-        this.mapper = mapper;
+        this.muscleGroupRepository = muscleGroupRepository;
+        this.exerciseMappermapper = exerciseMappermapper;
     }
 
-    public ExerciseDto registerExercise(ExerciseDto exerciseDto){
+    public ExerciseDetailsDto registerExercise(ExerciseDto exerciseDto){
         if(exerciseRepository.existsByName(exerciseDto.name())){
             throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.name() + " já cadastrado!");
         }
-        Exercise exercise = mapper.toEntity(exerciseDto);
+
+        Set<MuscleGroup> groups = exerciseDto.muscleGroupIds().stream()
+                .map(id -> muscleGroupRepository.findById(id)
+                        .orElseThrow(() -> GymJourneyException.notFound("Grupo muscular não encontrado: " + id)))
+                .collect(Collectors.toSet());
+        Exercise exercise = exerciseMappermapper.toEntity(exerciseDto);
+        exercise.setMuscleGroups(groups);
+
         Exercise newExercise = exerciseRepository.save(exercise);
-        return mapper.toDto(newExercise);
+        return exerciseMappermapper.toDetailsDto(newExercise);
     }
 
-    public ExerciseDto getExerciseById(Long id) {
+    public ExerciseDetailsDto getExerciseById(Long id) {
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
-        return mapper.toDto(exercise);
+        return exerciseMappermapper.toDetailsDto(exercise);
     }
 
-    public Page<ExerciseDto> getAllExercises(int page, int size){
+    public Page<ExerciseDetailsDto> getAllExercises(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<Exercise> exercisePage = exerciseRepository.findAll(pageable);
-        return exercisePage.map(mapper::toDto);
+        return exercisePage.map(exerciseMappermapper::toDetailsDto);
     }
 
-    public Page<ExerciseDto> searchExercisesByName(String name, int page, int size){
+    public Page<ExerciseDetailsDto> searchExercisesByName(String name, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
-        return exercisePage.map(mapper::toDto);
+        return exercisePage.map(exerciseMappermapper::toDetailsDto);
     }
 
     public ExerciseDto updateExercise(ExerciseDto exerciseDto) {
@@ -55,7 +70,8 @@ public class ExerciseService {
             throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.name() + " já cadastrado!");
         }
         exercise.updateExercise(exerciseDto);
+
         Exercise newExercise = exerciseRepository.save(exercise);
-        return mapper.toDto(newExercise);
+        return exerciseMappermapper.toDto(newExercise);
     }
 }
