@@ -1,7 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.config.security;
 
-import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import io.github.mendjoy.gymJourneyAPI.service.TokenService;
 import jakarta.servlet.FilterChain;

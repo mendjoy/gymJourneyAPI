@@ -1,5 +1,7 @@
 package io.github.mendjoy.gymJourneyAPI.service;
 
+import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.config.mapper.UserMapper;
 import io.github.mendjoy.gymJourneyAPI.domain.Role;
 import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.domain.enums.RoleName;
@@ -7,8 +9,6 @@ import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDto;
-import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
-import io.github.mendjoy.gymJourneyAPI.config.mapper.UserMapper;
 import io.github.mendjoy.gymJourneyAPI.repository.RoleRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
