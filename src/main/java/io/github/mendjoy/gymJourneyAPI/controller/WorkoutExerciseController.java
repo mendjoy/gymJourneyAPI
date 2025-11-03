@@ -22,22 +22,24 @@ public class WorkoutExerciseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<List<WorkoutExerciseDto>> registerWorkoutExercise(@RequestBody List<WorkoutExerciseDto> workoutExerciseDto) {
-        List<WorkoutExerciseDto> newWorkoutSections = workoutExerciseService.registerWorkoutExercise(workoutExerciseDto);
+    public ResponseEntity<List<WorkoutExerciseDto>> register(@RequestBody List<WorkoutExerciseDto> workoutExerciseDto) {
+        List<WorkoutExerciseDto> newWorkoutSections = workoutExerciseService.register(workoutExerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newWorkoutSections);
     }
 
+    @PutMapping
+    public ResponseEntity<WorkoutExerciseDto> update(@RequestBody WorkoutExerciseDto workoutExerciseDto) {
+        WorkoutExerciseDto workoutExercise = workoutExerciseService.update(workoutExerciseDto);
+        return ResponseEntity.ok(workoutExercise);
+    }
+
     @GetMapping
-    public ResponseEntity<Page<WorkoutExerciseDetailsDto>> getExercisesBySectionId(@RequestParam Long sectionId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        Page<WorkoutExerciseDetailsDto> exercises = workoutExerciseService.getExercisesBySectionId(sectionId, page, size);
+    public ResponseEntity<Page<WorkoutExerciseDetailsDto>> getBySectionId(@RequestParam Long sectionId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        Page<WorkoutExerciseDetailsDto> exercises = workoutExerciseService.getBySectionId(sectionId, page, size);
         return ResponseEntity.ok(exercises);
     }
 
-    @PutMapping
-    public ResponseEntity<WorkoutExerciseDto> updateWorkoutExercise(@RequestBody WorkoutExerciseDto workoutExerciseDto) {
-        WorkoutExerciseDto workoutExercise = workoutExerciseService.updateWorkoutExercise(workoutExerciseDto);
-        return ResponseEntity.ok(workoutExercise);
-    }
+
 
     //@PutMapping
    // public ResponseEntity<ApiResponseDto> updateWeight(@RequestParam Double Weight, @AuthenticationPrincipal User authenticatedUser){
@@ -45,8 +47,8 @@ public class WorkoutExerciseController {
    // }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> deleteWorkoutExercise (@PathVariable Long id){
-        workoutExerciseService.deleteWorkoutExercise(id);
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id){
+        workoutExerciseService.delete(id);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Exercicio removido do treino com sucesso!"));
     }
 }

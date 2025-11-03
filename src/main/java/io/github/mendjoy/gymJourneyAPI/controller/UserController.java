@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegisterDto userRegisterDto){
-        UserDto userDto = userService.registerUser(userRegisterDto);
+        UserDto userDto = userService.register(userRegisterDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
@@ -37,7 +37,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
-        UserDto userDto = userService.getUserById(id);
+        UserDto userDto = userService.getById(id);
         return ResponseEntity.ok(userDto);
     }
 
@@ -47,19 +47,19 @@ public class UserController {
         return ResponseEntity.ok("Conta verificada com sucesso!");
     }
 
-    //@PutMapping
-   // public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @AuthenticationPrincipal User authenticatedUser){
-       // UserDto userUpdated = userService.updateUser(userDto, authenticatedUser);
-       // return ResponseEntity.ok(userDto);
-    //}
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @AuthenticationPrincipal User authenticatedUser){
+        UserDto userUpdated = userService.update(userDto, authenticatedUser);
+        return ResponseEntity.ok(userDto);
+    }
 
-    @PatchMapping("add-role/{id}")
+    @PatchMapping("/add-role/{id}")
     public ResponseEntity<ApiResponseDto> addRole(@PathVariable Long id, @RequestBody RoleDto roleDto){
         userService.addRole(id, roleDto);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Papel de usuario inserido com sucesso"));
     }
 
-    @PatchMapping("remove-role/{id}")
+    @PatchMapping("/remove-role/{id}")
     public ResponseEntity<ApiResponseDto> removeRole(@PathVariable Long id, @RequestBody RoleDto roleDto){
         userService.removeRole(id, roleDto);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Papel de usuario removido com sucesso"));
@@ -67,7 +67,7 @@ public class UserController {
 
     @PatchMapping("/{id}/deactivate")
     public ResponseEntity<ApiResponseDto> disableUser(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
-        userService.disableUser(id, authenticatedUser);
+        userService.disable(id, authenticatedUser);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Usuário inativado com sucesso"));
     }
 

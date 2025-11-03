@@ -47,7 +47,7 @@ public class UserService implements UserDetailsService {
         return UUID.randomUUID().toString();
     }
 
-   public UserDto registerUser(UserRegisterDto userRegisterDto) {
+   public UserDto register(UserRegisterDto userRegisterDto) {
 
         if(userRepository.existsByEmail(userRegisterDto.email())){
             throw GymJourneyException.alreadyExists("E-mail já cadastrado!");
@@ -68,6 +68,13 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(user);
     }
 
+    public UserDto update(UserDto userDto, User authenticatedUser) {
+        User user = userRepository.findById(authenticatedUser.getId()).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
+        user.update(userDto);
+        User updatedUser = userRepository.save(user);
+        return userMapper.toDto(updatedUser);
+    }
+
     public void verifyEmail(String token) {
         User user = userRepository.findByToken(token).orElseThrow( () -> GymJourneyException.notFound("Usuário nao foi encontrado"));
         if(user.getExpirationToken().isBefore(LocalDateTime.now())){
@@ -84,16 +91,12 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(user);
     }
 
-    public UserDto getUserById(Long id) {
+    public UserDto getById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
         return userMapper.toDto(user);
     }
 
-    //public UserDto updateUser(UserDto userDto, User authenticatedUser) {
-
-    //}
-
-    public void disableUser(Long userId, User authenticatedUser) {
+    public void disable(Long userId, User authenticatedUser) {
         User user = userRepository.findById(userId).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
         boolean isAdmin = authenticatedUser.getRoles().stream().anyMatch(role -> role.getName() == RoleName.ADMIN);

@@ -20,7 +20,7 @@ public class MuscleGroupController {
         this.muscleGroupService = muscleGroupService;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<List<MuscleGroupDto>> register(@Valid @RequestBody List<MuscleGroupDto> muscleGroupDtos){
         List<MuscleGroupDto> newMuscleGroup = muscleGroupService.register(muscleGroupDtos);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMuscleGroup);
@@ -33,7 +33,7 @@ public class MuscleGroupController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MuscleGroupDto> getById(@RequestParam Long id){
+    public ResponseEntity<MuscleGroupDto> getById(@PathVariable Long id){
         MuscleGroupDto muscleGroupDto = muscleGroupService.getById(id);
         return ResponseEntity.ok(muscleGroupDto);
     }

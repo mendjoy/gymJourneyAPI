@@ -20,32 +20,32 @@ public class ExerciseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ExerciseDetailsDto> registerWorkout(@Valid @RequestBody ExerciseDto exerciseDto){
-        ExerciseDetailsDto newExercise = exerciseService.registerExercise(exerciseDto);
+    public ResponseEntity<ExerciseDetailsDto> register(@Valid @RequestBody ExerciseDto exerciseDto){
+        ExerciseDetailsDto newExercise = exerciseService.register(exerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
     }
 
+    @PutMapping
+    public ResponseEntity<ExerciseDto> update(@RequestBody ExerciseDto exerciseDto) {
+        ExerciseDto exercise = exerciseService.update(exerciseDto);
+        return ResponseEntity.ok(exercise);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<ExerciseDetailsDto> getExerciseById(@RequestParam Long id){
-        ExerciseDetailsDto exercise = exerciseService.getExerciseById(id);
+    public ResponseEntity<ExerciseDetailsDto> getById(@PathVariable Long id){
+        ExerciseDetailsDto exercise = exerciseService.getById(id);
         return ResponseEntity.ok(exercise);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ExerciseDetailsDto>> getAllExercises(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        Page<ExerciseDetailsDto> exercises = exerciseService.getAllExercises(page, size);
+    public ResponseEntity<Page<ExerciseDetailsDto>> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        Page<ExerciseDetailsDto> exercises = exerciseService.getAll(page, size);
         return ResponseEntity.ok(exercises);
     }
 
-    @PutMapping
-    public ResponseEntity<ExerciseDto> updateExercise(@RequestBody ExerciseDto exerciseDto) {
-        ExerciseDto exercise = exerciseService.updateExercise(exerciseDto);
-        return ResponseEntity.ok(exercise);
-    }
-
     @GetMapping("/search")
-    public ResponseEntity<Page<ExerciseDetailsDto>> searchExercisesByName(@RequestParam String name,@RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size ){
-        Page<ExerciseDetailsDto> exercises = exerciseService.searchExercisesByName(name, page, size);
+    public ResponseEntity<Page<ExerciseDetailsDto>> searchByName(@RequestParam String name,@RequestParam(defaultValue = "0") int page,  @RequestParam(defaultValue = "10") int size ){
+        Page<ExerciseDetailsDto> exercises = exerciseService.searchByName(name, page, size);
         return ResponseEntity.ok(exercises);
     }
 }

@@ -30,7 +30,7 @@ public class ExerciseService {
         this.exerciseMappermapper = exerciseMappermapper;
     }
 
-    public ExerciseDetailsDto registerExercise(ExerciseDto exerciseDto){
+    public ExerciseDetailsDto register(ExerciseDto exerciseDto){
         if(exerciseRepository.existsByName(exerciseDto.name())){
             throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.name() + " já cadastrado!");
         }
@@ -46,32 +46,32 @@ public class ExerciseService {
         return exerciseMappermapper.toDetailsDto(newExercise);
     }
 
-    public ExerciseDetailsDto getExerciseById(Long id) {
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
-        return exerciseMappermapper.toDetailsDto(exercise);
-    }
-
-    public Page<ExerciseDetailsDto> getAllExercises(int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Exercise> exercisePage = exerciseRepository.findAll(pageable);
-        return exercisePage.map(exerciseMappermapper::toDetailsDto);
-    }
-
-    public Page<ExerciseDetailsDto> searchExercisesByName(String name, int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
-        return exercisePage.map(exerciseMappermapper::toDetailsDto);
-    }
-
-    public ExerciseDto updateExercise(ExerciseDto exerciseDto) {
+    public ExerciseDto update(ExerciseDto exerciseDto) {
         ValidationUtils.validateIdNotNull(exerciseDto.id(), "Exercicio");
         Exercise exercise = exerciseRepository.findById(exerciseDto.id()).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
         if(exerciseRepository.existsByName(exerciseDto.name())){
             throw GymJourneyException.alreadyExists("Exercicio " + exerciseDto.name() + " já cadastrado!");
         }
-        exercise.updateExercise(exerciseDto);
+        exercise.update(exerciseDto);
 
         Exercise newExercise = exerciseRepository.save(exercise);
         return exerciseMappermapper.toDto(newExercise);
+    }
+
+    public ExerciseDetailsDto getById(Long id) {
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
+        return exerciseMappermapper.toDetailsDto(exercise);
+    }
+
+    public Page<ExerciseDetailsDto> getAll(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Exercise> exercisePage = exerciseRepository.findAll(pageable);
+        return exercisePage.map(exerciseMappermapper::toDetailsDto);
+    }
+
+    public Page<ExerciseDetailsDto> searchByName(String name, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
+        return exercisePage.map(exerciseMappermapper::toDetailsDto);
     }
 }

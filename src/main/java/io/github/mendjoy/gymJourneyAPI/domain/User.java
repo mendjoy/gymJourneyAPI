@@ -1,5 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.domain;
 
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -155,6 +156,20 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void update(UserDto userDto){
+        if (userDto.name() != null && !userDto.name().isBlank()) {
+            this.name = userDto.name();
+        }
+
+        if (userDto.phone() != null && !userDto.phone().isBlank()) {
+            this.phone = userDto.phone();
+        }
+
+        if (userDto.birthDate() != null) {
+            this.birthDate = userDto.birthDate();
+        }
     }
 
 }

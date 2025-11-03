@@ -62,7 +62,7 @@ public class Exercise {
         this.muscleGroups = muscleGroups;
     }
 
-    public void updateExercise(ExerciseDto exerciseDto) {
+    public void update(ExerciseDto exerciseDto) {
         if(exerciseDto.name() != null && !exerciseDto.name().isBlank()){
             this.setName(exerciseDto.name());
         }

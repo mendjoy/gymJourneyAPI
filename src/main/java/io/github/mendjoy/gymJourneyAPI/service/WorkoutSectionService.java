@@ -29,7 +29,7 @@ public class WorkoutSectionService {
         this.workoutSectionMapper = workoutSectionMapper;
     }
 
-    public List<WorkoutSectionDto> registerWorkoutSection(List<WorkoutSectionDto> workoutSectionDtos) {
+    public List<WorkoutSectionDto> register(List<WorkoutSectionDto> workoutSectionDtos) {
         List<WorkoutSection> workoutSections = workoutSectionDtos.stream().map(sectionDto -> {
             Workout workout =
                     workoutRepository.findById(sectionDto.workoutId()).orElseThrow(() -> GymJourneyException.notFound("Treino não " +
@@ -46,20 +46,7 @@ public class WorkoutSectionService {
                 .toList();
     }
 
-    public Page<WorkoutSectionDetailsDto> getSectionsByWorkoutId(Long workoutId, int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<WorkoutSection> workoutSections = workoutSectionRepository.findAllByWorkoutId(workoutId, pageable);
-        return workoutSections.map(workoutSectionMapper::toDetailsDto);
-    }
-
-    public void deleteWorkoutSection(Long id) {
-        WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound(
-                "Seção de treino " +
-                "não encontrada!"));
-        workoutSectionRepository.delete(workoutSection);
-    }
-
-    public WorkoutSectionDto updateWorkoutSection(WorkoutSectionDto workoutSectionDto) {
+    public WorkoutSectionDto update(WorkoutSectionDto workoutSectionDto) {
         ValidationUtils.validateIdNotNull(workoutSectionDto.id(), "Seção de treino");
         WorkoutSection section = workoutSectionRepository.findById(workoutSectionDto.id()).orElseThrow(() -> GymJourneyException.notFound("Seção de treino não encontrada!"));
         section.update(workoutSectionDto);
@@ -67,7 +54,20 @@ public class WorkoutSectionService {
         return workoutSectionMapper.toDto(updatedSection);
     }
 
-    public WorkoutSectionDetailsDto getWorkoutSectionById(Long id) {
+    public Page<WorkoutSectionDetailsDto> getByWorkoutId(Long workoutId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<WorkoutSection> workoutSections = workoutSectionRepository.findAllByWorkoutId(workoutId, pageable);
+        return workoutSections.map(workoutSectionMapper::toDetailsDto);
+    }
+
+    public void delete(Long id) {
+        WorkoutSection workoutSection = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound(
+                "Seção de treino " +
+                "não encontrada!"));
+        workoutSectionRepository.delete(workoutSection);
+    }
+
+    public WorkoutSectionDetailsDto getById(Long id) {
         WorkoutSection section = workoutSectionRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Seção " +
                 "de treino não " +
                 "encontrada!"));

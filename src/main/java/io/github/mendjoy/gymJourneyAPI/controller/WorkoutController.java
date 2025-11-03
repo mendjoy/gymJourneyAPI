@@ -21,32 +21,32 @@ public class WorkoutController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<WorkoutDto> registerWorkout(@Valid @RequestBody WorkoutDto workoutDto) {
-        WorkoutDto newWorkout = workoutService.registerWorkout(workoutDto);
+    public ResponseEntity<WorkoutDto> register(@Valid @RequestBody WorkoutDto workoutDto) {
+        WorkoutDto newWorkout = workoutService.register(workoutDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newWorkout);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WorkoutDetailsDto> getWorkoutById(@PathVariable Long id) {
-        WorkoutDetailsDto workoutDetailsDto = workoutService.getWorkoutById(id);
+    public ResponseEntity<WorkoutDetailsDto> getById(@PathVariable Long id) {
+        WorkoutDetailsDto workoutDetailsDto = workoutService.getById(id);
         return ResponseEntity.ok(workoutDetailsDto);
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<Page<WorkoutDetailsDto>> getWorkoutsByUser(@PathVariable Long id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        Page<WorkoutDetailsDto> workoutDtos = workoutService.getWorkoutsByUser(id, page, size);
+    public ResponseEntity<Page<WorkoutDetailsDto>> getByUser(@PathVariable Long id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        Page<WorkoutDetailsDto> workoutDtos = workoutService.getByUser(id, page, size);
         return ResponseEntity.ok(workoutDtos);
     }
 
     @PutMapping
     public ResponseEntity<WorkoutDto> update(@Valid @RequestBody WorkoutDto workoutDto) {
-        WorkoutDto newWorkout = workoutService.updateWorkout(workoutDto);
+        WorkoutDto newWorkout = workoutService.update(workoutDto);
         return ResponseEntity.ok(newWorkout);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> deleteWorkout(@PathVariable Long id){
-        workoutService.deleteWorkout(id);
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id){
+        workoutService.delete(id);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Treino excluido com sucesso!"));
     }
 

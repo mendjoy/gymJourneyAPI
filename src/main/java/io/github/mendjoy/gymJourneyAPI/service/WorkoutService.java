@@ -26,7 +26,7 @@ public class WorkoutService {
         this.workoutMapper = workoutMapper;
     }
 
-    public WorkoutDto registerWorkout(WorkoutDto workoutDto){
+    public WorkoutDto register(WorkoutDto workoutDto){
         User user = userRepository.findById(workoutDto.userId())
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário " + workoutDto.userId() + " não encontrado!"));
         Workout workout = workoutMapper.toEntity(workoutDto);
@@ -35,28 +35,29 @@ public class WorkoutService {
         return workoutMapper.toDto(newWorkout);
     }
 
-    public WorkoutDetailsDto getWorkoutById(Long id){
-        Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
-        return workoutMapper.toDetailsDto(workout);
-    }
-
-    public Page<WorkoutDetailsDto> getWorkoutsByUser(Long id, int page, int size) {
-        User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Workout> workouts = workoutRepository.findAllByUser(user, pageable);
-        return workouts.map(workoutMapper::toDetailsDto);
-    }
-
-    public void deleteWorkout(Long id) {
-        Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
-        workoutRepository.delete(workout);
-    }
-
-    public WorkoutDto updateWorkout(WorkoutDto workoutDto) {
+    public WorkoutDto update(WorkoutDto workoutDto) {
         ValidationUtils.validateIdNotNull(workoutDto.id(), "Treino");
         Workout workout = workoutRepository.findById(workoutDto.id()).orElseThrow(() -> GymJourneyException.notFound("Treino " + workoutDto.id() + " não encontrado!"));
         workout.updateWorkout(workoutDto);
         Workout updatedWorkout = workoutRepository.save(workout);
         return workoutMapper.toDto(updatedWorkout);
     }
+
+    public WorkoutDetailsDto getById(Long id){
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
+        return workoutMapper.toDetailsDto(workout);
+    }
+
+    public Page<WorkoutDetailsDto> getByUser(Long id, int page, int size) {
+        User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Workout> workouts = workoutRepository.findAllByUser(user, pageable);
+        return workouts.map(workoutMapper::toDetailsDto);
+    }
+
+    public void delete(Long id) {
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Treino não encontrado!"));
+        workoutRepository.delete(workout);
+    }
+
 }
