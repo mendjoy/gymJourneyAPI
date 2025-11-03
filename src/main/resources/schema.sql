@@ -30,7 +30,26 @@ CREATE TABLE IF NOT EXISTS exercise (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     description VARCHAR(255) NOT NULL,
-    muscle_group VARCHAR(255) NOT NULL
+    muscle_group_id BIGINT NOT NULL,
+    FOREIGN KEY (muscle_group_id) REFERENCES muscle_group(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS muscle_group (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS exercise_muscle_group (
+    exercise_id BIGINT NOT NULL,
+    muscle_group_id BIGINT NOT NULL,
+    PRIMARY KEY (exercise_id, muscle_group_id),
+    CONSTRAINT fk_exercise
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_muscle_group
+    FOREIGN KEY (muscle_group_id) REFERENCES muscle_group(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS workout (
