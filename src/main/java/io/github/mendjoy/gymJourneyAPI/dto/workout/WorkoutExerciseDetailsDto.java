@@ -1,6 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.dto.workout;
 
-import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
+import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDetailsDto;
 
 public record WorkoutExerciseDetailsDto(
         Long id,
@@ -8,5 +8,5 @@ public record WorkoutExerciseDetailsDto(
         Integer repetitions,
         Double weight,
         Integer restTime,
-        ExerciseDto exercise
+        ExerciseDetailsDto exercise
 ) {}
