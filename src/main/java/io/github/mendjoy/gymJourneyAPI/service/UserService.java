@@ -8,9 +8,9 @@ import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.mapper.UserMapper;
 import io.github.mendjoy.gymJourneyAPI.repository.RoleRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,14 +26,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
+    private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, RoleRepository roleRepository, EmailService emailService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.modelMapper = modelMapper;
+        this.userMapper = userMapper;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
     }
@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
 
         Role role = roleRepository.findByName(RoleName.USER).orElseThrow(() -> GymJourneyException.notFound("Papel do usuário nao encontrado!"));
         String encodedPassword = passwordEncoder.encode(userRegisterDto.password());
-        User user =  modelMapper.map(userRegisterDto, User.class);
+        User user =  userMapper.toEntity(userRegisterDto);
         user.setPassword(encodedPassword);
         user.setVerified(false);
         user.setToken(generateVerificationToken());
@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
 
         User newUser = userRepository.save(user);
        // emailService.sendVerificationEmail(user);
-        return modelMapper.map(newUser, UserDto.class);
+        return userMapper.toDto(user);
     }
 
     public void verifyEmail(String token) {
@@ -81,12 +81,12 @@ public class UserService implements UserDetailsService {
 
     public UserDto getAuthenticatedUser(User authenticatedUser) {
         User user = userRepository.findById(authenticatedUser.getId()).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        return modelMapper.map(user, UserDto.class);
+        return userMapper.toDto(user);
     }
 
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        return modelMapper.map(user, UserDto.class);
+        return userMapper.toDto(user);
     }
 
     //public UserDto updateUser(UserDto userDto, User authenticatedUser) {
@@ -109,10 +109,10 @@ public class UserService implements UserDetailsService {
 
     public void addRole(Long id, RoleDto roleDto) {
         User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        Role role = roleRepository.findByName(RoleName.valueOf(roleDto.getRoleName())).orElseThrow(() -> GymJourneyException.notFound("Papel de usuario não encontrado"));
+        Role role = roleRepository.findByName(RoleName.valueOf(roleDto.roleName())).orElseThrow(() -> GymJourneyException.notFound("Papel de usuario não encontrado"));
 
         if(user.getRoles().contains(role)){
-            throw GymJourneyException.conflict("Usuário já possui papel de " + roleDto.getRoleName());
+            throw GymJourneyException.conflict("Usuário já possui papel de " + roleDto.roleName());
         }
 
         user.getRoles().add(role);
@@ -121,7 +121,7 @@ public class UserService implements UserDetailsService {
 
     public void removeRole(Long id, RoleDto roleDto) {
         User user = userRepository.findById(id).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        Role role = roleRepository.findByName(RoleName.valueOf(roleDto.getRoleName())).orElseThrow(() -> GymJourneyException.notFound("Papel de usuario não encontrado"));
+        Role role = roleRepository.findByName(RoleName.valueOf(roleDto.roleName())).orElseThrow(() -> GymJourneyException.notFound("Papel de usuario não encontrado"));
 
         if (!user.getRoles().contains(role)) {
             throw GymJourneyException.badRequest("O usuário não possui esse papel.");

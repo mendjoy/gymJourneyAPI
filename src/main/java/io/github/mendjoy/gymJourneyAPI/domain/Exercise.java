@@ -55,14 +55,14 @@ public class Exercise {
     }
 
     public void updateExercise(ExerciseDto exerciseDto) {
-        if(exerciseDto.getName() != null && !exerciseDto.getName().isBlank()){
-            this.setName(exerciseDto.getName());
+        if(exerciseDto.name() != null && !exerciseDto.name().isBlank()){
+            this.setName(exerciseDto.name());
         }
-        if(exerciseDto.getDescription() != null && !exerciseDto.getDescription().isBlank()){
-            this.setDescription(exerciseDto.getDescription());
+        if(exerciseDto.description() != null && !exerciseDto.description().isBlank()){
+            this.setDescription(exerciseDto.description());
         }
-        if(exerciseDto.getMuscleGroup() != null && !exerciseDto.getMuscleGroup().isBlank()){
-            this.setMuscleGroup(exerciseDto.getMuscleGroup());
+        if(exerciseDto.muscleGroup() != null && !exerciseDto.muscleGroup().isBlank()){
+            this.setMuscleGroup(exerciseDto.muscleGroup());
         }
     }
 }

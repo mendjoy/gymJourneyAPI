@@ -76,12 +76,12 @@ public class WorkoutSection {
     }
 
     public void update(WorkoutSectionDto workoutSectionDto){
-        if(workoutSectionDto.getName() != null){
-            this.name = workoutSectionDto.getName();
+        if(workoutSectionDto.name() != null){
+            this.setName(workoutSectionDto.name());
         }
 
-        if(workoutSectionDto.getDescription() != null){
-            this.description = workoutSectionDto.getDescription();
+        if(workoutSectionDto.description() != null){
+            this.setDescription(workoutSectionDto.description());
         }
     }
 }

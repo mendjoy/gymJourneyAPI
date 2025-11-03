@@ -96,17 +96,17 @@ public class WorkoutExercise {
     }
 
     public void update(WorkoutExerciseDto workoutExerciseDto) {
-        if(workoutExerciseDto.getSets() != null){
-            this.sets = workoutExerciseDto.getSets();
+        if(workoutExerciseDto.sets() != null){
+            this.setSets(workoutExerciseDto.sets());
         }
-        if(workoutExerciseDto.getRepetitions() != null){
-            this.repetitions = workoutExerciseDto.getRepetitions();
+        if(workoutExerciseDto.repetitions() != null){
+            this.setRepetitions(workoutExerciseDto.repetitions());
         }
-        if(workoutExerciseDto.getWeight() != null){
-            this.weight = workoutExerciseDto.getWeight();
+        if(workoutExerciseDto.weight() != null){
+            this.setWeight(workoutExerciseDto.weight());
         }
-        if(workoutExerciseDto.getRestTime() != null){
-            this.restTime = workoutExerciseDto.getRestTime();
+        if(workoutExerciseDto.restTime() != null){
+            this.setRestTime(workoutExerciseDto.restTime());
         }
     }
 }

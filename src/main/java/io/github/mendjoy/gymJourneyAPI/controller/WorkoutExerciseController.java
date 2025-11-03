@@ -1,6 +1,5 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
-import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
@@ -8,7 +7,6 @@ import io.github.mendjoy.gymJourneyAPI.service.WorkoutExerciseService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

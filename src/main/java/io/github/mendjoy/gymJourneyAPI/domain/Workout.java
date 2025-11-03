@@ -16,12 +16,17 @@ public class Workout {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     private String name;
+
     private String description;
+
     @Column(name = "max_sessions")
     private Integer maxSessions;
+
     @Column(name = "start_date")
     private LocalDate startDate;
+
     @Column(name = "end_date")
     private LocalDate endDate;
 
@@ -106,20 +111,17 @@ public class Workout {
     }
 
     public void updateWorkout(WorkoutDto workoutDto){
-        if (workoutDto.getName() != null && !workoutDto.getName().isBlank()) {
-            this.name = workoutDto.getName();
+        if (workoutDto.name() != null && !workoutDto.name().isBlank()) {
+            this.setName(workoutDto.name());
         }
-        if (workoutDto.getDescription() != null && !workoutDto.getDescription().isBlank()) {
-            this.description = workoutDto.getDescription();
+        if (workoutDto.description() != null && !workoutDto.description().isBlank()) {
+            this.setDescription(workoutDto.description());
         }
-        if (workoutDto.getMaxSessions() != null && workoutDto.getMaxSessions() != 0) {
-            this.maxSessions = workoutDto.getMaxSessions();
+        if (workoutDto.maxSessions() != null && workoutDto.maxSessions() != 0) {
+            this.setMaxSessions(workoutDto.maxSessions());
         }
-        if (workoutDto.getStartDate() != null) {
-            this.startDate = workoutDto.getStartDate();
-        }
-        if (workoutDto.getEndDate() != null) {
-            this.endDate = workoutDto.getEndDate();
+        if (workoutDto.startDate() != null) {
+            this.setStartDate(workoutDto.startDate());
         }
     }
 }

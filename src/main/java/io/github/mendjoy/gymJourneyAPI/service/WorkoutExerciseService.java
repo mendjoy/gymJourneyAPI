@@ -5,10 +5,10 @@ import io.github.mendjoy.gymJourneyAPI.domain.WorkoutExercise;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
 import io.github.mendjoy.gymJourneyAPI.exception.GymJourneyException;
+import io.github.mendjoy.gymJourneyAPI.mapper.WorkoutExerciseMapper;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.utils.ValidationUtils;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,26 +21,27 @@ public class WorkoutExerciseService {
 
     private final WorkoutExerciseRepository workoutExerciseRepository;
     private final ExerciseRepository exerciseRepository;
-    private final ModelMapper modelMapper;
+    private final WorkoutExerciseMapper workoutExerciseMapper;
 
-    public WorkoutExerciseService(WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, ModelMapper modelMapper) {
+    public WorkoutExerciseService(WorkoutExerciseRepository workoutExerciseRepository, ExerciseRepository exerciseRepository, WorkoutExerciseMapper workoutExerciseMapper) {
         this.workoutExerciseRepository = workoutExerciseRepository;
         this.exerciseRepository = exerciseRepository;
-        this.modelMapper = modelMapper;
+        this.workoutExerciseMapper = workoutExerciseMapper;
     }
 
-    public List<WorkoutExerciseDto> registerWorkoutExercise(List<WorkoutExerciseDto> workoutExerciseDto) {
-        List<WorkoutExercise> workoutExercises = workoutExerciseDto.stream().map( we -> {
-            Exercise exercise = exerciseRepository.findById(we.getExerciseId()).orElseThrow(() -> GymJourneyException.notFound("Exercicio não encontrado!"));
-            WorkoutExercise workoutExercise = modelMapper.map(we, WorkoutExercise.class);
+    public List<WorkoutExerciseDto> registerWorkoutExercise(List<WorkoutExerciseDto> workoutExerciseDtos) {
+        List<WorkoutExercise> workoutExercises = workoutExerciseDtos.stream().map(dto -> {
+            Exercise exercise = exerciseRepository.findById(dto.exerciseId())
+                    .orElseThrow(() -> GymJourneyException.notFound("Exercício não encontrado!"));
+
+            WorkoutExercise workoutExercise = workoutExerciseMapper.toEntity(dto);
             workoutExercise.setExercise(exercise);
             return workoutExercise;
         }).toList();
 
         List<WorkoutExercise> newWorkoutExercises = workoutExerciseRepository.saveAll(workoutExercises);
-
         return newWorkoutExercises.stream()
-                .map(we -> modelMapper.map(we, WorkoutExerciseDto.class))
+                .map(workoutExerciseMapper::toDto)
                 .toList();
     }
 
@@ -48,9 +49,7 @@ public class WorkoutExerciseService {
         Pageable pageable = PageRequest.of(page, size);
         Page<WorkoutExercise> workoutExercises = workoutExerciseRepository.findAllByWorkoutSectionId(workoutSectionId, pageable);
 
-        return workoutExercises.map( we -> {
-            return modelMapper.map(we, WorkoutExerciseDetailsDto.class);
-        });
+        return workoutExercises.map(workoutExerciseMapper::toDetailsDto);
     }
 
     public void deleteWorkoutExercise(Long id) {
@@ -61,20 +60,20 @@ public class WorkoutExerciseService {
     }
 
     public WorkoutExerciseDto updateWorkoutExercise(WorkoutExerciseDto workoutExerciseDto) {
-        ValidationUtils.validateIdNotNull(workoutExerciseDto.getId(), "Exercicio");
+        ValidationUtils.validateIdNotNull(workoutExerciseDto.id(), "Exercicio");
         WorkoutExercise workoutExercise =
-                workoutExerciseRepository.findById(workoutExerciseDto.getId()).orElseThrow(() -> GymJourneyException.notFound("Exercicio " +
+                workoutExerciseRepository.findById(workoutExerciseDto.id()).orElseThrow(() -> GymJourneyException.notFound("Exercicio " +
                         "relacionado a treino não encontrado!"));
         workoutExercise.update(workoutExerciseDto);
 
-        if(workoutExerciseDto.getExerciseId() != null){
+        if(workoutExerciseDto.id() != null){
            Exercise exercise =
-                   exerciseRepository.findById(workoutExerciseDto.getExerciseId()).orElseThrow(() -> GymJourneyException.notFound(
+                   exerciseRepository.findById(workoutExerciseDto.id()).orElseThrow(() -> GymJourneyException.notFound(
                    "Exercicio não encontrado!"));
            workoutExercise.setExercise(exercise);
         }
 
         WorkoutExercise updatedWorkoutExercise = workoutExerciseRepository.save(workoutExercise);
-        return modelMapper.map(updatedWorkoutExercise, WorkoutExerciseDto.class);
+        return workoutExerciseMapper.toDto(updatedWorkoutExercise);
     }
 }
