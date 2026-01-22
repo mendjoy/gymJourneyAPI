@@ -32,7 +32,7 @@ public class AuthService {
 
         }catch (BadCredentialsException e){
 
-            throw GymJourneyException.forbidden("Email ou senha inválidos!");
+            throw GymJourneyException.unauthorized("Email ou senha inválidos!");
             
         }
     }
