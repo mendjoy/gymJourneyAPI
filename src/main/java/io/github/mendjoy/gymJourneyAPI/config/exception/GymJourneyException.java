@@ -39,5 +39,9 @@ public class GymJourneyException extends RuntimeException{
         return new GymJourneyException(message, HttpStatus.CONFLICT);
     }
 
+    public static GymJourneyException unauthorized(String message) {
+        return new GymJourneyException(message, HttpStatus.UNAUTHORIZED);
+    }
+
 }
 
