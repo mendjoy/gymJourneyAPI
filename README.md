@@ -54,6 +54,17 @@ Response (200 Ok)
 ### Usuários
 `/users`
 
+Endpoints responsáveis pelo gerenciamento de usuários.
+
+Funcionalidades:
+- Cadastro e verificação de contas de usuários
+- Atualização de dados pessoais e senha
+- Consulta de informações do usuário autenticado ou por ID
+- Ativação e inativação de usuários
+- Gerenciamento de papéis (roles), como USER, TRAINER e ADMIN
+
+Algumas rotas são protegidas por autenticação JWT e podem exigir permissões específicas de acordo com o papel do usuário.
+
 ##### 1. Registrar Usuário
 ***POST*** `/users/register`
 ```json
