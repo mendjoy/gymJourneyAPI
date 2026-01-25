@@ -10,10 +10,11 @@ public class MuscleGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 100)
     private String name;
 
-    public MuscleGroup() {}
+    public MuscleGroup() {
+    }
 
     public MuscleGroup(String name) {
         this.name = name;
