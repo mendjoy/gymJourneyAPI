@@ -2,19 +2,25 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "exercise")
 public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Column(unique = true, nullable = false, length = 255)
     private String name;
 
+    @NotBlank
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @ManyToMany
@@ -31,7 +37,7 @@ public class Exercise {
     public Exercise(String name, String description, Set<MuscleGroup> muscleGroups) {
         this.name = name;
         this.description = description;
-        this.muscleGroups = muscleGroups;
+        this.muscleGroups = muscleGroups != null ? muscleGroups : new HashSet<>();
     }
 
     public Long getId() {
@@ -63,10 +69,10 @@ public class Exercise {
     }
 
     public void update(ExerciseDto exerciseDto) {
-        if(exerciseDto.name() != null && !exerciseDto.name().isBlank()){
+        if (exerciseDto.name() != null && !exerciseDto.name().isBlank()) {
             this.setName(exerciseDto.name());
         }
-        if(exerciseDto.description() != null && !exerciseDto.description().isBlank()){
+        if (exerciseDto.description() != null && !exerciseDto.description().isBlank()) {
             this.setDescription(exerciseDto.description());
         }
     }
