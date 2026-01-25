@@ -20,14 +20,16 @@ em uma academia, com autenticação JWT e controle de permissões.
   - [Treinos](#workouts)
   - [Seções de Treino](#workout-sections)
   - [Exercícios do Treino](#workout-exercises)
-  
-### Base URL
+
+## Base URL
 ### `http://localhost:8080`
 
-### Autenticação
-A maioria das rotas requer autenticação via JWT.
-### `Authorization: Bearer {jwt_token}`
+## Autenticação
 
+A maioria das rotas da API requer autenticação via **JWT (JSON Web Token)**.
+
+O token é gerado após o login do usuário e deve ser enviado em todas as requisições protegidas por meio do header `Authorization`.
+### `Authorization: Bearer {jwt_token}`
 
 ---
 
