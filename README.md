@@ -14,12 +14,13 @@ em uma academia, com autenticação JWT e controle de permissões.
 - [Base URL](#base-url)
 - [Autenticação](#autenticação)
 - [Endpoints](#endpoints)
-  - [Usuários](#users)
-  - [Grupo Muscular](#muscle-group)
-  - [Exercícios](#exercises)
-  - [Treinos](#workouts)
-  - [Seções de Treino](#workout-sections)
-  - [Exercícios do Treino](#workout-exercises)
+  - [Login](#login)
+  - [Usuários](#usuários)
+  - [Grupo Muscular](#grupo-muscular)
+  - [Exercícios](#exercicios)
+  - [Treinos](#treinos)
+  - [Seções de Treino](#seções-de-treino)
+  - [Exercícios do Treino](#exercícios-do-treino)
 
 ## Base URL
 ### `http://localhost:8080`
@@ -31,11 +32,28 @@ A maioria das rotas da API requer autenticação via **JWT (JSON Web Token)**.
 O token é gerado após o login do usuário e deve ser enviado em todas as requisições protegidas por meio do header `Authorization`.
 ### `Authorization: Bearer {jwt_token}`
 
----
+## Endpoints
 
-### Endpoints
+### Login
+`POST /auth/login`
 
-### `/users`
+Realiza a autenticação do usuário e retorna um token JWT válido.
+```json
+{
+  "email": "joao.silva@example.com",
+  "password": "SenhaForte@123"
+}
+```
+Response (200 Ok)
+```json
+{
+    "token": "eyJpc3MiOiJHeW1Kb3VybmV5Q...."
+}
+```
+##
+### Usuários
+`/users`
+
 ##### 1. Registrar Usuário
 ***POST*** `/users/register`
 ```json
@@ -193,12 +211,10 @@ Response (200 Ok)
     "message": "Usuário ativado com sucesso"
 }
 ```
+##
 
-
-
----
-
-### `/muscle-group`
+### Grupo Muscular
+`/muscle-group`
 
 ##### 1. Cadastrar Grupo muscular
 ***POST*** `/muscle-group/register`
@@ -263,9 +279,10 @@ Retorna uma lista paginada de todos os grupos musculares cadastrados.
   - page (opcional, default = 0) – Página a ser retornada
   - size (opcional, default = 10) – Número de exercícios por página
 
----
+##
 
-### `/exercises`
+### Exercicios
+`/exercises`
 
 ##### 1. Cadastrar exercício
 ***POST*** `/exercises/register`
@@ -344,12 +361,15 @@ Retorna os detalhes de um exercicio, com base no seu ID.
   - page (opcional, default = 0) – Página a ser retornada
   - size (opcional, default = 10) – Número de exercícios por página
 
----
+##
 
-### `/workouts`
+### Treinos
+`/workouts`
 
----
-### `/workout-sections`
+##
+### Seções de Treino
+`/workout-sections`
 
----
-### `/workout-exercises`
+##
+### Exercícios do Treino
+`/workout-exercises`
