@@ -13,6 +13,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true, length = 100)
     private RoleName name;
 
     public Role() {
@@ -20,6 +21,10 @@ public class Role implements GrantedAuthority {
 
     public Role(RoleName name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public RoleName getName() {
