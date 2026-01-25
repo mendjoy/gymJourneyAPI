@@ -9,6 +9,18 @@
 API REST para gerenciamento de **treinos, exercícios, grupos musculares e usuários**
 em uma academia, com autenticação JWT e controle de permissões.
 
+## Índice
+
+- [Base URL](#base-url)
+- [Autenticação](#autenticação)
+- [Endpoints](#endpoints)
+  - [Usuários](#users)
+  - [Grupo Muscular](#muscle-group)
+  - [Exercícios](#exercises)
+  - [Treinos](#workouts)
+  - [Seções de Treino](#workout-sections)
+  - [Exercícios do Treino](#workout-exercises)
+  
 ### Base URL
 ### `http://localhost:8080`
 
