@@ -1,15 +1,186 @@
-# GymJourneyAPI 
+# GymJourneyAPI
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.6-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6.x-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-42.7.7-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT_Authentication-Auth0-EB5424?style=for-the-badge&logo=auth0&logoColor=white)
+![MapStruct](https://img.shields.io/badge/MapStruct-1.6.3-007ACC?style=for-the-badge&logo=java&logoColor=white)
 
-API para gerenciamento de **Treinos** em uma academia.
+API REST para gerenciamento de **treinos, exercícios, grupos musculares e usuários**
+em uma academia, com autenticação JWT e controle de permissões.
 
 ### Base URL
 ### `http://localhost:8080`
+
+### Autenticação
+A maioria das rotas requer autenticação via JWT.
+### `Authorization: Bearer {jwt_token}`
+
 
 ---
 
 ### Endpoints
 
 ### `/users`
+##### 1. Registrar Usuário
+***POST*** `/users/register`
+```json
+{
+    "email": "joao.silva@example.com",
+    "name": "João Silva",
+    "phone": "+55 11 98765-4321",
+    "birthDate": "1990-05-15",
+    "password": "SenhaForte@123"
+}
+```
+Response (201 Created)
+```json
+{
+    "id": 1,
+    "email": "joao.silva@example.com",
+    "name": "João Silva",
+    "phone": "+55 11 98765-4321",
+    "birthDate": "1990-05-15",
+    "roles": [
+        { "roleName": "USER" }
+    ]
+}
+```
+##### 2. Verificar conta
+***GET*** `/users/verify-account?token={token}`
+
+Response (200 Ok)
+```json
+{
+    "status": 200,
+    "message": "Conta verificada com sucesso!"
+}
+```
+##### 3. Atualizar Dados
+***PUT*** `/users/update`
+
+```json
+{
+  "name": "João Silva Atualizado",
+  "phone": "+55 11 99999-8888",
+  "birthDate": "1990-05-15"
+}
+```
+Response (200 Ok)
+```json
+{
+    "id": 1,
+    "email": "joao.silva@example.com",
+    "name": "João Silva Atualizado",
+    "phone": "+55 11 99999-8888",
+    "birthDate": "1990-05-15",
+    "roles": [
+        { "roleName": "USER" }
+    ]
+}
+```
+
+##### 4. Alterar senha
+***PATCH*** `/users/change-password`
+
+```json
+{
+    "currentPassword": "SenhaForte@123",
+    "newPassword": "NovaSenha@456",
+    "confirmPassword": "NovaSenha@456"
+}
+```
+Response (200 Ok)
+```json
+{
+    "status": 200,
+    "message": "Senha alterada com sucesso"
+}
+```
+
+##### 5. Buscar Dados do usuário autenticado
+***GET*** `/users`
+
+Response (200 Ok)
+```json
+{
+    "id": 1,
+    "email": "joao.silva@example.com",
+    "name": "João Silva",
+    "phone": "+55 11 98765-4321",
+    "birthDate": "1990-05-15",
+    "roles": [
+        { "roleName": "USER" }
+    ]
+}
+```
+
+##### 6. Buscar usuário por Id
+***GET*** `/users/{id}`
+
+Response (200 Ok)
+```json
+{
+    "id": 1,
+    "email": "joao.silva@example.com",
+    "name": "João Silva",
+    "phone": "+55 11 98765-4321",
+    "birthDate": "1990-05-15",
+    "roles": [
+        { "roleName": "USER" }
+    ]
+}
+```
+##### 7. Adicionar papel ao usuário
+***PATCH*** `/users/add-role/{id}`
+```json
+{
+    "roleName": "TRAINER"
+}
+```
+
+Response (200 Ok)
+```json
+{
+    "status": 200,
+    "message": "Papel de usuário inserido com sucesso"
+}
+```
+##### 8. Remover papel ao usuário
+***PATCH*** `/users/remove-role/{id}`
+```json
+{
+    "roleName": "TRAINER"
+}
+```
+
+Response (200 Ok)
+```json
+{
+    "status": 200,
+    "message": "Papel de usuário removido com sucesso"
+}
+```
+##### 9. Inativar Usuário
+***PATCH*** `/users/disable/{id}`
+Response (200 Ok)
+```json
+{
+    "status": 200,
+    "message": "Usuário inativado com sucesso"
+}
+```
+##### 10. Ativar Usuário
+***PATCH*** `/users/enable/{id}`
+Response (200 Ok)
+```json
+{
+    "status": 200,
+    "message": "Usuário ativado com sucesso"
+}
+```
+
+
 
 ---
 
@@ -22,7 +193,7 @@ Endpoint responsável por cadastrar um ou mais grupos musculares.
 Permite o envio de uma lista de objetos, onde cada item representa um grupo muscular distinto.
 
 - **Cada Grupo muscular deve:**
-    - Possuir um nome único (nomes duplicados não são permitidos).
+  - Possuir um nome único (nomes duplicados não são permitidos).
 
 **Request Body (JSON)**
 ```json
@@ -73,25 +244,25 @@ Retorna os detalhes de um grupo muscular específico, com base no seu ID.
 Retorna uma lista paginada de todos os grupos musculares cadastrados.
 
 - **Parâmetros de query:**
-    - name (opcional) - Termo utilizado para filtrar grupos musculares pelo nome.
-      A busca retorna todos os registros que contenham o termo informado, de forma parcial e sem distinção entre maiúsculas e minúsculas. 
-    - page (opcional, default = 0) – Página a ser retornada
-    - size (opcional, default = 10) – Número de exercícios por página
+  - name (opcional) - Termo utilizado para filtrar grupos musculares pelo nome.
+    A busca retorna todos os registros que contenham o termo informado, de forma parcial e sem distinção entre maiúsculas e minúsculas.
+  - page (opcional, default = 0) – Página a ser retornada
+  - size (opcional, default = 10) – Número de exercícios por página
 
 ---
 
 ### `/exercises`
 
 ##### 1. Cadastrar exercício
-  ***POST*** `/exercises/register`
+***POST*** `/exercises/register`
 
 Endpoint responsável por cadastrar um ou mais exercícios.
 Permite o envio de uma lista de objetos, onde cada item representa um exercício distinto.
 
 - **Cada exercício deve:**
-    - Possuir um nome único (nomes duplicados não são permitidos).
-    - Incluir uma descrição clara do movimento.
-    - Estar associado a um ou mais grupos musculares já cadastrados.
+  - Possuir um nome único (nomes duplicados não são permitidos).
+  - Incluir uma descrição clara do movimento.
+  - Estar associado a um ou mais grupos musculares já cadastrados.
 
 **Request Body (JSON)**
 ```json
@@ -154,10 +325,10 @@ Retorna os detalhes de um exercicio, com base no seu ID.
 **GET** `/exercises/search?name=elevacao&page=0&size=5`
 
 - **Parâmetros de query:**
-    - name (opcional) - Termo utilizado para filtrar grupos musculares pelo nome.
-      A busca retorna todos os registros que contenham o termo informado, de forma parcial e sem distinção entre maiúsculas e minúsculas.
-    - page (opcional, default = 0) – Página a ser retornada
-    - size (opcional, default = 10) – Número de exercícios por página
+  - name (opcional) - Termo utilizado para filtrar grupos musculares pelo nome.
+    A busca retorna todos os registros que contenham o termo informado, de forma parcial e sem distinção entre maiúsculas e minúsculas.
+  - page (opcional, default = 0) – Página a ser retornada
+  - size (opcional, default = 10) – Número de exercícios por página
 
 ---
 
