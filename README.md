@@ -13,6 +13,7 @@ em uma academia, com autenticação JWT e controle de permissões.
 
 - [Base URL](#base-url)
 - [Autenticação](#autenticação)
+- [Códigos HTTP de Retorno da API](#códigos-http-de-retorno-da-api)
 - [Endpoints](#endpoints)
   - [Login](#login)
   - [Usuários](#usuários)
@@ -31,6 +32,21 @@ A maioria das rotas da API requer autenticação via **JWT (JSON Web Token)**.
 
 O token é gerado após o login do usuário e deve ser enviado em todas as requisições protegidas por meio do header `Authorization`.
 ### `Authorization: Bearer {jwt_token}`
+
+## Códigos HTTP de Retorno da API
+<br>
+
+| Código | Status | Descrição |
+|------:|--------|-----------|
+| 200 | OK | Sucesso |
+| 201 | Created | Criado |
+| 400 | Bad Request | Inválida |
+| 401 | Unauthorized | Não autenticado |
+| 403 | Forbidden | Sem permissão |
+| 404 | Not Found | Não encontrado |
+| 409 | Conflict | Conflito |
+| 500 | Internal Server Error | Erro interno |
+
 
 ## Endpoints
 
