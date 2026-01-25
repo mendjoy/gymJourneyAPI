@@ -38,14 +38,14 @@ O token é gerado após o login do usuário e deve ser enviado em todas as requi
 
 | Código | Status | Descrição |
 |------:|--------|-----------|
-| 200 | OK | Sucesso |
-| 201 | Created | Criado |
-| 400 | Bad Request | Inválida |
-| 401 | Unauthorized | Não autenticado |
-| 403 | Forbidden | Sem permissão |
-| 404 | Not Found | Não encontrado |
-| 409 | Conflict | Conflito |
-| 500 | Internal Server Error | Erro interno |
+| 200 | OK | Requisição realizada com sucesso |
+| 201 | Created | Recurso criado com sucesso |
+| 400 | Bad Request | Requisição inválida ou dados informados incorretamente |
+| 401 | Unauthorized | Usuário não autenticado ou token JWT inválido |
+| 403 | Forbidden | Acesso negado por falta de permissão |
+| 404 | Not Found | Recurso não encontrado |
+| 409 | Conflict | Conflito de dados, como tentativa de cadastro duplicado |
+| 500 | Internal Server Error | Erro interno inesperado no servidor |
 
 
 ## Endpoints
