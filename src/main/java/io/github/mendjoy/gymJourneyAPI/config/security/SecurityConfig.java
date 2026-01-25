@@ -29,23 +29,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                   .sessionManagement( sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                   .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                   .authorizeHttpRequests(req -> {
-                             req.requestMatchers("/users/register", "/users/verify-account", "/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.PATCH, "/users/add-role/{id}", "users/remove-role/{id}").hasRole("ADMIN")
-                                .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.POST, "/muscle-group/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/muscle-group/**").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.POST, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.PUT, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.DELETE, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.PUT, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
-                                .requestMatchers(HttpMethod.DELETE, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
-                                .anyRequest().authenticated();
-                   })
-                   .build();
+                .sessionManagement( sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers("/users/register", "/users/verify-account", "/auth/login").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.PATCH, "/users/add-role/{id}", "users/remove-role/{id}").hasRole("ADMIN")
+                            .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.POST, "/muscle-group/**").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/muscle-group/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.POST, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.PUT, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.DELETE, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.PUT, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.DELETE, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
+                            .anyRequest().authenticated();
+                })
+                .build();
     }
 
     @Bean
