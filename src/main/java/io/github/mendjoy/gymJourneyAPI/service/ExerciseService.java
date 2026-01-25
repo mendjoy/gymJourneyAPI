@@ -161,7 +161,7 @@ public class ExerciseService {
         if (workoutExerciseRepository.existsByExerciseId(id)) {
             throw GymJourneyException.conflict(
                     "Não é possível deletar este exercício pois ele está sendo usado em treinos"
-         );
+            );
         }
 
         exerciseRepository.delete(exercise);
