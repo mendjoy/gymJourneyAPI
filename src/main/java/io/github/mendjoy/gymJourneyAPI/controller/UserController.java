@@ -10,6 +10,7 @@ import io.github.mendjoy.gymJourneyAPI.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,57 +25,95 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegisterDto userRegisterDto){
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegisterDto userRegisterDto) {
         UserDto userDto = userService.register(userRegisterDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<UserDto> update(
+            @Valid @RequestBody UserDto userDto,
+            @AuthenticationPrincipal User authenticatedUser) {
+        UserDto userUpdated = userService.update(userDto, authenticatedUser);
+        return ResponseEntity.ok(userUpdated);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/add-role/{id}")
+    public ResponseEntity<ApiResponseDto> addRole(
+            @PathVariable Long id,
+            @Valid @RequestBody RoleDto roleDto) {
+        userService.addRole(id, roleDto);
+        return ResponseEntity.ok(new ApiResponseDto(
+                HttpStatus.OK.value(),
+                "Papel de usuário inserido com sucesso"
+        ));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/remove-role/{id}")
+    public ResponseEntity<ApiResponseDto> removeRole(
+            @PathVariable Long id,
+            @Valid @RequestBody RoleDto roleDto) {
+        userService.removeRole(id, roleDto);
+        return ResponseEntity.ok(new ApiResponseDto(
+                HttpStatus.OK.value(),
+                "Papel de usuário removido com sucesso"
+        ));
+    }
+
+    @PatchMapping("/disable/{id}")
+    public ResponseEntity<ApiResponseDto> disable(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User authenticatedUser) {
+        userService.disable(id, authenticatedUser);
+        return ResponseEntity.ok(new ApiResponseDto(
+                HttpStatus.OK.value(),
+                "Usuário inativado com sucesso"
+        ));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/enable/{id}")
+    public ResponseEntity<ApiResponseDto> enable(@PathVariable Long id) {
+        userService.enable(id);
+        return ResponseEntity.ok(new ApiResponseDto(
+                HttpStatus.OK.value(),
+                "Usuário ativado com sucesso"
+        ));
+    }
+
+    @PatchMapping("/change-password")
+    public ResponseEntity<ApiResponseDto> changePassword(
+            @Valid @RequestBody UserPasswordDto userPasswordDto,
+            @AuthenticationPrincipal User authenticatedUser) {
+        userService.changePassword(userPasswordDto, authenticatedUser);
+        return ResponseEntity.ok(new ApiResponseDto(
+                HttpStatus.OK.value(),
+                "Senha alterada com sucesso"
+        ));
+    }
+
+    @GetMapping("/verify-account")
+    public ResponseEntity<ApiResponseDto> verifyAccount(@RequestParam String token) {
+        userService.verifyEmail(token);
+        return ResponseEntity.ok(new ApiResponseDto(
+                HttpStatus.OK.value(),
+                "Conta verificada com sucesso!"
+        ));
+    }
+
     @GetMapping
-    public ResponseEntity<UserDto> getAuthenticatedUser(@AuthenticationPrincipal User authenticatedUser){
+    public ResponseEntity<UserDto> getAuthenticatedUser(
+            @AuthenticationPrincipal User authenticatedUser) {
         UserDto userDto = userService.getAuthenticatedUser(authenticatedUser);
         return ResponseEntity.ok(userDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
         UserDto userDto = userService.getById(id);
         return ResponseEntity.ok(userDto);
     }
-
-    @GetMapping("/verify-account")
-    public ResponseEntity<String> verifyAccount(@RequestParam String token){
-        userService.verifyEmail(token);
-        return ResponseEntity.ok("Conta verificada com sucesso!");
-    }
-
-    @PutMapping
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @AuthenticationPrincipal User authenticatedUser){
-        UserDto userUpdated = userService.update(userDto, authenticatedUser);
-        return ResponseEntity.ok(userDto);
-    }
-
-    @PatchMapping("/add-role/{id}")
-    public ResponseEntity<ApiResponseDto> addRole(@PathVariable Long id, @RequestBody RoleDto roleDto){
-        userService.addRole(id, roleDto);
-        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Papel de usuario inserido com sucesso"));
-    }
-
-    @PatchMapping("/remove-role/{id}")
-    public ResponseEntity<ApiResponseDto> removeRole(@PathVariable Long id, @RequestBody RoleDto roleDto){
-        userService.removeRole(id, roleDto);
-        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Papel de usuario removido com sucesso"));
-    }
-
-    @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<ApiResponseDto> disableUser(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
-        userService.disable(id, authenticatedUser);
-        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Usuário inativado com sucesso"));
-    }
-
-    @PatchMapping("/change-password")
-    public ResponseEntity<ApiResponseDto> changePassword(@Valid @RequestBody UserPasswordDto userPasswordDto, @AuthenticationPrincipal User authenticatedUser){
-        userService.changePassword(userPasswordDto, authenticatedUser);
-        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Senha alterada com sucesso"));
-    }
-
 }

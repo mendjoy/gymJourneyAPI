@@ -2,61 +2,70 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "gym_user")
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 255)
     private String email;
 
+    @Column(length = 255)
     private String name;
 
+    @Column(length = 255)
     private String phone;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
-               joinColumns = @JoinColumn(name = "user_id"),
-               inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles = new ArrayList<>();
 
+    @Column(nullable = false)
     private Boolean verified = false;
 
+    @Column(length = 500)
     private String token;
 
     @Column(name = "expiration_token")
     private LocalDateTime expirationToken;
 
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 
     public User() {
     }
 
-    public User(String email, String name, String phone, LocalDate birthDate, String password, List<Role> role, Boolean verified, String token, LocalDateTime expirationToken, Boolean active) {
+    public User(String email, String name, String phone, LocalDate birthDate,
+                String password, List<Role> roles, Boolean verified,
+                String token, LocalDateTime expirationToken, Boolean active) {
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.birthDate = birthDate;
         this.password = password;
-        this.roles = role;
+        this.roles = roles != null ? roles : new ArrayList<>();
         this.verified = verified;
         this.token = token;
         this.expirationToken = expirationToken;
@@ -95,16 +104,16 @@ public class User implements UserDetails {
         return birthDate;
     }
 
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public List<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
     }
 
     public Boolean getVerified() {
@@ -158,18 +167,35 @@ public class User implements UserDetails {
         return email;
     }
 
-    public void update(UserDto userDto){
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active && verified;
+    }
+
+    public void update(UserDto userDto) {
         if (userDto.name() != null && !userDto.name().isBlank()) {
             this.name = userDto.name();
         }
-
         if (userDto.phone() != null && !userDto.phone().isBlank()) {
             this.phone = userDto.phone();
         }
-
         if (userDto.birthDate() != null) {
             this.birthDate = userDto.birthDate();
         }
     }
-
 }
