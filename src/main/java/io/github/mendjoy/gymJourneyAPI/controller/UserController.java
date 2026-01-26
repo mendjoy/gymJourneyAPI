@@ -1,11 +1,12 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
 import io.github.mendjoy.gymJourneyAPI.domain.User;
+import io.github.mendjoy.gymJourneyAPI.dto.TokenDto;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
-import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserStatusDto;
 import io.github.mendjoy.gymJourneyAPI.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,26 +25,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<UserDto> register(@Valid @RequestBody UserRegisterDto userRegisterDto) {
         UserDto userDto = userService.register(userRegisterDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{userId}")
     public ResponseEntity<UserDto> update(
+            @PathVariable Long userId,
             @Valid @RequestBody UserDto userDto,
             @AuthenticationPrincipal User authenticatedUser) {
-        UserDto userUpdated = userService.update(userDto, authenticatedUser);
+        UserDto userUpdated = userService.update(userId, userDto, authenticatedUser);
         return ResponseEntity.ok(userUpdated);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/add-role/{id}")
+    @PostMapping("/{userId}/roles/{roleId}")
     public ResponseEntity<ApiResponseDto> addRole(
-            @PathVariable Long id,
-            @Valid @RequestBody RoleDto roleDto) {
-        userService.addRole(id, roleDto);
+            @PathVariable Long userId,
+            @PathVariable Long roleId) {
+        userService.addRole(userId, roleId);
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
                 "Papel de usuário inserido com sucesso"
@@ -51,69 +53,60 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/remove-role/{id}")
+    @DeleteMapping("/{userId}/roles/{roleId}")
     public ResponseEntity<ApiResponseDto> removeRole(
-            @PathVariable Long id,
-            @Valid @RequestBody RoleDto roleDto) {
-        userService.removeRole(id, roleDto);
+            @PathVariable Long userId,
+            @PathVariable Long roleId) {
+        userService.removeRole(userId, roleId);
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
                 "Papel de usuário removido com sucesso"
         ));
     }
 
-    @PatchMapping("/disable/{id}")
-    public ResponseEntity<ApiResponseDto> disable(
-            @PathVariable Long id,
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @PatchMapping("/{userId}/status")
+    public ResponseEntity<ApiResponseDto> changeStatus(
+            @PathVariable Long userId,
+            @RequestBody UserStatusDto userStatusDto,
             @AuthenticationPrincipal User authenticatedUser) {
-        userService.disable(id, authenticatedUser);
+        userService.changeStatus(userId, userStatusDto, authenticatedUser);
+        String msg = userStatusDto.enabled() ?
+                "Usuário ativado com sucesso" :
+                "Usuário inativado com sucesso";
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
-                "Usuário inativado com sucesso"
-        ));
+                msg));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/enable/{id}")
-    public ResponseEntity<ApiResponseDto> enable(@PathVariable Long id) {
-        userService.enable(id);
-        return ResponseEntity.ok(new ApiResponseDto(
-                HttpStatus.OK.value(),
-                "Usuário ativado com sucesso"
-        ));
-    }
-
-    @PatchMapping("/change-password")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @PatchMapping("/{userId}/password")
     public ResponseEntity<ApiResponseDto> changePassword(
+            @PathVariable Long userId,
             @Valid @RequestBody UserPasswordDto userPasswordDto,
             @AuthenticationPrincipal User authenticatedUser) {
-        userService.changePassword(userPasswordDto, authenticatedUser);
+        userService.changePassword(userId, userPasswordDto, authenticatedUser);
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
                 "Senha alterada com sucesso"
         ));
     }
 
-    @GetMapping("/verify-account")
-    public ResponseEntity<ApiResponseDto> verifyAccount(@RequestParam String token) {
-        userService.verifyEmail(token);
+    @PostMapping("/verify")
+    public ResponseEntity<ApiResponseDto> verifyEmail(@RequestBody TokenDto tokenDto) {
+        userService.verifyEmail(tokenDto);
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
                 "Conta verificada com sucesso!"
         ));
     }
 
-    @GetMapping
-    public ResponseEntity<UserDto> getAuthenticatedUser(
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getById(
+            @PathVariable Long userId,
             @AuthenticationPrincipal User authenticatedUser) {
-        UserDto userDto = userService.getAuthenticatedUser(authenticatedUser);
-        return ResponseEntity.ok(userDto);
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
-        UserDto userDto = userService.getById(id);
+        UserDto userDto = userService.getById(userId, authenticatedUser);
         return ResponseEntity.ok(userDto);
     }
 }

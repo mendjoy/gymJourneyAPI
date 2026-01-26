@@ -5,10 +5,11 @@ import io.github.mendjoy.gymJourneyAPI.config.mapper.UserMapper;
 import io.github.mendjoy.gymJourneyAPI.domain.Role;
 import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.domain.enums.RoleName;
-import io.github.mendjoy.gymJourneyAPI.dto.role.RoleDto;
+import io.github.mendjoy.gymJourneyAPI.dto.TokenDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDto;
+import io.github.mendjoy.gymJourneyAPI.dto.user.UserStatusDto;
 import io.github.mendjoy.gymJourneyAPI.repository.RoleRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,10 +47,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não foi encontrado"));
     }
 
-    private String generateVerificationToken() {
-        return UUID.randomUUID().toString();
-    }
-
     @Transactional
     public UserDto register(UserRegisterDto userRegisterDto) {
         if (userRepository.existsByEmail(userRegisterDto.email())) {
@@ -62,41 +59,35 @@ public class UserService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(userRegisterDto.password());
         User user = userMapper.toEntity(userRegisterDto);
         user.setPassword(encodedPassword);
-        user.setVerified(false);
-        user.setToken(generateVerificationToken());
-        user.setExpirationToken(LocalDateTime.now().plusMinutes(30));
-        user.setActive(true);
         user.setRoles(List.of(role));
-
         User newUser = userRepository.save(user);
-
-        try {
-            emailService.sendVerificationEmail(newUser);
-        } catch (Exception e) {
-
-        }
-
+        sendVerificationToken(user);
         return userMapper.toDto(newUser);
     }
 
     @Transactional
-    public UserDto update(UserDto userDto, User authenticatedUser) {
+    public UserDto update(Long userId, UserDto userDto, User authenticatedUser) {
         User user = userRepository.findById(authenticatedUser.getId())
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
+
+        if(cannotAccessUser(user, authenticatedUser)){
+            throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
+        }
+
         user.update(userDto);
         User updatedUser = userRepository.save(user);
         return userMapper.toDto(updatedUser);
     }
 
     @Transactional
-    public void addRole(Long id, RoleDto roleDto) {
+    public void addRole(Long id, Long roleId) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        Role role = roleRepository.findByName(RoleName.valueOf(roleDto.roleName()))
+        Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> GymJourneyException.notFound("Papel de usuário não encontrado"));
 
         if (user.getRoles().contains(role)) {
-            throw GymJourneyException.conflict("Usuário já possui papel de " + roleDto.roleName());
+            throw GymJourneyException.conflict("Usuário já possui papel de " + role.getName());
         }
 
         user.getRoles().add(role);
@@ -104,10 +95,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void removeRole(Long id, RoleDto roleDto) {
+    public void removeRole(Long id, Long roleId) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        Role role = roleRepository.findByName(RoleName.valueOf(roleDto.roleName()))
+        Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> GymJourneyException.notFound("Papel de usuário não encontrado"));
 
         if (!user.getRoles().contains(role)) {
@@ -123,9 +114,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void changePassword(UserPasswordDto userPasswordDto, User authenticatedUser) {
+    public void changePassword(Long userId, UserPasswordDto userPasswordDto, User authenticatedUser) {
         User user = userRepository.findById(authenticatedUser.getId())
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
+
+        if(cannotAccessUser(user, authenticatedUser)){
+            throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
+        }
 
         if (!passwordEncoder.matches(userPasswordDto.currentPassword(), user.getPassword())) {
             throw GymJourneyException.badRequest("Senha atual incorreta");
@@ -144,49 +139,25 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    @Transactional
-    public void disable(Long userId, User authenticatedUser) {
+    public void changeStatus(Long userId, UserStatusDto userStatusDto, User authenticatedUser) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        boolean isAdmin = authenticatedUser.getRoles().stream()
-                .anyMatch(role -> role.getName() == RoleName.ADMIN);
-        boolean isSameUser = user.getId().equals(authenticatedUser.getId());
-
-        if (!isAdmin && !isSameUser) {
+        if(cannotAccessUser(user, authenticatedUser)){
             throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
         }
 
-        user.setActive(false);
+        user.setActive(userStatusDto.enabled());
         userRepository.save(user);
     }
 
     @Transactional
-    public void enable(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-
-        user.setActive(true);
-        user.setVerified(false);
-        user.setToken(generateVerificationToken());
-        user.setExpirationToken(LocalDateTime.now().plusMinutes(30));
-
-        User updatedUser = userRepository.save(user);
-
-
-        try {
-            emailService.sendVerificationEmail(updatedUser);
-        } catch (Exception e) {
-
-        }
-    }
-
-    @Transactional
-    public void verifyEmail(String token) {
-        User user = userRepository.findByToken(token)
+    public void verifyEmail(TokenDto tokenDto) {
+        User user = userRepository.findByToken(tokenDto.token())
                 .orElseThrow(() -> GymJourneyException.notFound("Token inválido ou expirado"));
 
         if (user.getExpirationToken().isBefore(LocalDateTime.now())) {
+            sendVerificationToken(user);
             throw GymJourneyException.badRequest("Token expirado, solicite um novo email de verificação.");
         }
 
@@ -196,15 +167,50 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    private void sendVerificationToken(User user) {
+        String token = UUID.randomUUID().toString();
+        user.setToken(token);
+        user.setExpirationToken(LocalDateTime.now().plusHours(24L));
+        userRepository.save(user);
+
+        try {
+            emailService.sendVerificationEmail(user);
+        } catch (Exception e) {
+
+            System.err.println("Falha ao enviar email de verificação: " + e.getMessage());
+        }
+    }
+
     public UserDto getAuthenticatedUser(User authenticatedUser) {
         User user = userRepository.findById(authenticatedUser.getId())
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
         return userMapper.toDto(user);
     }
 
-    public UserDto getById(Long id) {
+    public UserDto getById(Long id, User authenticatedUser) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
+        if(cannotAccessUser(user, authenticatedUser)){
+            throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
+        }
         return userMapper.toDto(user);
     }
+
+    private boolean cannotAccessUser(User user, User authenticatedUser) {
+        return !isAdmin(authenticatedUser) && !isSameUser(user, authenticatedUser);
+    }
+
+    private boolean isAdmin(User user){
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName() == RoleName.ADMIN);
+    }
+
+    private boolean isSameUser(User user, User authenticatedUser){
+        return user.getId().equals(authenticatedUser.getId());
+    }
+
+    private boolean isTokenExpired(User user) {
+        return user.getExpirationToken().isBefore(LocalDateTime.now());
+    }
+
 }
