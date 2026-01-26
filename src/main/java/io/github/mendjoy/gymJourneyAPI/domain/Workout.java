@@ -3,28 +3,38 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "workout")
 public class Workout {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @NotNull
+    @Column(nullable = false, length = 255)
     private String name;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "max_sessions")
+    @Positive
+    @Column(name = "max_sessions", nullable = false)
     private Integer maxSessions;
 
-    @Column(name = "start_date")
+    @NotNull
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
     @Column(name = "end_date")
@@ -32,18 +42,19 @@ public class Workout {
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    List<WorkoutSection> workoutSections;
+    private List<WorkoutSection> workoutSections = new ArrayList<>();
 
     public Workout() {
     }
 
-    public Workout(User user, String name, String description, Integer maxSessions, LocalDate startDate, List<WorkoutSection> workoutSections) {
+    public Workout(User user, String name, String description, Integer maxSessions,
+                   LocalDate startDate, List<WorkoutSection> workoutSections) {
         this.user = user;
         this.name = name;
         this.description = description;
         this.maxSessions = maxSessions;
         this.startDate = startDate;
-        this.workoutSections = workoutSections;
+        this.workoutSections = workoutSections != null ? workoutSections : new ArrayList<>();
     }
 
     public Long getId() {
@@ -110,14 +121,19 @@ public class Workout {
         this.workoutSections = workoutSections;
     }
 
-    public void updateWorkout(WorkoutDto workoutDto){
+    public void addWorkoutSection(WorkoutSection section) {
+        workoutSections.add(section);
+        section.setWorkout(this);
+    }
+
+    public void updateWorkout(WorkoutDto workoutDto) {
         if (workoutDto.name() != null && !workoutDto.name().isBlank()) {
             this.setName(workoutDto.name());
         }
         if (workoutDto.description() != null && !workoutDto.description().isBlank()) {
             this.setDescription(workoutDto.description());
         }
-        if (workoutDto.maxSessions() != null && workoutDto.maxSessions() != 0) {
+        if (workoutDto.maxSessions() != null && workoutDto.maxSessions() > 0) {
             this.setMaxSessions(workoutDto.maxSessions());
         }
         if (workoutDto.startDate() != null) {
