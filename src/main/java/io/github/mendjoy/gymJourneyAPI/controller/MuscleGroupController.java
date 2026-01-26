@@ -22,7 +22,7 @@ public class MuscleGroupController {
         this.muscleGroupService = muscleGroupService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @PostMapping
     public ResponseEntity<List<MuscleGroupDto>> create(
             @Valid @RequestBody List<MuscleGroupDto> muscleGroupDtos) {
@@ -30,7 +30,7 @@ public class MuscleGroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newMuscleGroups);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @PutMapping("/{muscleGroupId}")
     public ResponseEntity<MuscleGroupDto> update(
             @PathVariable Long muscleGroupId,
@@ -39,12 +39,14 @@ public class MuscleGroupController {
         return ResponseEntity.ok(muscleGroup);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @GetMapping("/{muscleGroupId}")
     public ResponseEntity<MuscleGroupDto> getById(@PathVariable Long muscleGroupId) {
         MuscleGroupDto muscleGroupDto = muscleGroupService.getById(muscleGroupId);
         return ResponseEntity.ok(muscleGroupDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @GetMapping
     public ResponseEntity<Page<MuscleGroupDto>> findMuscleGroups(
             @RequestParam(required = false) String name,
@@ -55,7 +57,7 @@ public class MuscleGroupController {
         return ResponseEntity.ok(muscleGroups);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @DeleteMapping("/{muscleGroupId}")
     public ResponseEntity<ApiResponseDto> delete(@PathVariable Long muscleGroupId) {
         muscleGroupService.delete(muscleGroupId);
