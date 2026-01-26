@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDto register(UserRegisterDto userRegisterDto) {
+    public UserDto create(UserRegisterDto userRegisterDto) {
         if (userRepository.existsByEmail(userRegisterDto.email())) {
             throw GymJourneyException.alreadyExists("E-mail já cadastrado!");
         }
