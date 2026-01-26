@@ -2,7 +2,6 @@ package io.github.mendjoy.gymJourneyAPI.controller;
 
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
-import io.github.mendjoy.gymJourneyAPI.dto.muscleGroup.MuscleGroupDto;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.service.ExerciseService;
 import jakarta.validation.Valid;
@@ -30,68 +29,52 @@ public class ExerciseController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
-    @PutMapping("/{id}")
+    @PutMapping("/{exerciseId}")
     public ResponseEntity<ExerciseDetailsDto> update(
-            @PathVariable Long id,
+            @PathVariable Long exerciseId,
             @Valid @RequestBody ExerciseDto exerciseDto) {
-        ExerciseDetailsDto exercise = exerciseService.update(id, exerciseDto);
+        ExerciseDetailsDto exercise = exerciseService.update(exerciseId, exerciseDto);
         return ResponseEntity.ok(exercise);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ExerciseDetailsDto> getById(@PathVariable Long id) {
-        ExerciseDetailsDto exercise = exerciseService.getById(id);
+    @GetMapping("/{exerciseId}")
+    public ResponseEntity<ExerciseDetailsDto> getById(@PathVariable Long exerciseId) {
+        ExerciseDetailsDto exercise = exerciseService.getById(exerciseId);
         return ResponseEntity.ok(exercise);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ExerciseDetailsDto>> getAll(
+    public ResponseEntity<Page<ExerciseDetailsDto>> getExercises(
+            @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<ExerciseDetailsDto> exercises = exerciseService.getAll(page, size);
-        return ResponseEntity.ok(exercises);
-    }
 
-    @GetMapping("/search")
-    public ResponseEntity<Page<ExerciseDetailsDto>> searchByName(
-            @RequestParam String name,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<ExerciseDetailsDto> exercises = exerciseService.searchByName(name, page, size);
+        Page<ExerciseDetailsDto> exercises = exerciseService.getExercises(name, page, size);
         return ResponseEntity.ok(exercises);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
-    @PatchMapping("/{id}/muscle-groups/add")
+    @PostMapping("/{exerciseId}/muscle-groups/{muscleGroupId}")
     public ResponseEntity<ApiResponseDto> addMuscleGroup(
-            @PathVariable Long id,
-            @Valid @RequestBody MuscleGroupDto muscleGroupDto) {
-        exerciseService.addMuscleGroup(id, muscleGroupDto);
-        return ResponseEntity.ok(new ApiResponseDto(
-                HttpStatus.OK.value(),
-                "Grupo muscular adicionado com sucesso"
-        ));
+            @PathVariable Long exerciseId,
+            @PathVariable Long muscleGroupId) {
+        exerciseService.addMuscleGroup(exerciseId, muscleGroupId);
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Grupo muscular adicionado"));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
-    @PatchMapping("/{id}/muscle-groups/remove")
+    @DeleteMapping("/{exerciseId}/muscle-groups/{muscleGroupId}")
     public ResponseEntity<ApiResponseDto> removeMuscleGroup(
-            @PathVariable Long id,
-            @Valid @RequestBody MuscleGroupDto muscleGroupDto) {
-        exerciseService.removeMuscleGroup(id, muscleGroupDto);
-        return ResponseEntity.ok(new ApiResponseDto(
-                HttpStatus.OK.value(),
-                "Grupo muscular removido com sucesso"
-        ));
+            @PathVariable Long exerciseId,
+            @PathVariable Long muscleGroupId) {
+        exerciseService.removeMuscleGroup(exerciseId, muscleGroupId);
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Grupo muscular removido"));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id) {
-        exerciseService.delete(id);
-        return ResponseEntity.ok(new ApiResponseDto(
-                HttpStatus.OK.value(),
-                "Exercício deletado com sucesso"
-        ));
+    @DeleteMapping("/{exerciseId}")
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long exerciseId) {
+        exerciseService.delete(exerciseId);
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Exercício deletado"));
     }
 }

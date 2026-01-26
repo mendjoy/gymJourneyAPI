@@ -6,7 +6,6 @@ import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
 import io.github.mendjoy.gymJourneyAPI.domain.MuscleGroup;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDto;
-import io.github.mendjoy.gymJourneyAPI.dto.muscleGroup.MuscleGroupDto;
 import io.github.mendjoy.gymJourneyAPI.repository.ExerciseRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.MuscleGroupRepository;
 import io.github.mendjoy.gymJourneyAPI.repository.WorkoutExerciseRepository;
@@ -99,24 +98,20 @@ public class ExerciseService {
         return exerciseMapper.toDetailsDto(exercise);
     }
 
-    public Page<ExerciseDetailsDto> getAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Exercise> exercisePage = exerciseRepository.findAll(pageable);
-        return exercisePage.map(exerciseMapper::toDetailsDto);
-    }
-
-    public Page<ExerciseDetailsDto> searchByName(String name, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
-        return exercisePage.map(exerciseMapper::toDetailsDto);
+    public Page<ExerciseDetailsDto> getExercises(String name, int page, int size) {
+        if (name == null || name.isBlank()) {
+            return getAll(page, size);
+        } else {
+            return searchByName(name, page, size);
+        }
     }
 
     @Transactional
-    public void addMuscleGroup(Long exerciseId, MuscleGroupDto muscleGroupDto) {
+    public void addMuscleGroup(Long exerciseId, Long muscleGroupId) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> GymJourneyException.notFound("Exercício não encontrado!"));
 
-        MuscleGroup muscleGroup = muscleGroupRepository.findById(muscleGroupDto.id())
+        MuscleGroup muscleGroup = muscleGroupRepository.findById(muscleGroupId)
                 .orElseThrow(() -> GymJourneyException.notFound("Grupo muscular não encontrado!"));
 
         if (exercise.getMuscleGroups().contains(muscleGroup)) {
@@ -130,11 +125,11 @@ public class ExerciseService {
     }
 
     @Transactional
-    public void removeMuscleGroup(Long exerciseId, MuscleGroupDto muscleGroupDto) {
+    public void removeMuscleGroup(Long exerciseId, Long muscleGroupId) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> GymJourneyException.notFound("Exercício não encontrado!"));
 
-        MuscleGroup muscleGroup = muscleGroupRepository.findById(muscleGroupDto.id())
+        MuscleGroup muscleGroup = muscleGroupRepository.findById(muscleGroupId)
                 .orElseThrow(() -> GymJourneyException.notFound("Grupo muscular não encontrado!"));
 
         if (!exercise.getMuscleGroups().contains(muscleGroup)) {
@@ -154,11 +149,11 @@ public class ExerciseService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        Exercise exercise = exerciseRepository.findById(id)
+    public void delete(Long exerciseId) {
+        Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> GymJourneyException.notFound("Exercício não encontrado!"));
 
-        if (workoutExerciseRepository.existsByExerciseId(id)) {
+        if (workoutExerciseRepository.existsByExerciseId(exerciseId)) {
             throw GymJourneyException.conflict(
                     "Não é possível deletar este exercício pois ele está sendo usado em treinos"
             );
@@ -166,4 +161,17 @@ public class ExerciseService {
 
         exerciseRepository.delete(exercise);
     }
+
+    private Page<ExerciseDetailsDto> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Exercise> exercisePage = exerciseRepository.findAll(pageable);
+        return exercisePage.map(exerciseMapper::toDetailsDto);
+    }
+
+    private Page<ExerciseDetailsDto> searchByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Exercise> exercisePage = exerciseRepository.findByNameContainingIgnoreCase(name, pageable);
+        return exercisePage.map(exerciseMapper::toDetailsDto);
+    }
+
 }
