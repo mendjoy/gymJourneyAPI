@@ -30,7 +30,7 @@ public class MuscleGroupService {
     }
 
     @Transactional
-    public List<MuscleGroupDto> register(List<MuscleGroupDto> muscleGroupDtos) {
+    public List<MuscleGroupDto> create(List<MuscleGroupDto> muscleGroupDtos) {
         List<String> duplicates = new ArrayList<>();
         List<MuscleGroup> toSave = new ArrayList<>();
 
@@ -95,17 +95,12 @@ public class MuscleGroupService {
         return muscleGroupMapper.toDto(muscleGroup);
     }
 
-    public Page<MuscleGroupDto> getAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<MuscleGroup> muscleGroupPage = muscleGroupRepository.findAll(pageable);
-        return muscleGroupPage.map(muscleGroupMapper::toDto);
-    }
-
-    public Page<MuscleGroupDto> searchByName(String name, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<MuscleGroup> muscleGroupPage = muscleGroupRepository
-                .findByNameContainingIgnoreCase(name, pageable);
-        return muscleGroupPage.map(muscleGroupMapper::toDto);
+    public Page<MuscleGroupDto> findMuscleGroups(String name, int page, int size) {
+        if (name == null || name.isBlank()) {
+            return findAll(page, size);
+        } else {
+            return findByName(name, page, size);
+        }
     }
 
     @Transactional
@@ -122,5 +117,18 @@ public class MuscleGroupService {
          }
 
         muscleGroupRepository.delete(muscleGroup);
+    }
+
+    private Page<MuscleGroupDto> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<MuscleGroup> muscleGroupPage = muscleGroupRepository.findAll(pageable);
+        return muscleGroupPage.map(muscleGroupMapper::toDto);
+    }
+
+    private Page<MuscleGroupDto> findByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<MuscleGroup> muscleGroupPage = muscleGroupRepository
+                .findByNameContainingIgnoreCase(name, pageable);
+        return muscleGroupPage.map(muscleGroupMapper::toDto);
     }
 }

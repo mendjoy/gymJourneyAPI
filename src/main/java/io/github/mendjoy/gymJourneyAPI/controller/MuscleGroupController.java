@@ -23,49 +23,42 @@ public class MuscleGroupController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/register")
-    public ResponseEntity<List<MuscleGroupDto>> register(
+    @PostMapping
+    public ResponseEntity<List<MuscleGroupDto>> create(
             @Valid @RequestBody List<MuscleGroupDto> muscleGroupDtos) {
-        List<MuscleGroupDto> newMuscleGroups = muscleGroupService.register(muscleGroupDtos);
+        List<MuscleGroupDto> newMuscleGroups = muscleGroupService.create(muscleGroupDtos);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMuscleGroups);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/update/{id}")
+    @PutMapping("/{muscleGroupId}")
     public ResponseEntity<MuscleGroupDto> update(
-            @PathVariable Long id,
+            @PathVariable Long muscleGroupId,
             @Valid @RequestBody MuscleGroupDto muscleGroupDto) {
-        MuscleGroupDto muscleGroup = muscleGroupService.update(id, muscleGroupDto);
+        MuscleGroupDto muscleGroup = muscleGroupService.update(muscleGroupId, muscleGroupDto);
         return ResponseEntity.ok(muscleGroup);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MuscleGroupDto> getById(@PathVariable Long id) {
-        MuscleGroupDto muscleGroupDto = muscleGroupService.getById(id);
+    @GetMapping("/{muscleGroupId}")
+    public ResponseEntity<MuscleGroupDto> getById(@PathVariable Long muscleGroupId) {
+        MuscleGroupDto muscleGroupDto = muscleGroupService.getById(muscleGroupId);
         return ResponseEntity.ok(muscleGroupDto);
     }
 
     @GetMapping
-    public ResponseEntity<Page<MuscleGroupDto>> getAll(
+    public ResponseEntity<Page<MuscleGroupDto>> findMuscleGroups(
+            @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<MuscleGroupDto> muscleGroups = muscleGroupService.getAll(page, size);
-        return ResponseEntity.ok(muscleGroups);
-    }
 
-    @GetMapping("/search")
-    public ResponseEntity<Page<MuscleGroupDto>> searchByName(
-            @RequestParam String name,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<MuscleGroupDto> muscleGroups = muscleGroupService.searchByName(name, page, size);
+        Page<MuscleGroupDto> muscleGroups = muscleGroupService.findMuscleGroups(name, page, size);
         return ResponseEntity.ok(muscleGroups);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id) {
-        muscleGroupService.delete(id);
+    @DeleteMapping("/{muscleGroupId}")
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long muscleGroupId) {
+        muscleGroupService.delete(muscleGroupId);
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
                 "Grupo muscular deletado com sucesso"
