@@ -37,12 +37,14 @@ public class ExerciseController {
         return ResponseEntity.ok(exercise);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @GetMapping("/{exerciseId}")
     public ResponseEntity<ExerciseDetailsDto> getById(@PathVariable Long exerciseId) {
         ExerciseDetailsDto exercise = exerciseService.getById(exerciseId);
         return ResponseEntity.ok(exercise);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @GetMapping
     public ResponseEntity<Page<ExerciseDetailsDto>> getExercises(
             @RequestParam(required = false) String name,
@@ -71,7 +73,7 @@ public class ExerciseController {
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Grupo muscular removido"));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @DeleteMapping("/{exerciseId}")
     public ResponseEntity<ApiResponseDto> delete(@PathVariable Long exerciseId) {
         exerciseService.delete(exerciseId);
