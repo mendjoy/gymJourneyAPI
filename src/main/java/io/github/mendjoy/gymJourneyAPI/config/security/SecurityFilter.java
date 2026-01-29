@@ -32,37 +32,50 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        return path.equals("/auth/login")  || path.equals("/users")  || path.equals("/users/verify");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, GymJourneyException {
 
         try {
-            String token = recoverToker(request);
 
-            if(token != null){
+            String token = recoverToken(request);
+
+            if (token != null) {
                 String email = tokenService.verifyToken(token);
-                User user = userRepository.findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(email).orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado!"));
+                User user = (User) userRepository.findByEmail(email).orElse(null);
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (user != null && user.getVerified()) {
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(
+                            user, null, user.getAuthorities()
+                    );
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
 
             filterChain.doFilter(request, response);
 
-        }catch (GymJourneyException ex){
+        } catch (GymJourneyException ex) {
 
             handleException(response, ex.getMessage(), ex.getHttpStatus());
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
-            handleException(response, "Erro interno no servidor", HttpStatus.INTERNAL_SERVER_ERROR);
+            handleException(response, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 
     }
 
-    private String recoverToker(HttpServletRequest request){
+    private String recoverToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader != null){
+        if (authHeader != null) {
             return authHeader.replace("Bearer ", "");
         }
 

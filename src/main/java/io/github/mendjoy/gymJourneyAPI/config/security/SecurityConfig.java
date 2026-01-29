@@ -3,6 +3,8 @@ package io.github.mendjoy.gymJourneyAPI.config.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,20 +31,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement( sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/users/register", "/users/verify-account", "/auth/login").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.PATCH, "/users/add-role/{id}", "users/remove-role/{id}").hasRole("ADMIN")
+                    req.requestMatchers(HttpMethod.POST, "/users", "/users/verify", "/auth/login").permitAll()
                             .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.POST, "/muscle-group/**").hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.GET, "/muscle-group/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.POST, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.PUT, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.DELETE, "/workouts/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.PUT, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers(HttpMethod.DELETE, "/workout-sections/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers("//muscle-groups/**").hasAnyRole("ADMIN", "TRAINER")
                             .anyRequest().authenticated();
                 })
                 .build();
@@ -54,15 +48,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public RoleHierarchy roleHierarchy(){
-        return RoleHierarchyImpl.withDefaultRolePrefix()
-                .role("ADMIN").implies("TRAINER")
-                .role("TRAINER").implies("USER")
-                .build();
+    public RoleHierarchy roleHierarchy() {
+        return RoleHierarchyImpl.fromHierarchy(
+                "ADMIN > TRAINER\n" +
+                        "TRAINER > USER"
+        );
     }
+
+    @Bean
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler(RoleHierarchy roleHierarchy) {
+        DefaultMethodSecurityExpressionHandler handler =
+                new DefaultMethodSecurityExpressionHandler();
+        handler.setRoleHierarchy(roleHierarchy);
+        return handler;
+    }
+
 }
