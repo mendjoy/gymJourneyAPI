@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/users", "/users/verify", "/auth/login").permitAll()
                             .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
-                            .requestMatchers("//muscle-groups/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers("/muscle-groups/**").hasAnyRole("ADMIN", "TRAINER")
                             .anyRequest().authenticated();
                 })
                 .build();

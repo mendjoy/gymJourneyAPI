@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,14 +20,12 @@ public class ExerciseController {
         this.exerciseService = exerciseService;
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @PostMapping
     public ResponseEntity<ExerciseDetailsDto> register(@Valid @RequestBody ExerciseDto exerciseDto) {
         ExerciseDetailsDto newExercise = exerciseService.register(exerciseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @PutMapping("/{exerciseId}")
     public ResponseEntity<ExerciseDetailsDto> update(
             @PathVariable Long exerciseId,
@@ -37,14 +34,12 @@ public class ExerciseController {
         return ResponseEntity.ok(exercise);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @GetMapping("/{exerciseId}")
     public ResponseEntity<ExerciseDetailsDto> getById(@PathVariable Long exerciseId) {
         ExerciseDetailsDto exercise = exerciseService.getById(exerciseId);
         return ResponseEntity.ok(exercise);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @GetMapping
     public ResponseEntity<Page<ExerciseDetailsDto>> getExercises(
             @RequestParam(required = false) String name,
@@ -55,7 +50,6 @@ public class ExerciseController {
         return ResponseEntity.ok(exercises);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @PostMapping("/{exerciseId}/muscle-groups/{muscleGroupId}")
     public ResponseEntity<ApiResponseDto> addMuscleGroup(
             @PathVariable Long exerciseId,
@@ -64,7 +58,6 @@ public class ExerciseController {
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Grupo muscular adicionado"));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @DeleteMapping("/{exerciseId}/muscle-groups/{muscleGroupId}")
     public ResponseEntity<ApiResponseDto> removeMuscleGroup(
             @PathVariable Long exerciseId,
@@ -73,7 +66,6 @@ public class ExerciseController {
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Grupo muscular removido"));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TRAINER')")
     @DeleteMapping("/{exerciseId}")
     public ResponseEntity<ApiResponseDto> delete(@PathVariable Long exerciseId) {
         exerciseService.delete(exerciseId);
