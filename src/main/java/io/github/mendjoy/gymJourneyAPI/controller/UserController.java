@@ -40,7 +40,6 @@ public class UserController {
         return ResponseEntity.ok(userUpdated);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{userId}/roles/{roleId}")
     public ResponseEntity<ApiResponseDto> addRole(
             @PathVariable Long userId,
@@ -52,7 +51,6 @@ public class UserController {
         ));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{userId}/roles/{roleId}")
     public ResponseEntity<ApiResponseDto> removeRole(
             @PathVariable Long userId,
@@ -64,7 +62,6 @@ public class UserController {
         ));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     @PatchMapping("/{userId}/status")
     public ResponseEntity<ApiResponseDto> changeStatus(
             @PathVariable Long userId,
@@ -79,7 +76,6 @@ public class UserController {
                 msg));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     @PatchMapping("/{userId}/password")
     public ResponseEntity<ApiResponseDto> changePassword(
             @PathVariable Long userId,
@@ -101,7 +97,7 @@ public class UserController {
         ));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @PreAuthorize("hasAuthority('ADMIN') or #userId == authentication.principal.id")
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getById(
             @PathVariable Long userId,

@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/users", "/users/verify", "/auth/login").permitAll()
+                            .requestMatchers("/users/*/roles/*").hasRole("ADMIN")
                             .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
                             .requestMatchers("/muscle-groups/**").hasAnyRole("ADMIN", "TRAINER")
                             .anyRequest().authenticated();
