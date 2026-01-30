@@ -60,17 +60,20 @@ public class UserService implements UserDetailsService {
         User user = userMapper.toEntity(userRegisterDto);
         user.setPassword(encodedPassword);
         user.setRoles(List.of(role));
+        String token = UUID.randomUUID().toString();
+        user.setToken(token);
+        user.setExpirationToken(LocalDateTime.now().plusHours(24L));
         User newUser = userRepository.save(user);
-        sendVerificationToken(user);
+       // sendVerificationToken(newUser);
         return userMapper.toDto(newUser);
     }
 
     @Transactional
     public UserDto update(Long userId, UserDto userDto, User authenticatedUser) {
-        User user = userRepository.findById(authenticatedUser.getId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        if(cannotAccessUser(user, authenticatedUser)){
+        if(cannotAccess(user, authenticatedUser)){
             throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
         }
 
@@ -115,11 +118,11 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void changePassword(Long userId, UserPasswordDto userPasswordDto, User authenticatedUser) {
-        User user = userRepository.findById(authenticatedUser.getId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        if(cannotAccessUser(user, authenticatedUser)){
-            throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
+        if(cannotAccess(user, authenticatedUser)){
+            throw GymJourneyException.forbidden("Você não tem permissão para Alterar");
         }
 
         if (!passwordEncoder.matches(userPasswordDto.currentPassword(), user.getPassword())) {
@@ -143,7 +146,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        if(cannotAccessUser(user, authenticatedUser)){
+        if(cannotAccess(user, authenticatedUser)){
             throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
         }
 
@@ -158,7 +161,7 @@ public class UserService implements UserDetailsService {
 
         if (user.getExpirationToken().isBefore(LocalDateTime.now())) {
             sendVerificationToken(user);
-            throw GymJourneyException.badRequest("Token expirado, solicite um novo email de verificação.");
+            throw GymJourneyException.badRequest("Token expirado, sera enviado um novo email de verificação.");
         }
 
         user.setVerified(true);
@@ -168,10 +171,6 @@ public class UserService implements UserDetailsService {
     }
 
     private void sendVerificationToken(User user) {
-        String token = UUID.randomUUID().toString();
-        user.setToken(token);
-        user.setExpirationToken(LocalDateTime.now().plusHours(24L));
-        userRepository.save(user);
 
         try {
             emailService.sendVerificationEmail(user);
@@ -181,22 +180,16 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserDto getAuthenticatedUser(User authenticatedUser) {
-        User user = userRepository.findById(authenticatedUser.getId())
-                .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        return userMapper.toDto(user);
-    }
-
     public UserDto getById(Long id, User authenticatedUser) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        if(cannotAccessUser(user, authenticatedUser)){
-            throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
+        if(cannotAccess(user, authenticatedUser)){
+            throw GymJourneyException.forbidden("Você não tem permissão para visualizar este usuário");
         }
         return userMapper.toDto(user);
     }
 
-    private boolean cannotAccessUser(User user, User authenticatedUser) {
+    public boolean cannotAccess(User user, User authenticatedUser) {
         return !isAdmin(authenticatedUser) && !isSameUser(user, authenticatedUser);
     }
 
@@ -207,10 +200,6 @@ public class UserService implements UserDetailsService {
 
     private boolean isSameUser(User user, User authenticatedUser){
         return user.getId().equals(authenticatedUser.getId());
-    }
-
-    private boolean isTokenExpired(User user) {
-        return user.getExpirationToken().isBefore(LocalDateTime.now());
     }
 
 }
