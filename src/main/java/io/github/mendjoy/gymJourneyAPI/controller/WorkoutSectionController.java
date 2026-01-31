@@ -21,22 +21,10 @@ public class WorkoutSectionController {
         this.workoutSectionService = workoutSectionService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<List<WorkoutSectionDto>> register(@RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
-        List<WorkoutSectionDto> newSections = workoutSectionService.register(workoutSectionDtos);
+    @PostMapping
+    public ResponseEntity<List<WorkoutSectionDto>> create(@RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
+        List<WorkoutSectionDto> newSections = workoutSectionService.create(workoutSectionDtos);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSections);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<WorkoutSectionDetailsDto>> getByWorkoutId(@RequestParam Long workoutId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        Page<WorkoutSectionDetailsDto> sections = workoutSectionService.getByWorkoutId(workoutId, page, size);
-        return ResponseEntity.ok(sections);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<WorkoutSectionDetailsDto> getById(@PathVariable Long id){
-        WorkoutSectionDetailsDto section = workoutSectionService.getById(id);
-        return ResponseEntity.ok(section);
     }
 
     @PutMapping
@@ -45,9 +33,22 @@ public class WorkoutSectionController {
         return ResponseEntity.ok(section);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id){
-        workoutSectionService.delete(id);
+    @GetMapping
+    public ResponseEntity<Page<WorkoutSectionDetailsDto>> findByWorkoutId(@RequestParam Long workoutId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<WorkoutSectionDetailsDto> sections = workoutSectionService.findByWorkoutId(workoutId, page, size);
+        return ResponseEntity.ok(sections);
+    }
+
+    @GetMapping("/{sectionId}")
+    public ResponseEntity<WorkoutSectionDetailsDto> findById(@PathVariable Long sectionId) {
+        WorkoutSectionDetailsDto section = workoutSectionService.findById(sectionId);
+        return ResponseEntity.ok(section);
+    }
+
+
+    @DeleteMapping("/{sectionId}")
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long sectionId) {
+        workoutSectionService.delete(sectionId);
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Seção do treino excluida com sucesso!"));
     }
 }

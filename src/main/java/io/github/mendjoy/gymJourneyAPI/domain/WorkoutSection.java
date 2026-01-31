@@ -4,35 +4,44 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutSectionDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "workout_section")
 public class WorkoutSection {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "workout_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workout_id", nullable = false)
     @JsonBackReference
     private Workout workout;
+
+    @NotBlank
+    @Column(nullable = false, length = 255)
     private String name;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(mappedBy = "workoutSection", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<WorkoutExercise> workoutExercises;
+    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
     public WorkoutSection() {
     }
 
-    public WorkoutSection(Workout workout, String name, String description, List<WorkoutExercise> workoutExercises) {
+    public WorkoutSection(Workout workout, String name, String description,
+                          List<WorkoutExercise> workoutExercises) {
         this.workout = workout;
         this.name = name;
         this.description = description;
-        this.workoutExercises = workoutExercises;
+        this.workoutExercises = workoutExercises != null ? workoutExercises : new ArrayList<>();
     }
 
     public Long getId() {
@@ -75,12 +84,16 @@ public class WorkoutSection {
         this.workoutExercises = workoutExercises;
     }
 
-    public void update(WorkoutSectionDto workoutSectionDto){
-        if(workoutSectionDto.name() != null){
+    public void addWorkoutExercise(WorkoutExercise exercise) {
+        workoutExercises.add(exercise);
+        exercise.setWorkoutSection(this);
+    }
+
+    public void update(WorkoutSectionDto workoutSectionDto) {
+        if (workoutSectionDto.name() != null && !workoutSectionDto.name().isBlank()) {
             this.setName(workoutSectionDto.name());
         }
-
-        if(workoutSectionDto.description() != null){
+        if (workoutSectionDto.description() != null && !workoutSectionDto.description().isBlank()) {
             this.setDescription(workoutSectionDto.description());
         }
     }
