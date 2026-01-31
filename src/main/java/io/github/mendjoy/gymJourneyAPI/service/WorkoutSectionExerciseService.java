@@ -4,7 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.config.mapper.WorkoutExerciseMapper;
 import io.github.mendjoy.gymJourneyAPI.domain.Exercise;
 import io.github.mendjoy.gymJourneyAPI.domain.User;
-import io.github.mendjoy.gymJourneyAPI.domain.WorkoutExercise;
+import io.github.mendjoy.gymJourneyAPI.domain.WorkoutSectionExercise;
 import io.github.mendjoy.gymJourneyAPI.domain.WorkoutSection;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
@@ -20,17 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class WorkoutExerciseService {
+public class WorkoutSectionExerciseService {
 
     private final WorkoutExerciseRepository workoutExerciseRepository;
     private final WorkoutSectionRepository workoutSectionRepository;
     private final ExerciseRepository exerciseRepository;
     private final WorkoutExerciseMapper workoutExerciseMapper;
 
-    public WorkoutExerciseService(WorkoutExerciseRepository workoutExerciseRepository,
-                                  WorkoutSectionRepository workoutSectionRepository,
-                                  ExerciseRepository exerciseRepository,
-                                  WorkoutExerciseMapper workoutExerciseMapper) {
+    public WorkoutSectionExerciseService(WorkoutExerciseRepository workoutExerciseRepository,
+                                         WorkoutSectionRepository workoutSectionRepository,
+                                         ExerciseRepository exerciseRepository,
+                                         WorkoutExerciseMapper workoutExerciseMapper) {
         this.workoutExerciseRepository = workoutExerciseRepository;
         this.workoutSectionRepository = workoutSectionRepository;
         this.exerciseRepository = exerciseRepository;
@@ -50,16 +50,16 @@ public class WorkoutExerciseService {
             );
         }
 
-        List<WorkoutExercise> exercises = workoutExerciseDtos.stream().map(dto -> {
+        List<WorkoutSectionExercise> exercises = workoutExerciseDtos.stream().map(dto -> {
             Exercise exercise = exerciseRepository.findById(dto.exerciseId())
                     .orElseThrow(() -> GymJourneyException.notFound(
                             "Exercício " + dto.exerciseId() + " não encontrado!"
                     ));
 
-            WorkoutExercise workoutExercise = workoutExerciseMapper.toEntity(dto);
-            workoutExercise.setWorkoutSection(section);
-            workoutExercise.setExercise(exercise);
-            return workoutExercise;
+            WorkoutSectionExercise workoutSectionExercise = workoutExerciseMapper.toEntity(dto);
+            workoutSectionExercise.setWorkoutSection(section);
+            workoutSectionExercise.setExercise(exercise);
+            return workoutSectionExercise;
         }).toList();
 
         return workoutExerciseRepository.saveAll(exercises)
@@ -74,11 +74,11 @@ public class WorkoutExerciseService {
             Long exerciseId,
             WorkoutExerciseDto workoutExerciseDto) {
 
-        WorkoutExercise workoutExercise = getWorkoutExercise(sectionId, exerciseId);
+        WorkoutSectionExercise workoutSectionExercise = getWorkoutExercise(sectionId, exerciseId);
 
         if (workoutExerciseDto.exerciseId() != null &&
                 !workoutExerciseDto.exerciseId()
-                        .equals(workoutExercise.getExercise().getId())) {
+                        .equals(workoutSectionExercise.getExercise().getId())) {
 
             Exercise newExercise = exerciseRepository.findById(
                             workoutExerciseDto.exerciseId())
@@ -86,13 +86,13 @@ public class WorkoutExerciseService {
                             "Exercício não encontrado!"
                     ));
 
-            workoutExercise.setExercise(newExercise);
+            workoutSectionExercise.setExercise(newExercise);
         }
 
-        workoutExercise.update(workoutExerciseDto);
+        workoutSectionExercise.update(workoutExerciseDto);
 
         return workoutExerciseMapper.toDetailsDto(
-                workoutExerciseRepository.save(workoutExercise)
+                workoutExerciseRepository.save(workoutSectionExercise)
         );
     }
 
@@ -137,9 +137,9 @@ public class WorkoutExerciseService {
             throw GymJourneyException.badRequest("O peso não pode ser negativo");
         }
 
-        WorkoutExercise workoutExercise = getWorkoutExercise(sectionId, exerciseId);
+        WorkoutSectionExercise workoutSectionExercise = getWorkoutExercise(sectionId, exerciseId);
 
-        if (!workoutExercise.getWorkoutSection()
+        if (!workoutSectionExercise.getWorkoutSection()
                 .getWorkout()
                 .getUser()
                 .getId()
@@ -150,10 +150,10 @@ public class WorkoutExerciseService {
             );
         }
 
-        workoutExercise.setWeight(weight);
+        workoutSectionExercise.setWeight(weight);
 
         return workoutExerciseMapper.toDetailsDto(
-                workoutExerciseRepository.save(workoutExercise)
+                workoutExerciseRepository.save(workoutSectionExercise)
         );
     }
 
@@ -165,19 +165,19 @@ public class WorkoutExerciseService {
                 ));
     }
 
-    private WorkoutExercise getWorkoutExercise(Long sectionId, Long exerciseId) {
-        WorkoutExercise workoutExercise = workoutExerciseRepository.findById(exerciseId)
+    private WorkoutSectionExercise getWorkoutExercise(Long sectionId, Long exerciseId) {
+        WorkoutSectionExercise workoutSectionExercise = workoutExerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> GymJourneyException.notFound(
                         "Exercício do treino não encontrado!"
                 ));
 
-        if (!workoutExercise.getWorkoutSection().getId().equals(sectionId)) {
+        if (!workoutSectionExercise.getWorkoutSection().getId().equals(sectionId)) {
             throw GymJourneyException.badRequest(
                     "Este exercício não pertence à seção informada"
             );
         }
 
-        return workoutExercise;
+        return workoutSectionExercise;
     }
 }
 

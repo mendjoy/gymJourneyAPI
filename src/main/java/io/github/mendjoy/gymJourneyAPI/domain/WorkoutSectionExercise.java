@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "workout_exercise")
-public class WorkoutExercise {
+public class WorkoutSectionExercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,11 +41,11 @@ public class WorkoutExercise {
     @Column(name = "rest_time")
     private Integer restTime;
 
-    public WorkoutExercise() {
+    public WorkoutSectionExercise() {
     }
 
-    public WorkoutExercise(WorkoutSection workoutSection, Exercise exercise,
-                           Integer sets, Integer repetitions, Double weight, Integer restTime) {
+    public WorkoutSectionExercise(WorkoutSection workoutSection, Exercise exercise,
+                                  Integer sets, Integer repetitions, Double weight, Integer restTime) {
         this.workoutSection = workoutSection;
         this.exercise = exercise;
         this.sets = sets;

@@ -4,7 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDetailsDto;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
-import io.github.mendjoy.gymJourneyAPI.service.WorkoutExerciseService;
+import io.github.mendjoy.gymJourneyAPI.service.WorkoutSectionExerciseService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,12 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/workout-sections/{sectionId}/exercises")
-public class WorkoutExerciseController {
+public class WorkoutSectionExerciseController {
 
-    private final WorkoutExerciseService workoutExerciseService;
+    private final WorkoutSectionExerciseService workoutSectionExerciseService;
 
-    public WorkoutExerciseController(WorkoutExerciseService workoutExerciseService) {
-        this.workoutExerciseService = workoutExerciseService;
+    public WorkoutSectionExerciseController(WorkoutSectionExerciseService workoutSectionExerciseService) {
+        this.workoutSectionExerciseService = workoutSectionExerciseService;
     }
 
     @PostMapping
@@ -30,7 +30,7 @@ public class WorkoutExerciseController {
             @Valid @RequestBody List<WorkoutExerciseDto> workoutExerciseDtos) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(workoutExerciseService.create(sectionId, workoutExerciseDtos));
+                .body(workoutSectionExerciseService.create(sectionId, workoutExerciseDtos));
     }
 
     @PutMapping("/{exerciseId}")
@@ -40,7 +40,7 @@ public class WorkoutExerciseController {
             @Valid @RequestBody WorkoutExerciseDto workoutExerciseDto) {
 
         return ResponseEntity.ok(
-                workoutExerciseService.update(sectionId, exerciseId, workoutExerciseDto)
+                workoutSectionExerciseService.update(sectionId, exerciseId, workoutExerciseDto)
         );
     }
 
@@ -51,7 +51,7 @@ public class WorkoutExerciseController {
             @RequestParam(defaultValue = "10") int size) {
 
         return ResponseEntity.ok(
-                workoutExerciseService.getBySectionId(sectionId, page, size)
+                workoutSectionExerciseService.getBySectionId(sectionId, page, size)
         );
     }
 
@@ -61,7 +61,7 @@ public class WorkoutExerciseController {
             @PathVariable Long exerciseId) {
 
         return ResponseEntity.ok(
-                workoutExerciseService.getById(sectionId, exerciseId)
+                workoutSectionExerciseService.getById(sectionId, exerciseId)
         );
     }
 
@@ -73,7 +73,7 @@ public class WorkoutExerciseController {
             @AuthenticationPrincipal User authenticatedUser) {
 
         return ResponseEntity.ok(
-                workoutExerciseService.updateWeight(
+                workoutSectionExerciseService.updateWeight(
                         sectionId, exerciseId, weight, authenticatedUser
                 )
         );
@@ -84,7 +84,7 @@ public class WorkoutExerciseController {
             @PathVariable Long sectionId,
             @PathVariable Long exerciseId) {
 
-        workoutExerciseService.delete(sectionId, exerciseId);
+        workoutSectionExerciseService.delete(sectionId, exerciseId);
 
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),

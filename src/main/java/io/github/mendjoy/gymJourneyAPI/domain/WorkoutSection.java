@@ -31,17 +31,17 @@ public class WorkoutSection {
 
     @OneToMany(mappedBy = "workoutSection", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
+    private List<WorkoutSectionExercise> workoutSectionExercises = new ArrayList<>();
 
     public WorkoutSection() {
     }
 
     public WorkoutSection(Workout workout, String name, String description,
-                          List<WorkoutExercise> workoutExercises) {
+                          List<WorkoutSectionExercise> workoutSectionExercises) {
         this.workout = workout;
         this.name = name;
         this.description = description;
-        this.workoutExercises = workoutExercises != null ? workoutExercises : new ArrayList<>();
+        this.workoutSectionExercises = workoutSectionExercises != null ? workoutSectionExercises : new ArrayList<>();
     }
 
     public Long getId() {
@@ -76,16 +76,16 @@ public class WorkoutSection {
         this.description = description;
     }
 
-    public List<WorkoutExercise> getWorkoutExercises() {
-        return workoutExercises;
+    public List<WorkoutSectionExercise> getWorkoutExercises() {
+        return workoutSectionExercises;
     }
 
-    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
-        this.workoutExercises = workoutExercises;
+    public void setWorkoutExercises(List<WorkoutSectionExercise> workoutSectionExercises) {
+        this.workoutSectionExercises = workoutSectionExercises;
     }
 
-    public void addWorkoutExercise(WorkoutExercise exercise) {
-        workoutExercises.add(exercise);
+    public void addWorkoutExercise(WorkoutSectionExercise exercise) {
+        workoutSectionExercises.add(exercise);
         exercise.setWorkoutSection(this);
     }
 
