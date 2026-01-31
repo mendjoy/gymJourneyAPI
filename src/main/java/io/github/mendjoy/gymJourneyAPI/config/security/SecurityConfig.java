@@ -38,6 +38,9 @@ public class SecurityConfig {
                             .requestMatchers("/users/*/roles/*").hasRole("ADMIN")
                             .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
                             .requestMatchers("/muscle-groups/**").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.POST, "/workouts").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.DELETE, "/workouts").hasAnyRole("ADMIN", "TRAINER")
+                            .requestMatchers(HttpMethod.PUT, "/workouts").hasAnyRole("ADMIN", "TRAINER")
                             .anyRequest().authenticated();
                 })
                 .build();
