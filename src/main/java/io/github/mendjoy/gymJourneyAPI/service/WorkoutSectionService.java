@@ -2,7 +2,6 @@ package io.github.mendjoy.gymJourneyAPI.service;
 
 import io.github.mendjoy.gymJourneyAPI.config.exception.GymJourneyException;
 import io.github.mendjoy.gymJourneyAPI.config.mapper.WorkoutSectionMapper;
-import io.github.mendjoy.gymJourneyAPI.config.utils.ValidationUtils;
 import io.github.mendjoy.gymJourneyAPI.domain.Workout;
 import io.github.mendjoy.gymJourneyAPI.domain.WorkoutSection;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutSectionDetailsDto;

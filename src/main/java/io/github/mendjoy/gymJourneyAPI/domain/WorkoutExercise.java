@@ -3,34 +3,49 @@ package io.github.mendjoy.gymJourneyAPI.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.github.mendjoy.gymJourneyAPI.dto.workout.WorkoutExerciseDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "workout_exercise")
 public class WorkoutExercise {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workout_section_id", nullable = false)
     @JsonBackReference
     private WorkoutSection workoutSection;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
+    @Positive
+    @NotNull
+    @Column(nullable = false)
     private Integer sets;
+
+    @Positive
+    @NotNull
+    @Column(nullable = false)
     private Integer repetitions;
+
+    @Min(0)
     private Double weight;
 
+    @Min(0)
     @Column(name = "rest_time")
     private Integer restTime;
 
     public WorkoutExercise() {
     }
 
-    public WorkoutExercise(WorkoutSection workoutSection, Exercise exercise, Integer sets, Integer repetitions, Double weight, Integer restTime) {
+    public WorkoutExercise(WorkoutSection workoutSection, Exercise exercise,
+                           Integer sets, Integer repetitions, Double weight, Integer restTime) {
         this.workoutSection = workoutSection;
         this.exercise = exercise;
         this.sets = sets;
@@ -96,16 +111,16 @@ public class WorkoutExercise {
     }
 
     public void update(WorkoutExerciseDto workoutExerciseDto) {
-        if(workoutExerciseDto.sets() != null){
+        if (workoutExerciseDto.sets() != null && workoutExerciseDto.sets() > 0) {
             this.setSets(workoutExerciseDto.sets());
         }
-        if(workoutExerciseDto.repetitions() != null){
+        if (workoutExerciseDto.repetitions() != null && workoutExerciseDto.repetitions() > 0) {
             this.setRepetitions(workoutExerciseDto.repetitions());
         }
-        if(workoutExerciseDto.weight() != null){
+        if (workoutExerciseDto.weight() != null && workoutExerciseDto.weight() >= 0) {
             this.setWeight(workoutExerciseDto.weight());
         }
-        if(workoutExerciseDto.restTime() != null){
+        if (workoutExerciseDto.restTime() != null && workoutExerciseDto.restTime() >= 0) {
             this.setRestTime(workoutExerciseDto.restTime());
         }
     }
