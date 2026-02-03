@@ -152,7 +152,7 @@ Response (200 Ok):
 
 ##### 3. Atualizar Dados
 
-***PUT*** `/users`
+***PUT*** `/users/{userId}`
 
 Request:
 
@@ -240,7 +240,7 @@ Response (200 Ok)
 }
 ```
 
-##### 7. Remover papel ao usuário
+##### 7. Remover papel do usuário
 
 ***DELETE*** `"/{userId}/roles/{roleId}"`
 
@@ -277,11 +277,11 @@ Response (200 Ok)
 
 ### Grupo Muscular
 
-`/muscle-group`
+`/muscle-groups`
 
 ##### 1. Cadastrar Grupo muscular
 
-***POST*** `/muscle-group/register`
+***POST*** `/muscle-groupsr`
 
 Endpoint responsável por cadastrar um ou mais grupos musculares.
 Permite o envio de uma lista de objetos, onde cada item representa um grupo muscular distinto.
@@ -313,7 +313,7 @@ Response (201 Created)
 
 ##### 2. Atualizar Grupo muscular
 
-***PUT*** `/muscle-group/update`
+***PUT*** `/muscle-groups/{muscleGroupId}`
 
 **Request Body (JSON)**
 
@@ -336,7 +336,7 @@ Response (200 Ok)
 
 ##### 3. Consultar Grupo muscular
 
-***GET*** `/muscle-group/{id}`
+***GET*** `/muscle-groups/{muscleGroupId}`
 
 Retorna os detalhes de um grupo muscular específico, com base no seu ID.
 
@@ -401,7 +401,7 @@ Response (201 Created)
 
 ##### 2. Atualizar Exercicio
 
-***PUT*** `/exercises/update`
+***PUT*** `/exercises/{exerciseId}`
 
 **Request Body (JSON)**
 
@@ -431,7 +431,7 @@ Response (200 Ok)
 
 ### 3. Consultar Exercicios
 
-**GET** `/exercises/{id}`
+**GET** `/exercises/{exerciseId}`
 
 Retorna os detalhes de um exercicio, com base no seu ID.
 
