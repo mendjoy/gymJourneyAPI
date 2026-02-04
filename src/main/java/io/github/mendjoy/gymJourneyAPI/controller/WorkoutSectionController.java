@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/workout-sections")
+@RequestMapping("/workouts/{workoutId}/sections")
 public class WorkoutSectionController {
 
     private final WorkoutSectionService workoutSectionService;
@@ -22,33 +22,59 @@ public class WorkoutSectionController {
     }
 
     @PostMapping
-    public ResponseEntity<List<WorkoutSectionDto>> create(@RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
-        List<WorkoutSectionDto> newSections = workoutSectionService.create(workoutSectionDtos);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newSections);
+    public ResponseEntity<List<WorkoutSectionDto>> create(
+            @PathVariable Long workoutId,
+            @RequestBody List<WorkoutSectionDto> workoutSectionDtos) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(workoutSectionService.create(workoutId, workoutSectionDtos));
     }
 
-    @PutMapping
-    public ResponseEntity<WorkoutSectionDto> update(@RequestBody WorkoutSectionDto workoutSectionDto) {
-        WorkoutSectionDto section = workoutSectionService.update(workoutSectionDto);
-        return ResponseEntity.ok(section);
+    @PutMapping("/{sectionId}")
+    public ResponseEntity<WorkoutSectionDto> update(
+            @PathVariable Long workoutId,
+            @PathVariable Long sectionId,
+            @RequestBody WorkoutSectionDto workoutSectionDto) {
+
+        return ResponseEntity.ok(
+                workoutSectionService.update(workoutId, sectionId, workoutSectionDto)
+        );
     }
 
     @GetMapping
-    public ResponseEntity<Page<WorkoutSectionDetailsDto>> findByWorkoutId(@RequestParam Long workoutId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<WorkoutSectionDetailsDto> sections = workoutSectionService.findByWorkoutId(workoutId, page, size);
-        return ResponseEntity.ok(sections);
+    public ResponseEntity<Page<WorkoutSectionDetailsDto>> findAll(
+            @PathVariable Long workoutId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return ResponseEntity.ok(
+                workoutSectionService.findByWorkoutId(workoutId, page, size)
+        );
     }
 
     @GetMapping("/{sectionId}")
-    public ResponseEntity<WorkoutSectionDetailsDto> findById(@PathVariable Long sectionId) {
-        WorkoutSectionDetailsDto section = workoutSectionService.findById(sectionId);
-        return ResponseEntity.ok(section);
-    }
+    public ResponseEntity<WorkoutSectionDetailsDto> findById(
+            @PathVariable Long workoutId,
+            @PathVariable Long sectionId) {
 
+        return ResponseEntity.ok(
+                workoutSectionService.findById(workoutId, sectionId)
+        );
+    }
 
     @DeleteMapping("/{sectionId}")
-    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long sectionId) {
-        workoutSectionService.delete(sectionId);
-        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "Seção do treino excluida com sucesso!"));
+    public ResponseEntity<ApiResponseDto> delete(
+            @PathVariable Long workoutId,
+            @PathVariable Long sectionId) {
+
+        workoutSectionService.delete(workoutId, sectionId);
+
+        return ResponseEntity.ok(
+                new ApiResponseDto(
+                        HttpStatus.OK.value(),
+                        "Seção do treino excluída com sucesso!"
+                )
+        );
     }
 }
+
