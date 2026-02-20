@@ -1,7 +1,6 @@
 package io.github.mendjoy.gymJourneyAPI.controller;
 
 import io.github.mendjoy.gymJourneyAPI.domain.User;
-import io.github.mendjoy.gymJourneyAPI.dto.TokenDto;
 import io.github.mendjoy.gymJourneyAPI.dto.response.ApiResponseDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
@@ -88,9 +87,9 @@ public class UserController {
         ));
     }
 
-    @PostMapping("/verify")
-    public ResponseEntity<ApiResponseDto> verifyEmail(@RequestBody TokenDto tokenDto) {
-        userService.verifyEmail(tokenDto);
+    @GetMapping("/verify")
+    public ResponseEntity<ApiResponseDto> verifyEmail(@RequestParam(required = true) String token) {
+        userService.verifyEmail(token);
         return ResponseEntity.ok(new ApiResponseDto(
                 HttpStatus.OK.value(),
                 "Conta verificada com sucesso!"

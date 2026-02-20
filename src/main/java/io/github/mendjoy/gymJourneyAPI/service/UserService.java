@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
         user.setToken(token);
         user.setExpirationToken(LocalDateTime.now().plusHours(24L));
         User newUser = userRepository.save(user);
-       // sendVerificationToken(newUser);
+        sendVerificationToken(newUser);
         return userMapper.toDto(newUser);
     }
 
@@ -155,8 +155,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void verifyEmail(TokenDto tokenDto) {
-        User user = userRepository.findByToken(tokenDto.token())
+    public void verifyEmail(String token) {
+        User user = userRepository.findByToken(token)
                 .orElseThrow(() -> GymJourneyException.notFound("Token inválido ou expirado"));
 
         if (user.getExpirationToken().isBefore(LocalDateTime.now())) {
@@ -173,7 +173,9 @@ public class UserService implements UserDetailsService {
     private void sendVerificationToken(User user) {
 
         try {
+
             emailService.sendVerificationEmail(user);
+
         } catch (Exception e) {
 
             System.err.println("Falha ao enviar email de verificação: " + e.getMessage());

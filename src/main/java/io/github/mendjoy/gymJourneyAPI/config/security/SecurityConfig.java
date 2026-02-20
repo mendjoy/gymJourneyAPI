@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.POST, "/users", "/users/verify", "/auth/login").permitAll()
+                    req.requestMatchers(HttpMethod.POST, "/users", "/auth/login").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/users/verify").permitAll()
                             .requestMatchers("/users/*/roles/*").hasRole("ADMIN")
                             .requestMatchers("/exercises/**").hasAnyRole("ADMIN", "TRAINER")
                             .requestMatchers("/muscle-groups/**").hasAnyRole("ADMIN", "TRAINER")
