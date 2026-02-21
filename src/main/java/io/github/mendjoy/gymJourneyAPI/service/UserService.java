@@ -5,7 +5,6 @@ import io.github.mendjoy.gymJourneyAPI.config.mapper.UserMapper;
 import io.github.mendjoy.gymJourneyAPI.domain.Role;
 import io.github.mendjoy.gymJourneyAPI.domain.User;
 import io.github.mendjoy.gymJourneyAPI.domain.enums.RoleName;
-import io.github.mendjoy.gymJourneyAPI.dto.TokenDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserPasswordDto;
 import io.github.mendjoy.gymJourneyAPI.dto.user.UserRegisterDto;
@@ -43,7 +42,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByEmailIgnoreCaseAndVerifiedTrueAndActiveTrue(username)
+        return userRepository.findByEmailIgnoreCaseAndVerifiedTrue(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não foi encontrado"));
     }
 
@@ -73,7 +72,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        if(cannotAccess(user, authenticatedUser)){
+        if (cannotAccess(user, authenticatedUser)) {
             throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
         }
 
@@ -121,7 +120,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        if(cannotAccess(user, authenticatedUser)){
+        if (cannotAccess(user, authenticatedUser)) {
             throw GymJourneyException.forbidden("Você não tem permissão para Alterar");
         }
 
@@ -146,7 +145,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
 
-        if(cannotAccess(user, authenticatedUser)){
+        if (cannotAccess(user, authenticatedUser)) {
             throw GymJourneyException.forbidden("Você não tem permissão para inativar este usuário.");
         }
 
@@ -185,7 +184,7 @@ public class UserService implements UserDetailsService {
     public UserDto getById(Long id, User authenticatedUser) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> GymJourneyException.notFound("Usuário não encontrado"));
-        if(cannotAccess(user, authenticatedUser)){
+        if (cannotAccess(user, authenticatedUser)) {
             throw GymJourneyException.forbidden("Você não tem permissão para visualizar este usuário");
         }
         return userMapper.toDto(user);
@@ -195,12 +194,12 @@ public class UserService implements UserDetailsService {
         return !isAdmin(authenticatedUser) && !isSameUser(user, authenticatedUser);
     }
 
-    private boolean isAdmin(User user){
+    private boolean isAdmin(User user) {
         return user.getRoles().stream()
                 .anyMatch(role -> role.getName() == RoleName.ADMIN);
     }
 
-    private boolean isSameUser(User user, User authenticatedUser){
+    private boolean isSameUser(User user, User authenticatedUser) {
         return user.getId().equals(authenticatedUser.getId());
     }
 

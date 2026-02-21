@@ -9,12 +9,12 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface WorkoutExerciseMapper {
 
-    @Mapping(source = "workoutSection.id", target = "workoutSectionId")
-    @Mapping(source = "exercise.id", target = "exerciseId")
-    WorkoutExerciseDto toDto(WorkoutSectionExercise entity);
-
     @Mapping(source = "exercise", target = "exercise")
     WorkoutExerciseDetailsDto toDetailsDto(WorkoutSectionExercise entity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "workoutSection", ignore = true)
+    @Mapping(target = "exercise", ignore = true)
     WorkoutSectionExercise toEntity(WorkoutExerciseDto dto);
+
 }

@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 public record WorkoutExerciseDto(
         Long id,
 
-        @NotNull(message = "O id da secao deve ser informado!")
-        Long workoutSectionId,
-
         @NotNull(message = "O id do exercicio deve ser informado!")
         Long exerciseId,
 

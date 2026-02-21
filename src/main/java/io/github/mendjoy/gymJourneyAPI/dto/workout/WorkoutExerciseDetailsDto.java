@@ -4,6 +4,7 @@ import io.github.mendjoy.gymJourneyAPI.dto.exercise.ExerciseDetailsDto;
 
 public record WorkoutExerciseDetailsDto(
         Long id,
+        Long workoutSectionId,
         Integer sets,
         Integer repetitions,
         Double weight,
